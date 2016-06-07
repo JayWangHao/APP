@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cattsoft.framework" >
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
+    <service
+        android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+        android:exported="true" >
+        <intent-filter>
+            <action android:name="com.cattsoft.mos.wo.PUSH_ACTION" />
+        </intent-filter>
+    </service>
+
+    <!-- 百度地图定位服务 -->
+    <service
+        android:name="com.baidu.location.f"
+        android:enabled="true"
+        android:process=":remote" >
+    </service>
+
+    <application>
+        <activity
+            android:name=".template.TestORMLiteActivity"
+            android:label="@string/title_activity_test_ormlite" >
+        </activity>
+    </application>
+
+</manifest>

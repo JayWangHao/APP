@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:context="com.cattsoft.wow.activity.RelevanceWarningActivity">
+    <!-- 标题栏 -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#FF0000" >
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:text="返回"
+            android:background="@null"
+            android:drawableLeft="@drawable/title_left_back"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true"
+            android:drawablePadding="5dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关联告警"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+    <com.cattsoft.framework.view.pullableview.PullToRefreshLayout
+        android:id="@+id/refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_with_frame"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <include layout="@layout/refresh_head" />
+
+        <!-- 列表布局文件 -->
+        <com.cattsoft.framework.view.pullableview.PullableListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:scrollbars="none"
+            android:divider="#FF0000"
+            android:dividerHeight="1dp"
+            android:visibility="invisible"
+            />
+    </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>
+
+<!--<ListView
+    android:id="@+id/listview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>-->
+
+
+</LinearLayout>

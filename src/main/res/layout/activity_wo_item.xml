@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/left_linlay"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/alam"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/warning_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/alarm"
+                android:text="二级"
+                android:textColor="#00FF00"
+                android:textSize="22sp"
+                android:textStyle="italic" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/right_rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:visibility="gone" />
+
+        <!--上面显示部分-->
+        <LinearLayout
+            android:id="@+id/rel_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+
+            >
+
+            <LinearLayout
+                android:id="@+id/hide_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <!-- 第一行，站点名称 -->
+                <LinearLayout
+                    android:id="@+id/lin1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="站点名称：" />
+
+                    <TextView
+                        android:id="@+id/site_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第二行，工单标题 -->
+                <LinearLayout
+                    android:id="@+id/lin2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="工单标题：" />
+
+                    <TextView
+                        android:id="@+id/wo_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第三行，工单历时 -->
+                <LinearLayout
+                    android:id="@+id/lin3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工单历时：" />
+
+                    <TextView
+                        android:id="@+id/wo_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!--待受理-->
+            <RelativeLayout
+                android:id="@+id/layout_01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lin3"
+                android:layout_marginRight="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/accept_wo"
+                    android:layout_width="50dp"
+                    android:layout_height="27dp"
+                    android:layout_toLeftOf="@+id/warning"
+                    android:background="#FF0000"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="接单"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/warning"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#FF0000"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="告警"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
+
+            <!--处理中-->
+            <RelativeLayout
+                android:id="@+id/layout_11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lin3"
+                android:layout_marginRight="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/start"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/finish"
+                    android:background="@color/wo_button_blue"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="开始"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/finish"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/warning3"
+                    android:background="@color/wo_button_blue_selected"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="完成"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/warning3"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="#34AFFF"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="告警"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
+
+            <!--待确认-->
+            <RelativeLayout
+                android:id="@+id/layout_21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lin3"
+                android:layout_marginRight="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/warning5"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:background="#2FB51C"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="告警"
+                    android:textColor="#FFFFFF" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="25dp">
+
+                <ImageView
+                    android:id="@+id/down_img"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/down" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--下面隐藏部分-->
+        <LinearLayout
+            android:id="@+id/hide_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel_up"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- 第四行,派发人员 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="派发人员：" />
+
+                    <TextView
+                        android:id="@+id/distribute_person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第五行，派发时间 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="派发时间：" />
+
+                    <TextView
+                        android:id="@+id/distribute_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第六行，通知时间-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="通知时间：" />
+
+                    <TextView
+                        android:id="@+id/notic_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第七行,工单内容-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="工单内容：" />
+
+                    <TextView
+                        android:id="@+id/wo_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第八行,EMOS环节-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMOS环节：" />
+
+                    <TextView
+                        android:id="@+id/emos_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第九行,待受理人-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/people"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="待受理人：" />
+
+                    <TextView
+                        android:id="@+id/accept_person"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <!-- 第十行,EMOSID-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EMOSID：" />
+
+                    <TextView
+                        android:id="@+id/emosid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="是否超时：" />
+
+                    <TextView
+                        android:id="@+id/isovertime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="催单次数：" />
+
+                    <TextView
+                        android:id="@+id/nprompttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="受理时间：" />
+
+                    <TextView
+                        android:id="@+id/acceptance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/finishTimeLinlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="完成时间：" />
+
+                    <TextView
+                        android:id="@+id/finishtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="故障单等级：" />
+
+                    <TextView
+                        android:id="@+id/faultlevel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+                <!--待受理-->
+                <RelativeLayout
+                    android:id="@+id/layout_02"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/accept_wo2"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/warning2"
+                        android:background="#FF0000"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="接单"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/warning2"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="#FF0000"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="告警"
+                        android:textColor="#FFFFFF" />
+                </RelativeLayout>
+
+                <!--处理中-->
+                <RelativeLayout
+                    android:id="@+id/layout_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/start2"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/finish2"
+                        android:background="@color/wo_button_blue"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="开始"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/finish2"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/warning4"
+                        android:background="@color/wo_button_blue_selected"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="完成"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/warning4"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:background="#34AFFF"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="告警"
+                        android:textColor="#FFFFFF" />
+                </RelativeLayout>
+
+                <!--待确认-->
+                <RelativeLayout
+                    android:id="@+id/layout_22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/warning6"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:background="#2FB51C"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="告警"
+                        android:textColor="#FFFFFF" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/ji_text_view"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:background="#FF0000"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="基站导航"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_marginTop="9dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="留言板"
+                        android:textColor="@color/red"/>
+                <ListView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/lv_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+
+                </ListView>
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <Button
+                        android:id="@+id/btn_message_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@color/red"
+                        android:textSize="16sp"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
+                        android:text="提交" />
+
+                    <EditText
+                        android:id="@+id/et_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerVertical="true"
+                        android:padding="5dp"
+                        android:background="@drawable/wo_item_edit_shap"
+                        android:hint="请输入留言"
+                        android:layout_toLeftOf="@id/btn_message_submit" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:id="@+id/up_img"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/up" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

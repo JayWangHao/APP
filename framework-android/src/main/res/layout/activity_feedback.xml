@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/default_background"
+    android:orientation="vertical" >
+
+    <include layout="@layout/include_title"/>
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/et_feedback_content"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        mos:hint_value="@string/feedback_content_hint"
+        mos:value_right_gravity="false"
+        mos:value_text_size="12sp"
+        mos:is_show_edit="false"
+        />
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/et_feedback_contact"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        mos:hint_value="@string/feedback_contact_hint"
+        mos:value_right_gravity="false"
+        mos:value_text_size="12sp"
+        mos:is_show_edit="false"
+        />
+
+    <Button
+        android:id="@+id/btn_feedback_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/default_btn_style"
+        android:text="@string/feedback_btn_label"/>
+
+    <!--<com.cattsoft.framework.view.TitleBarView-->
+        <!--android:id="@+id/title1"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!-->-->
+    <!--</com.cattsoft.framework.view.TitleBarView>-->
+  <!--<LinearLayout-->
+    <!--android:id="@+id/feedBackRoot"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:background="@color/white"-->
+    <!--android:orientation="vertical" >  -->
+    <!--<TextView android:id="@+id/feedback_tv_content"-->
+			<!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:paddingLeft="5.0dip"-->
+            <!--android:text="@string/feedback_content_label"-->
+            <!--android:textColor="#FF000000"-->
+            <!--android:textSize="18dip" />-->
+    <!-- -->
+    <!--<EditText-->
+            <!--android:id="@+id/feed_back_content"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="5.0dip"-->
+            <!--android:layout_marginRight="5.0dip"-->
+            <!--android:layout_marginTop="10.0dip"-->
+            <!--android:maxLines="500"-->
+            <!--android:minLines="2"-->
+            <!--android:paddingTop="5dip"-->
+            <!--android:gravity="top"-->
+            <!--android:background="@drawable/feed_back_content"-->
+            <!--android:hint="@string/feedback_content_hint"-->
+            <!--android:textSize="16dip"-->
+            <!--android:paddingRight="15.0dip"-->
+            <!--android:paddingLeft="15.0dip"-->
+            <!--android:saveEnabled="true"-->
+            <!--android:maxLength="240" />-->
+    <!-- -->
+   <!--<TextView-->
+            <!--android:id="@+id/feedback_tv_contact"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingLeft="5.0dip"-->
+            <!--android:text="@string/feedback_contact_label"-->
+            <!--android:textColor="#FF000000"-->
+            <!--android:textSize="18dip" />    -->
+    <!-- -->
+    <!--<EditText-->
+            <!--android:id="@+id/feed_back_contact"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="5.0dip"-->
+            <!--android:layout_marginRight="5.0dip"-->
+            <!--android:layout_marginTop="10.0dip"-->
+            <!--android:paddingRight="15.0dip"-->
+            <!--android:paddingTop="5dip"-->
+            <!--android:gravity="top"-->
+            <!--android:textSize="16dip"-->
+            <!--android:background="@drawable/feed_back_contact"-->
+            <!--android:hint="@string/feedback_contact_hint"-->
+            <!--android:paddingLeft="15.0dip"-->
+            <!--android:saveEnabled="true"-->
+            <!--android:maxLength="32" />-->
+    <!-- -->
+    <!--<Button-->
+        <!--android:id="@+id/feedback_btn_sure"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="20dip"-->
+        <!--android:background="@drawable/feed_back_btn"-->
+        <!--android:text="@string/feedback_btn_label"-->
+        <!--android:textColor="#FFFFFFFF"-->
+        <!--android:textSize="16dip" />-->
+<!--</LinearLayout>-->
+</LinearLayout> 

@@ -1,0 +1,161 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+
+    <style name="process_dialog"
+        parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    
+    <style name="main_bar_text_style">
+         <item name="android:textColor">#ffffff</item>
+         <item name="android:textStyle">bold</item>
+         <item name="android:textSize">18sp</item>
+     </style>
+    
+    
+    <!-- checkbox style -->
+    <style name="checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/common_checkbox</item>
+        <item name="android:textColor">#FFA2A499</item>
+    </style>
+    
+    <!-- startActivity透明 -->
+    <style name="StartActivityTheme" parent="@android:style/Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- 详情信息显示框的默认样式-->
+    <style name="label_text_style">
+
+        <item name="backgroundImg">@drawable/edit_label_text_bg</item>
+        <item name="label_text_size">13sp</item>
+        <item name="value_text_size">13sp</item>
+        <item name="label_padding_top">15dp</item>
+        <item name="label_padding_bottom">15dp</item>
+        <item name="value_padding_top">15dp</item>
+        <item name="value_padding_bottom">15dp</item>
+        <item name="is_show_colon">false</item>
+        <item name="value_right_gravity">true</item>
+        <item name="label_text_color">@color/label_color</item>
+        <item name="value_text_color">@color/value_color</item>
+    </style>
+    <!--展示在查询页面默认样式 -->
+    <style name="show_label_text_style" parent="@style/label_text_style">
+
+
+        <item name="label_text_size">14sp</item>
+        <item name="value_text_size">14sp</item>
+
+    </style>
+
+
+    <!-- 详细信息编辑框的默认样式-->
+    <style name="edit_label_text_style" parent="@style/label_text_style">
+        <item name="is_show_edit">true</item>
+
+    </style>
+    <!--展示在查询页面默认样式 -->
+    <style name="show_edit_label_text_style" parent="@style/edit_label_text_style">
+
+        <item name="label_text_size">14sp</item>
+        <item name="value_text_size">14sp</item>
+    </style>
+
+    <!-- 详细信息选择输入框的默认样式-->
+    <!--<style name="select_item_style">-->
+        <!--<item name="bgImg">@drawable/edit_label_text_bg</item>-->
+        <!--<item name="left_label_text_color">@color/label_color</item>-->
+        <!--<item name="left_label_text_size">12sp</item>-->
+        <!--<item name="right_label_text_color">@color/value_color</item>-->
+        <!--<item name="right_label_text_size">12sp</item>-->
+        <!--<item name="left_label_padding_top">11dp</item>-->
+        <!--<item name="left_label_padding_bottom">11dp</item>-->
+        <!--<item name="right_label_padding_top">11dp</item>-->
+        <!--<item name="right_label_padding_bottom">11dp</item>-->
+        <!--<item name="drawable_right">@drawable/new_mos_detail</item>-->
+    <!--</style>-->
+    <style name="select_item_style">
+        <item name="bgImg">@drawable/edit_label_text_bg</item>
+        <item name="left_label_text_color">@color/label_color</item>
+        <item name="left_label_text_size">13sp</item>
+        <item name="right_label_text_color">#646464</item>
+        <item name="right_label_text_size">12sp</item>
+        <item name="left_label_padding_top">17dp</item>
+        <item name="left_label_padding_bottom">17dp</item>
+        <item name="right_label_padding_top">17dp</item>
+        <item name="right_label_padding_bottom">17dp</item>
+        <item name="drawable_right">@drawable/new_mos_detail</item>
+    </style>
+    <!--展示在查询页面默认样式 -->
+    <style name="show_select_item_style" parent="@style/select_item_style">
+
+
+        <item name="left_label_text_size">14sp</item>
+        <item name="right_label_text_size">14sp</item>
+
+    </style>
+
+    <!-- 自定义弹出框 -->
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item> <!--Dialog的windowFrame框为无 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item><!-- 是否漂现在activity上 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+    </style>
+
+   <!-- 弹出框弹出与退出动画-->
+        <style name="CustomDialogStyle" parent="android:Animation">
+            <item name="@android:windowEnterAnimation">@anim/custom_dialog_enter</item>  <!--进入时的动画-->
+            <item name="@android:windowExitAnimation">@anim/custom_dialog_exit</item>    <!--退出时的动画-->
+        </style>
+
+    <style name="StyledIndicators" parent="@android:style/Theme.Light">
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+    </style>
+
+    <!-- tab页的样式-->
+    <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
+
+        <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
+
+        <item name="android:dividerPadding">8dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">8dp</item>
+    </style>
+
+    <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
+        <item name="android:typeface">monospace</item>
+
+    </style>
+
+    <style name="default_btn_style" parent="android:style/Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@drawable/default_btn_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">10dp</item>
+
+    </style>
+    <!-- 等级-->
+    <style name="level" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/level_lover</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+
+    </style>
+
+</resources>

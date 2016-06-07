@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/default_background"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:id="@+id/ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="17dp"
+        android:layout_marginTop="17dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+            <com.cattsoft.framework.view.SelectItem
+                android:id="@+id/select_settings_change_user"
+                style="@style/select_item_style"
+                mos:select_label="@string/change_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+            <!--<com.cattsoft.framework.view.SelectItem-->
+                <!--android:id="@+id/select_settings_modify_password"-->
+                <!--style="@style/select_item_style"-->
+                <!--mos:select_label="@string/modify_password"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="12dp" />-->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+
+            <com.cattsoft.framework.view.SelectItem
+                android:id="@+id/select_settings_feedback"
+                style="@style/select_item_style"
+                mos:select_label="@string/feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+            <!--<com.cattsoft.framework.view.SelectItem-->
+                <!--android:id="@+id/receiver_push_message_item"-->
+                <!--style="@style/select_item_style"-->
+                <!--mos:select_label="@string/receiver_push_message"-->
+                <!--mos:drawable_right="@drawable/setting_on"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@color/line2"-->
+                <!--android:paddingRight="20dp"-->
+                <!--android:paddingLeft="20dp"/>-->
+
+            <!--<com.cattsoft.framework.view.SelectItem-->
+                <!--android:id="@+id/is_recommend_nearby_work"-->
+                <!--style="@style/select_item_style"-->
+                <!--mos:select_label="@string/is_recommend_nearby_work"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@color/line2"-->
+                <!--android:paddingRight="20dp"-->
+                <!--android:paddingLeft="20dp"/>-->
+
+            <com.cattsoft.framework.view.SelectItem
+                android:id="@+id/select_settings_check_version"
+                style="@style/select_item_style"
+                mos:select_label="@string/check_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+            <com.cattsoft.framework.view.SelectItem
+                android:id="@+id/select_settings_about_me"
+                style="@style/select_item_style"
+                mos:select_label="@string/about_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+            <com.cattsoft.framework.view.SelectItem
+                android:id="@+id/btn_exit"
+                style="@style/select_item_style"
+                mos:select_label="@string/exit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@color/line2"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+
+
+
+
+
+
+
+            <!--<Button-->
+            <!--android:id="@+id/btn_exit"-->
+            <!--style="@style/default_btn_style"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="退出登录" />-->
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <include 
+        layout="@layout/include_title"
+        
+        />
+
+<RelativeLayout 
+    android:id="@+id/wo_detail_layout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/detail_main_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/detail_title_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+             >
+
+            
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/left_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/detail_title_layout"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wodetail_left_more"
+            android:visibility="gone"
+             />
+
+        <ImageView
+            android:id="@+id/right_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/detail_title_layout"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wodetail_right_more"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/cursor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/detail_title_layout"
+            android:visibility="gone"
+            android:scaleType="matrix" />
+    </RelativeLayout>
+    <!-- 左右滚动控件 总体布局文件 -->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vPager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_main_layout"
+        android:layout_gravity="center"
+        android:background="@drawable/background"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+    
+</RelativeLayout>
+</LinearLayout>

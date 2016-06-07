@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+
+    <!-- 标题栏 -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#FF0000" >
+
+        <ImageView
+            android:id="@+id/user_name_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/login_user_name_img" />
+
+
+
+        <TextView
+            android:id="@+id/duanZhan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="统计"
+            android:layout_centerInParent="true"
+            android:textColor="#ffffff"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="#F3F3F3"
+        >
+        <!-- 小标题栏 -->
+
+        <LinearLayout
+            android:id="@+id/data_choose"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#F3F3F3"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="今日"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/week"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="本周"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/month"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="本月"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/cursor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/data_choose"
+            android:scaleType="matrix" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/report_background"
+            android:layout_marginTop="0.4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:background="#151A2F">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="14dp">
+                    <TextView
+                        android:id="@+id/kind_txt"
+                        android:layout_width="120dp"
+                        android:layout_height="32dp"
+                        android:text="断站"
+                        android:textColor="#feb237"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="3dp"
+                        android:gravity="center"
+                        android:background="@drawable/report_fragment_left"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_below="@id/kind_txt"
+                        android:layout_marginTop="15dp"
+                        android:layout_alignLeft="@id/kind_txt"
+                        android:layout_alignRight="@id/kind_txt"
+                        android:background="@drawable/statistics"
+                        android:padding="3dp">
+                        <TextView
+                            android:id="@+id/recover_count_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="218"
+                            android:textColor="#fff888"
+                            android:textSize="20sp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_horizontal"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="已恢复"
+                            android:textColor="#fff888"
+                            android:textSize="15sp"
+                            android:layout_below="@id/recover_count_text"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            />
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#191E32"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="-3dp"
+                            android:layout_marginRight="-3dp"/>
+                        <TextView
+                            android:id="@+id/alarm_count_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="218"
+                            android:textColor="#8b841c"
+                            android:textSize="20sp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_horizontal"
+                        android:layout_below="@id/view"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="断站数"
+                            android:textColor="#8b841c"
+                            android:layout_marginTop="7dp"
+                            android:textSize="15sp"
+                            android:layout_below="@id/alarm_count_text"
+                            android:gravity="center_horizontal"
+                            />
+                    </RelativeLayout>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart1"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pieChart1"
+                        android:text="占总量百分比"
+                        android:textColor="#fff800"
+                        android:textSize="15sp"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_marginTop="1dp"
+                android:background="#151A2F">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="14dp">
+                    <TextView
+                        android:id="@+id/kind1_txt"
+                        android:layout_width="120dp"
+                        android:layout_height="32dp"
+                        android:text="工单"
+                        android:textColor="#D84A4C"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:background="@drawable/report_fragment_left_text"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_below="@id/kind1_txt"
+                        android:layout_marginTop="15dp"
+                        android:layout_alignLeft="@id/kind1_txt"
+                        android:layout_alignRight="@id/kind1_txt"
+                        android:background="@drawable/statistics"
+                        android:padding="3dp">
+                        <TextView
+                            android:id="@+id/process_count_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="218"
+                            android:textColor="#ff1413"
+                            android:gravity="center_horizontal"
+                            android:textSize="20sp"
+                            android:layout_marginTop="16dp"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="已处理"
+                            android:textColor="#D84A4C"
+                            android:gravity="center_horizontal"
+                            android:layout_marginTop="7dp"
+                            android:textSize="15sp"
+                            android:layout_below="@id/process_count_text"
+                            />
+                        <View
+                            android:id="@+id/view1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#191E32"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="-3dp"
+                            android:layout_marginRight="-3dp"/>
+                        <TextView
+                            android:id="@+id/area_count_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="218"
+                            android:textColor="#8d1726"
+                            android:layout_marginTop="16dp"
+                            android:textSize="20sp"
+                            android:gravity="center_horizontal"
+                            android:layout_below="@id/view1"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="工单数"
+                            android:textColor="#D84A4C"
+                            android:background="#151A2F"
+                            android:textSize="15sp"
+                            android:layout_marginTop="7dp"
+                            android:layout_below="@id/area_count_text"
+                            android:gravity="center_horizontal"
+                            />
+                    </RelativeLayout>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart2"
+                        android:layout_width="200dp"
+                        android:layout_height="150dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pieChart2"
+                        android:text="占总量百分比"
+                        android:textColor="#D84A4C"
+                        android:textSize="15sp"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    <!--</LinearLayout>
+</com.cattsoft.wow.mudels.SlidingMenu>-->
+
+</LinearLayout>

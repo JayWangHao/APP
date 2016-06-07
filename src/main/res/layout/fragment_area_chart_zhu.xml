@@ -1,0 +1,410 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cattsoft.wow.fragment.AreaChartZhuFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="-10dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/overview_view_page">
+        <ImageView
+            android:id="@+id/rank"
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/green"
+
+            />
+
+        <TextView
+            android:id="@+id/ranktext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="27dp"
+            android:layout_toRightOf="@id/rank"
+            android:text="排名"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+
+            />
+
+        <ImageView
+            android:id="@+id/woNum"
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_below="@id/rank"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/red"
+
+            />
+
+        <TextView
+            android:id="@+id/wotext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ranktext"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/woNum"
+            android:text="工单数"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <ImageView
+            android:id="@+id/beipeiImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/wotext"
+            android:src="@drawable/beipeiqu" />
+
+        <TextView
+            android:id="@+id/rankbeipeitext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="90dp"
+            android:layout_toRightOf="@id/wotext"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wobeipeitext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="80dp"
+            android:layout_toRightOf="@id/wotext"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/yubeiImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-15dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/beipeiImg"
+            android:src="@drawable/yubeiqu" />
+
+        <TextView
+            android:id="@+id/rankyubeitext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="90dp"
+            android:layout_toRightOf="@id/beipeiImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/woyubeitext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@id/beipeiImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/shapinbaImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="-20dp"
+            android:src="@drawable/shapinba" />
+
+        <TextView
+            android:id="@+id/rankshapinbatext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="15dp"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/woshapinbatext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/yuzhongImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:src="@drawable/yuzhong" />
+
+        <TextView
+            android:id="@+id/rankyuzhongtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="13dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/woyuzhongtext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/beipeiImg"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="-2dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/jiangbeiImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-10dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:src="@drawable/jiangbei" />
+
+        <TextView
+            android:id="@+id/rankjiangbeitext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wojiangbeitext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/shapinbaImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/beixinImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-30dp"
+            android:layout_toRightOf="@id/jiangbeiImg"
+            android:src="@drawable/beixin" />
+
+        <TextView
+            android:id="@+id/rankbeixintext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-23dp"
+            android:layout_toRightOf="@id/jiangbeiImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wobeixintext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/yuzhongImg"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="-32dp"
+            android:layout_toRightOf="@id/jiangbeiImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/jiulongpoImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shapinbaImg"
+            android:layout_marginLeft="42dp"
+            android:layout_marginTop="-15dp"
+            android:src="@drawable/jiulongpo" />
+
+        <TextView
+            android:id="@+id/rankjiulongpotext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shapinbaImg"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="25dp"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wojiulongpotext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/shapinbaImg"
+            android:layout_marginLeft="63dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/nananImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jiangbeiImg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="-25dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:src="@drawable/nanan" />
+
+        <TextView
+            android:id="@+id/ranknanantext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/jiangbeiImg"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wonanantext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/jiangbeiImg"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="-10dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/dadukouImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nananImg"
+            android:layout_marginLeft="-25dp"
+            android:layout_marginTop="-30dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:src="@drawable/dadukou" />
+
+        <TextView
+            android:id="@+id/rankdadukoutext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nananImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-10dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wodadukoutext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/nananImg"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/jiulongpoImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/bananImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beixinImg"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="-5dp"
+            android:layout_toRightOf="@id/dadukouImg"
+            android:src="@drawable/banan" />
+
+        <TextView
+            android:id="@+id/rankbanantext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/beixinImg"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@id/dadukouImg"
+            android:text="18"
+            android:textColor="@color/green"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/wobanantext"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/beixinImg"
+            android:layout_marginLeft="95dp"
+            android:layout_marginTop="57dp"
+            android:layout_toRightOf="@id/dadukouImg"
+            android:background="@drawable/redpint"
+            android:gravity="center"
+            android:text="8888"
+            android:textColor="@color/white"
+            android:textSize="8sp" />
+
+    </RelativeLayout>
+
+</FrameLayout>

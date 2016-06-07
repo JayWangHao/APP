@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto">
+    <com.cattsoft.framework.view.TitleBarView
+        android:id="@+id/title1"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        mos:title_backgroundImg="@drawable/titlebar_bg"
+        mos:left_img="@drawable/titlebar_img_btn_back"
+        mos:title_text_color="#ffffff"
+        mos:title_text_size="12sp"
+         />
+</merge>

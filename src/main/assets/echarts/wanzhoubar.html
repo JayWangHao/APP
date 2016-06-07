@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Echarts</title>
+	<style>
+		html{
+		background: #000000;
+		}
+	</style>
+	<script type="text/javascript" src="js/echarts.js" charset="utf-8"></script>
+	<script type="text/javascript" src="js/wanzhoubar.js"></script>
+	<script>
+		function connectWebViewJavascriptBridge(callback) {
+		if (window.WebViewJavascriptBridge) {
+		callback(WebViewJavascriptBridge)
+		} else {
+		document.addEventListener(
+		'WebViewJavascriptBridgeReady'
+		, function() {
+		callback(WebViewJavascriptBridge)
+		},
+		false
+		);
+		}
+		}
+
+		connectWebViewJavascriptBridge(function(bridge) {
+		bridge.init(function(message, responseCallback) {
+		console.log('JS got a message', message);
+		var data = {
+		'Javascript Responds': 'Wee!'
+		};
+		console.log('JS responding with', data);
+		responseCallback(data);
+		});
+
+		//这里就是Js注册的functionInJs方法，data即为原生带来的参数
+		bridge.registerHandler("WanBAR", function(data, responseCallback) {
+		//将原生带来的参数，显示在show标签位置
+
+	    var responseJSON=eval('('+data+')');
+		
+		var complete =[];
+		var total=[];
+		var address=[];
+		for(var i in responseJSON){ 
+	     if(i=='忠县'||i=='梁平'||i=='万州'||i=='巫溪'||i=='城口'||i=='开县'||i=='巫山'||i=='奉节'||i=='云阳'){
+
+         complete.push(responseJSON[i].ONCEFIN);
+         total.push(responseJSON[i].ONCEUNFIN);
+          address.push(i);
+        }
+		
+		}
+
+		on(complete,total,address);
+
+		});
+		})
+
+	</script>
+	
+	
+</head>
+<body >
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" class="main" style="height:300px"></div>
+</body>
+</html>

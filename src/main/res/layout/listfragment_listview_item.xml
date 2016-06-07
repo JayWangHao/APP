@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+
+        android:id="@+id/ll_item"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        android:orientation="horizontal" >
+
+        <TextView
+
+            android:id="@+id/areaName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="区域名"
+            android:textColor="#ff0000"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/noBrokenStationNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="非断站数"
+            android:textColor="#ff0000"
+            android:textSize="16dp" />
+        <TextView
+            android:id="@+id/workingNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="工单数"
+            android:textColor="#ff0000"
+            android:textSize="16dp" />
+
+        <TextView
+
+            android:drawableRight="@drawable/lift_right"
+            android:id="@+id/brokenStationNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="断站数"
+            android:layout_marginRight="10dp"
+            android:textColor="#ff0000"
+            android:textSize="16dp" />
+
+
+    </LinearLayout>
+</LinearLayout>

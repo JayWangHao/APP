@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <!-- <com.cattsoft.framework.view.pullableview.PullToRefreshLayout
+        android:id="@+id/wo_detail_refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_with_frame"
+        android:orientation="vertical"
+        android:visibility="visible">-->
+
+       <!-- <include layout="@layout/refresh_head" />-->
+        <!-- 列表布局文件 -->
+        <com.cattsoft.framework.view.pullableview.PullableListView
+            android:id="@+id/wo_detail_list_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:scrollbars="none"
+            android:dividerHeight="1dp"
+            />
+   <!-- </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>-->
+
+
+
+</LinearLayout>

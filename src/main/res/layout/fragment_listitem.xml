@@ -1,0 +1,208 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#FF0000">
+
+        <Button
+            android:id="@+id/back_btn_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/title_left_back"
+            android:text="返回"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/title_middle_bg"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/duanZhan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="断站"
+                android:textColor="#FF0000" />
+
+            <TextView
+                android:id="@+id/fei_duanZhan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/title_middle_text_bg"
+                android:gravity="center"
+                android:text="非断站" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/my_order"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/title_my_order" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <!-- 搜索栏 -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/sreach_bg"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/serch_ima"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/ic_action_search" />
+
+                    <EditText
+                        android:id="@+id/sreach_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:hint="请输入站点ID或名称关键字"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/ima_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/shanchu"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 小标题栏 -->
+
+            <LinearLayout
+                android:id="@+id/data_choose"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#F3F3F3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/today"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="今日"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/week"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="本周"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/month"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="本月"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/cursor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/data_choose"
+                android:scaleType="matrix" />
+
+
+            <TextView
+                android:id="@+id/tv_city_name"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:text="城口"
+                android:textSize="20sp"/>
+            <com.cattsoft.framework.view.pullableview.PullToRefreshLayout
+                android:id="@+id/warning_refresh_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/bottom_with_frame"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <include layout="@layout/refresh_head" />
+                <!-- 列表布局文件 -->
+                <com.cattsoft.framework.view.pullableview.PullableListView
+                    android:id="@+id/warning_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cacheColorHint="#00000000"
+                    android:divider="#FF0000"
+                    android:dividerHeight="1dp"
+                    android:scrollbars="none"
+                    android:visibility="invisible" />
+            </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

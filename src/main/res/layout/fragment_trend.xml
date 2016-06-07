@@ -1,0 +1,55 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="com.cattsoft.wow.fragment.TrendFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- 标题栏 -->
+        <RelativeLayout
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="#FF0000" >
+
+            <ImageView
+                android:id="@+id/user_name_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/login_user_name_img" />
+
+
+
+            <TextView
+                android:id="@+id/duanZhan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="走势"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+
+        <com.github.lzyzsd.jsbridge.BridgeWebView
+            android:id="@+id/webViewLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.github.lzyzsd.jsbridge.BridgeWebView
+            android:id="@+id/webViewBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"/>
+        <com.github.lzyzsd.jsbridge.BridgeWebView
+            android:id="@+id/webViewPie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

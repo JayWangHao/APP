@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="select_item">
+        <attr name="drawable_left" format="reference" />
+        <attr name="drawable_right" format="reference" />
+        <attr name="bgImg" format="reference"></attr>
+        <attr name="left_label_text_color" format="color"></attr>
+        <attr name="right_label_text_color" format="color"></attr>
+        <attr name="left_label_text_size" format="dimension"></attr>
+        <attr name="right_label_text_size" format="dimension"></attr>
+        <attr name="left_label_padding_top" format="dimension"></attr>
+        <attr name="left_label_padding_bottom" format="dimension"></attr>
+        <attr name="right_label_padding_top" format="dimension"></attr>
+        <attr name="right_label_padding_bottom" format="dimension"></attr>
+        <attr name="select_label" format="string"></attr>
+        <attr name="select_value" format="string"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="edit_labeltext">
+        <attr name="backgroundImg" format="reference"></attr>
+        <attr name="label" format="string"></attr>
+        <attr name="value" format="string"></attr>
+        <attr name="hint_value" format="string"></attr>
+        <attr name="is_show_colon" format="boolean"></attr>
+        <attr name="value_right_gravity" format="boolean"></attr>
+        <attr name="is_show_edit" format="boolean"></attr>
+        <attr name="label_text_color" format="color"></attr>
+        <attr name="label_text_size" format="dimension"></attr>
+        <attr name="value_text_color" format="color"></attr>
+        <attr name="value_text_size" format="dimension"></attr>
+        <attr name="label_padding_top" format="dimension"></attr>
+        <attr name="label_padding_bottom" format="dimension"></attr>
+        <attr name="value_padding_top" format="dimension"></attr>
+        <attr name="value_padding_bottom" format="dimension"></attr>
+        <attr name="view_height" format="dimension"></attr>
+    </declare-styleable>
+    
+    <declare-styleable name="titlebar">
+        <attr name="title_backgroundImg" format="reference"></attr>
+        <attr name="title_backgroundColor" format="color"></attr>
+        <attr name="left_img" format="reference"></attr>
+        <attr name="right_img" format="reference"></attr>
+        <attr name="arrow_img" format="reference"></attr>
+        <attr name="title_text_color" format="color"></attr>
+        <attr name="title_text_size" format="dimension"></attr>
+        <attr name="title_height" format="dimension"></attr>
+        <attr name="title_right_text_size" format="dimension"></attr>
+        <attr name="title_right_text_color" format="color"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="MenuImg">
+        <attr name="menuDrawable" format="reference"></attr>
+        <attr name="menuTextSize" format="dimension"></attr>
+        <attr name="menuTextColor" format="color"></attr>
+
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleView">
+        <attr name="innerRoundColor" format="color"/>
+        <attr name="outerRoundColor" format="color"/>
+        <attr name="innerRoundWidth" format="dimension"></attr>
+        <attr name="outerRoundWidth" format="dimension"></attr>
+        <attr name="numTextColor" format="color" />
+        <attr name="numTextSize" format="dimension" />
+        <attr name="remarkTextColor" format="color"/>
+        <attr name="remarkTextSize" format="dimension"/>
+        <attr name="remark" format="string"></attr>
+        <attr name="max" format="integer"></attr>
+        <attr name="textIsDisplayable" format="boolean"></attr>
+        <attr name="style">
+            <enum name="STROKE" value="0"></enum>
+            <enum name="FILL" value="1"></enum>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SlidingMenu">
+        <attr name="mode">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="viewAbove" format="reference" />
+        <attr name="viewBehind" format="reference" />
+        <attr name="behindOffset" format="dimension" />
+        <attr name="behindWidth" format="dimension" />
+        <attr name="behindScrollScale" format="float" />
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="touchModeBehind">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+        </attr>
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowWidth" format="dimension" />
+        <attr name="fadeEnabled" format="boolean" />
+        <attr name="fadeDegree" format="float" />
+        <attr name="selectorEnabled" format="boolean" />
+        <attr name="selectorDrawable" format="reference" />
+    </declare-styleable>
+
+
+
+</resources>

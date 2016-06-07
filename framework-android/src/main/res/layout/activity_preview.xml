@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff" >
+     <com.cattsoft.framework.view.TitleBarView
+        android:id="@+id/title1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    </com.cattsoft.framework.view.TitleBarView>
+ <ImageView 
+     android:id="@+id/show_image"
+     android:layout_height="450dp"
+     android:layout_width="fill_parent"
+     android:layout_below="@+id/title1"
+     android:padding="10dp"
+     />
+ <RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/show_image" >
+ <EditText 
+     android:id="@+id/describe_text"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"   
+     android:layout_alignLeft="@+id/show_image"
+     android:layout_gravity="center_vertical"
+     android:layout_marginLeft="20dp"
+     android:singleLine="true"
+     android:paddingRight="75dp"
+     android:layout_marginRight="10dp"/>
+ <Button 
+     android:id="@+id/send_to_btn"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_below="@+id/show_image"
+     android:layout_alignRight="@+id/describe_text"
+     android:layout_gravity="center_vertical"
+     android:layout_margin="7dp"
+     />
+ </RelativeLayout>
+</RelativeLayout>

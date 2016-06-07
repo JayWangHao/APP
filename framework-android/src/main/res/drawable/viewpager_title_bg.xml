@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="1" android:drawable="@drawable/viewpager_title_one_bg"/>
+    <item android:maxLevel="2" android:drawable="@drawable/viewpager_title_two_bg"/>
+    <!--
+    <item android:maxLevel="3" android:drawable="@drawable/viewpager_title_three_bg"/>
+    -->
+    <item android:maxLevel="3" android:drawable="@drawable/viewpager_title_four_bg"/>
+    <item android:maxLevel="4" android:drawable="@drawable/viewpager_title_five_bg"/>
+    <item android:maxLevel="5" android:drawable="@drawable/viewpager_title_six_bg"/>
+    <item android:maxLevel="6" android:drawable="@drawable/viewpager_title_seven_bg"/>
+    <item android:maxLevel="7" android:drawable="@drawable/viewpager_title_eight_bg"/>
+    <item android:maxLevel="8" android:drawable="@drawable/viewpager_title_nine_bg"/>
+
+</selector>

@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.cattsoft.framework.view.BottomMenuFragment">
+
+
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_menu_gridview_bg"
+        android:numColumns="5"
+        android:scrollbars="none"
+        android:paddingLeft="20dp"
+         >
+    </GridView>
+
+    <SlidingDrawer
+        android:id="@+id/slidingdrawer"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:content="@+id/content"
+        android:handle="@+id/scanhandle"
+        android:layout_above="@id/gridview"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/scanhandle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/detail_image_btn_toorbar_up" >
+        </ImageView>
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bottom_menu_slidingdrawer_bg"  />
+
+    </SlidingDrawer>
+
+</RelativeLayout>

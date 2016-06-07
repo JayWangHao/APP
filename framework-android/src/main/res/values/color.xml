@@ -1,0 +1,68 @@
+<resources>
+
+    <color name="titleColor">#f8f8f8</color>
+
+    <color name="background">#f2eae8</color>
+    <color name="red">#e27f66</color>
+    <color name="pink">#d866e2</color>
+    <color name="green">#c6e266</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#93908b</color>
+    <color name="gray1">#646464</color>
+    <color name="orange">#f78514</color>
+    <color name="no_color">#9000</color>
+	<color name="lightBlack">#545454</color>
+    <color name="title_right_color">#ff8019</color>
+    
+    <!-- 文字的颜色 -->
+    <color name="textBlack">#FF000000</color>
+    <color name="list_item_color">#fefefe</color>
+    <color name="blue">#1cbde9</color>
+    <color name="transparent_text">#55000000</color>
+    <color name="tuijian">#00B5c3</color>
+    <color name="fujin">#585858</color>
+
+    <color name="text1">#de4a48</color>
+    <color name="text2">#73a437</color>
+    <color name="text3">#4590c9</color>
+
+    <!-- 扫描条形码 -->
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color> 
+    <color name="transparent">#00000000</color>
+    
+    <!-- 圆环的颜色-->
+    <color name="inner_round_default_color">#dedede</color>
+    <color name="outer_round_default_color">#46c9c1</color>
+    <color name="num_text_default_color">#333333</color>
+    <color name="remark_text_default_color">#7b7b7b</color>
+
+
+    <!--第四版掌上运维编辑框、显示框、选择框字体颜色 -->
+    <color name="line">#d5d5d5</color>
+    <color name="line1">#e5e5e5</color>
+    <color name="line2">#acacac</color>
+    <color name="label_color">#646464</color>
+    <color name="value_color">#acacac</color>
+
+    <!--第四版掌上运维弹出框标题颜色取消按钮颜色、选中行字体颜色-->
+    <color name="dialog_title_color">#020000</color>
+    <color name="dialog_cancle_color">#fe7200</color>
+    <color name="dialog_list_line_color">#d9d9d9</color>
+
+    <color name="login_text_line_color">#ff9933</color>
+
+    <color name="default_btn_bg_color">#fd6b08</color>
+
+    <color name="default_background">#e7e7e7</color>
+    <color name="process_query_background">#f7f7f7</color>
+
+
+    <color name="black_50">#80000000</color> <!-- 60%透明度的黑色 -->
+    <color name="black_80">#D9000000</color> <!-- 80%透明度的黑色 -->
+    <color name="viewfinder_laser">#ffff0000</color>
+
+
+</resources>

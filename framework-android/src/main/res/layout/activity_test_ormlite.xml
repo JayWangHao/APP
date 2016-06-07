@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/default_background"
+    >
+    <include
+        layout="@layout/include_title"
+        />
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="420dip"
+        android:layout_weight="18">
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt1"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        mos:label="业务号码："
+        mos:value_right_gravity="false" />
+
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt2"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        mos:label="客户名称："
+        mos:value=""
+        mos:value_right_gravity="false" />
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt3"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:imeOptions="actionSearch"
+        mos:label="工单号码："
+        mos:value_right_gravity="false" />
+
+
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt4"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        mos:label="物理号码："
+        mos:value=""
+        mos:value_right_gravity="false" />
+
+
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt5"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        mos:label="内部单号："
+        mos:value=""
+        mos:value_right_gravity="false" />
+
+    <com.cattsoft.framework.view.EditLabelText
+        android:id="@+id/eidt6"
+        style="@style/edit_label_text_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        mos:label="定单号码："
+        mos:value=""
+        mos:value_right_gravity="false" />
+
+    <Button
+        android:id="@+id/save_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="清空表后插入数据列表"
+        style="@style/default_btn_style"/>
+    <Button
+        android:id="@+id/query_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="查询所有数据"
+        style="@style/default_btn_style"/>
+
+
+    <Button
+        android:id="@+id/query_third"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="查询第三条数据"
+        style="@style/default_btn_style"/>
+    <Button
+        android:id="@+id/update_third"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="更新第三条数据"
+        style="@style/default_btn_style"/>
+    <Button
+        android:id="@+id/delete_third"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="删除第三条数据"
+        style="@style/default_btn_style"/>
+        </LinearLayout>
+</ScrollView>
+</LinearLayout>
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mos="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+<!--  
+        <com.cattsoft.framework.view.TitleBarView
+            android:id="@+id/title1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="EditLabelText样例"
+            android:textColor="@color/black" />
+
+        <com.cattsoft.framework.view.EditLabelText
+            android:id="@+id/loginname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            mos:hint_value="@string/hello_world"
+            mos:label="@string/app_name"
+            mos:value="@string/loading"
+            style="@style/edit_label_text_style"
+            />
+        
+        <com.cattsoft.framework.view.LabelText
+            android:id="@+id/loginname1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            mos:label="@string/app_name"
+            style="@style/label_text_style"
+            mos:value="@string/loading" />
+        
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="EditLabelText动态生成样例"
+            android:textColor="@color/black" />
+        <!-- 这里有个动态生成的EditLabelText -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="LabelText动态生成样例"
+            android:textColor="@color/black" />
+        <!-- 这里有动态生成的LabelText -->
+
+        <com.cattsoft.framework.view.SelectItem
+            android:id="@+id/item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            label="@string/app_name"
+            value="@string/app_name"
+            style="@style/select_item_style"
+            />
+
+        <!-- 这里有个动态生成的Selectitem -->
+
+        <com.cattsoft.framework.view.SearchEditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:textCursorDrawable="@null" />
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBF1F1"
+    android:orientation="vertical"
+    tools:context=".CitityWeatherFragment" >
+
+    <Button
+        android:id="@+id/change_password_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="修改密码"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/password_icon"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="16dp"
+        />
+    <Button
+        android:id="@+id/logout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_below="@id/change_password_btn"
+        android:text="注销"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/logout_icon"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:id="@+id/about_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_below="@id/logout_btn"
+        android:text="关于"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/about_icon"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="10dp"
+        />
+
+</LinearLayout>
+

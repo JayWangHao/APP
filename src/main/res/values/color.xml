@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="small_title_text_color">#FF0000</color>
+    <color name="wraning_history_text_green_color">#29AD44</color>
+    <color name="wraning_history_text_red_color">#F23E86</color>
+    <color name="text_nochecked">#FFFFFF</color>
+    <color name="text_checked">#00FF00</color>
+    <color name="wo_count_color">#E5E5E5</color>
+    <color name="wraning_detail_text_green_color">#29AD44</color>
+    <color name="wraning_detail_text_red_color">#FF0000</color>
+    <color name="wo_button_blue">#34AFFF</color>
+    <color name="wo_button_blue_selected">#ABABAB</color>
+    <color name="wo_text_green">#2FB51C</color>
+</resources>
