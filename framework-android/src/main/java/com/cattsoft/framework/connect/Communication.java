@@ -250,7 +250,7 @@ public class Communication {
      *            服务器的地址，直接写Action的地址，如tm/WoHandleAction.do?method=query
      * @param parameter
      *            请求的json字符串
-     * @param methodName
+     * @param callbackInterface
      *            服务端传来数据后，该Acitivity对数据处理的方法名
      * @param superObject
      *            反射的实例(Activity)，指定是哪个activity
@@ -478,6 +478,32 @@ public class Communication {
 			throws ClientProtocolException, IOException {
 		HttpClient client = createHttpClient();
 		String serverUrl = serverURL + url;
+		HttpPost post = new HttpPost(serverUrl);
+		post.addHeader("Content-Type", "application/json");
+		String result = null;
+
+		StringEntity resEntity = new StringEntity(parameter, "UTF-8");
+		post.setEntity(resEntity);
+		// 获取响应的结果
+		HttpResponse response = client.execute(post);
+		// 获取HttpEntity
+		HttpEntity respEntity = response.getEntity();
+		// 获取响应的结果信息
+		byte[] resultByteType = EntityUtils.toByteArray(respEntity);
+		// 解压返回的字符串
+		try {
+			result = StringUtil.unCompressGbk(resultByteType);
+		} catch (IOException e) {
+			result = StringUtil.getAppException4MOS("解压或解密出现异常！");
+		}
+		return result;
+	}
+
+	public static String getPostSearchWarning(String url, String parameter)
+			throws ClientProtocolException, IOException {
+		HttpClient client = createHttpClient();
+//		String serverUrl = "http://221.5.203.219:8080/wonms2/tz/TZDeviceAction.do?method=QuerytFaultList";
+		String serverUrl = "http://221.5.203.219:8080/wonms2/tz/TZDeviceAction.do?method=getQueryAlarmList";
 		HttpPost post = new HttpPost(serverUrl);
 		post.addHeader("Content-Type", "application/json");
 		String result = null;
