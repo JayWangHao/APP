@@ -240,8 +240,7 @@ public class Communication {
 			
 		}
 
-		sharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(context);
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		
 	}
 

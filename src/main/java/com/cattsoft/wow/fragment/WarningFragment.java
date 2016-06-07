@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,9 +45,20 @@ import com.cattsoft.wow.activity.WoDetailActivity;
 import com.cattsoft.wow.adapter.WarningListViewAdapter;
 import com.cattsoft.wow.mudels.Warning;
 import com.cattsoft.wow.mudels.Wo;
+import com.cattsoft.wow.view.ToastCommom;
+import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+
+import org.apache.http.entity.StringEntity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +81,9 @@ public class WarningFragment extends Fragment {
     private String Break_Value = "1";
     private String Data_Value = "1";
 
-    /** 页卡头标 */
+    /**
+     * 页卡头标
+     */
     private ArrayList<TextView> pageTitles = new ArrayList<TextView>();
     private ImageView cursor;       // 动画图片
     private int screenW;
@@ -104,15 +118,15 @@ public class WarningFragment extends Fragment {
     private boolean flash_flag = false;     //闪烁告警的标识
     private String error;
 
-    private Map<Integer,Boolean> map = new HashMap<Integer,Boolean>();
+    private Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
     private int oldPostion = -1;
     private static HashMap<Integer, Boolean> isExpand;//设置item展开或者收缩的初始值
-
+    private ToastCommom toastCommom;
 
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        LogUtil.d("TAG_1","这是告警界面");
+        LogUtil.d("TAG_1", "这是告警界面");
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         view = inflater.inflate(R.layout.fragment_warning, container, false);
 
@@ -124,23 +138,23 @@ public class WarningFragment extends Fragment {
         return view;
     }
 
-    private void getSharedPreferencesData(){
+    private void getSharedPreferencesData() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Break_Value = sharedPreferences.getString("Break_Value", "");
-        Data_Value = sharedPreferences.getString("Data_Value","");
-        if(Break_Value.equals("2")){
+        Data_Value = sharedPreferences.getString("Data_Value", "");
+        if (Break_Value.equals("2")) {
             Break.setTextColor(getResources().getColor(R.color.black));
             Not_Break.setTextColor(getResources().getColor(R.color.small_title_text_color));
             Break.setBackgroundResource(R.drawable.title_middle_text_bg2);
             Not_Break.setBackgroundColor(getResources().getColor(R.color.white));
-        }else{
-           Break.setTextColor(getResources().getColor(R.color.small_title_text_color));
-           Not_Break.setTextColor(getResources().getColor(R.color.black));
-           Break.setBackgroundColor(getResources().getColor(R.color.white));
-           Not_Break.setBackgroundResource(R.drawable.title_middle_text_bg);
-       }
+        } else {
+            Break.setTextColor(getResources().getColor(R.color.small_title_text_color));
+            Not_Break.setTextColor(getResources().getColor(R.color.black));
+            Break.setBackgroundColor(getResources().getColor(R.color.white));
+            Not_Break.setBackgroundResource(R.drawable.title_middle_text_bg);
+        }
 
-        if(Data_Value.equals("7")){
+        if (Data_Value.equals("7")) {
             today.setTextColor(getResources().getColor(R.color.black));
             week.setTextColor(getResources().getColor(R.color.small_title_text_color));
             month.setTextColor(getResources().getColor(R.color.black));
@@ -148,7 +162,7 @@ public class WarningFragment extends Fragment {
             animation.setFillAfter(true);   // True:图片停在动画结束位置
             animation.setDuration(300);
             cursor.startAnimation(animation);
-        }else if(Data_Value.equals("30")){
+        } else if (Data_Value.equals("30")) {
             today.setTextColor(getResources().getColor(R.color.black));
             week.setTextColor(getResources().getColor(R.color.black));
             month.setTextColor(getResources().getColor(R.color.small_title_text_color));
@@ -159,7 +173,7 @@ public class WarningFragment extends Fragment {
         }
     }
 
-    private void initDataWarningThread(){
+    private void initDataWarningThread() {
 //        if(isShowProgressDialog){
 //            progressDialog = new ProgressDialog(WarningFragment.super.getActivity());
 //            progressDialog.showProcessDialog();
@@ -173,18 +187,19 @@ public class WarningFragment extends Fragment {
         mThread.start();
     }
 
-    public void initData(){
+    public void initData() {
+
 
         Message msg = new Message();
         // 发起请求从后台获取数据后显示出来
         String url = "tz/TZDeviceAction.do?method=getQueryAlarmList";
         // 把条件数据以JSON形式存储好
         JSONObject jsonParmter = new JSONObject();
-        userId = sharedPreferences.getString("userId","");
-        if(order_flag == true ){
+        userId = sharedPreferences.getString("userId", "");
+        if (order_flag == true) {
             jsonParmter.put("ALARMLEVEL", levels);
             jsonParmter.put("ALARMSTATE", state);
-            if(flash_flag == true){
+            if (flash_flag == true) {
                 jsonParmter.put("flash", 1);
             }
             jsonParmter.put("BREAK", Break_Value);                //1断站，2非断站
@@ -192,41 +207,40 @@ public class WarningFragment extends Fragment {
             jsonParmter.put("USERID", userId);          //用户ID
             jsonParmter.put("limit", limit);           //显示条数
             jsonParmter.put("page", pageNo);              //页码
-            if(sreach_start == true){
+            if (sreach_start == true && sreach_text_context != null) {
                 jsonParmter.put("VCNECNAME", sreach_text_context);
             }
-        }else{
+        } else {
             jsonParmter.put("BREAK", Break_Value);                //1断站，2非断站
             jsonParmter.put("DAYLIMITVALUE", Data_Value);      //时间条件，1本日，7本周，30本月
             jsonParmter.put("USERID", userId);           //用户ID
             jsonParmter.put("limit", 5);           //显示条数
             jsonParmter.put("page", pageNo);              //页码
-            if(sreach_start == true){
+            if (sreach_start == true && sreach_text_context != null) {
                 jsonParmter.put("VCNECNAME", sreach_text_context);
             }
             jsonParmter.put("ALARMSTATE", "1");
         }
 
         String ss = jsonParmter.toString();//请求服务器的条件数据
+
         try {
-            result =  Communication.getPostResponseForNetManagement(url, ss);
-
-
+            result = Communication.getPostResponseForNetManagement(url, ss);
             JSONObject resultJson = JSON.parseObject(result);
 
-            if(StringUtil.isBlank(result)) {
+            if (!result.contains("neCName")) {
                 msg.what = 1;
                 handler.sendMessage(msg);
                 Log.d("TAG_1", "告警搜索返回结果：msg.what = 1;" + result);
                 return;
             }
-            if(resultJson.containsKey("error")){
-                error = resultJson.getString("error");
-                msg.what = 2;
-                handler.sendMessage(msg);
-                Log.d("TAG_1", "告警搜索返回结果：msg.what = 2;" + result);
-                return;
-            }
+//            if(resultJson.containsKey("error")){
+//                error = resultJson.getString("error");
+//                msg.what = 2;
+//                handler.sendMessage(msg);
+//                Log.d("TAG_1", "告警搜索返回结果：msg.what = 2;" + result);
+//                return;
+//            }
             Log.d("TAG_1", "告警搜索返回结果：msg.what = 3" + result);
             JSONArray alarmsArrayList = resultJson.getJSONArray("alarms");
 
@@ -235,11 +249,11 @@ public class WarningFragment extends Fragment {
             handler.sendMessage(msg);
             return;
 
-        } catch (JSONException e){
-            Log.d("TAG_1","告警搜索返回结果e："+e);
+        } catch (JSONException e) {
+            Log.d("TAG_1", "告警搜索返回结果e：" + e);
 
         } catch (Exception e) {
-            Log.d("TAG_1","告警搜索返回结果e："+e);
+            Log.d("TAG_1", "告警搜索返回结果e：" + e);
             e.printStackTrace();
             msg.what = 4;
             handler.sendMessage(msg);
@@ -247,9 +261,63 @@ public class WarningFragment extends Fragment {
         }
     }
 
+    //     用于接收线程发送的消息
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message m) {
+            Log.d("TAG_1", "what:" + m.what);
+            switch (m.what) {
+
+                case 1: {
+                    if (sreach_start) {
+                        toastCommom.ToastShow(WarningFragment.super.getActivity(), (ViewGroup) WarningFragment.super.getActivity().findViewById(R.id.toast_layout_root), "服务器暂无该站点");
+                    } else {
+                        Toast.makeText(WarningFragment.super.getActivity(), "服务端暂无数据", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+//                case 2:{
+//                    Toast.makeText(getActivity(), "返回数据异常！", Toast.LENGTH_LONG).show();
+//                    break;
+//                }
+                case 3: {
+                    adapter = new WarningListViewAdapter(WarningFragment.super.getActivity(), mlist);
+                    mlistview.setAdapter(adapter);
+                    mlistview.setVisibility(View.VISIBLE);
+
+                    if (pageNo != 1) {
+                        mlistview.setSelection((pageNo - 1) * 5 + 1);
+                    }
+
+                    if (mlist.size() >= limit) {
+                        //设置最后一页时，提示没有数据
+                        int len = mlist.size() % limit;
+                        if (len != 0) {
+                            Toast.makeText(getActivity(), "已经是最后一页", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
+                        refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                    } else {
+                        refreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                    }
+                    Log.d("TAG_1", "更新界面");
+                    break;
+                }
+//                case 4:{
+//                    Toast.makeText(WarningFragment.super.getActivity(),"请求服务端异常！",Toast.LENGTH_SHORT).show();
+//                    break;
+//                }
+            }
+            sreach_start = false;
+//            progressDialog.closeProcessDialog();
+        }
+    };
+
     private void initView(View view) {
-        my_order = (ImageView)view.findViewById(R.id.my_order);
-        Break = (TextView)view.findViewById(R.id.duanZhan);
+        my_order = (ImageView) view.findViewById(R.id.my_order);
+        Break = (TextView) view.findViewById(R.id.duanZhan);
         Not_Break = (TextView) view.findViewById(R.id.fei_duanZhan);
         today = (TextView) view.findViewById(R.id.today);
         today.setTextColor(getResources().getColor(R.color.small_title_text_color));
@@ -263,8 +331,9 @@ public class WarningFragment extends Fragment {
 
         mlistview = (PullableListView) view.findViewById(R.id.warning_list_view);
 
-        user_name=(ImageView)view.findViewById(R.id.user_name_img);
-        refreshLayout = (PullToRefreshLayout)view.findViewById(R.id.warning_refresh_view);
+        user_name = (ImageView) view.findViewById(R.id.user_name_img);
+        refreshLayout = (PullToRefreshLayout) view.findViewById(R.id.warning_refresh_view);
+        toastCommom = ToastCommom.createToastConfig();
     }
 
     // 初始化页卡(上方)的标题
@@ -350,9 +419,9 @@ public class WarningFragment extends Fragment {
                     moveTwoToLeft(perSpacing);       // 从3 到 1
                 }
                 currIndex = 0;
-                if(animation==null){
+                if (animation == null) {
 
-                }else{
+                } else {
                     animation.setFillAfter(true);   // True:图片停在动画结束位置
                     animation.setDuration(300);
                     cursor.startAnimation(animation);
@@ -430,7 +499,11 @@ public class WarningFragment extends Fragment {
                 isShowProgressDialog = true;
                 isClearList = true;
                 sreach_text_context = sreach_text.getText().toString();
-                initDataWarningThread();
+                if (TextUtils.isEmpty(sreach_text_context)){
+                    Toast.makeText(WarningFragment.super.getActivity(),"请输入站点",Toast.LENGTH_SHORT).show();
+                }else {
+                    initDataWarningThread();
+                }
             }
         });
         my_order.setOnClickListener(new View.OnClickListener() {
@@ -478,73 +551,73 @@ public class WarningFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-            if (mlist.size() > 1) {
+                if (mlist.size() > 1) {
 
-                final ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
-                final ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
-                final LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
-                final TextView historyWarning = (TextView) view.findViewById(R.id.history_warning);
-                final TextView historyWarning2 = (TextView) view.findViewById(R.id.history_warning2);
-                final TextView flowWarning = (TextView) view.findViewById(R.id.flow_warning);
-                final TextView flowWarning2 = (TextView) view.findViewById(R.id.flow_warning2);
+                    final ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
+                    final ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
+                    final LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
+                    final TextView historyWarning = (TextView) view.findViewById(R.id.history_warning);
+                    final TextView historyWarning2 = (TextView) view.findViewById(R.id.history_warning2);
+                    final TextView flowWarning = (TextView) view.findViewById(R.id.flow_warning);
+                    final TextView flowWarning2 = (TextView) view.findViewById(R.id.flow_warning2);
 
-                map.put(position, true);
-                if (hideLayout.getVisibility() == View.GONE) {
-                    if (flowWarning.getVisibility() == View.VISIBLE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        historyWarning.setVisibility(View.GONE);
-                        historyWarning2.setVisibility(View.VISIBLE);
-                        flowWarning.setVisibility(View.GONE);
-                        flowWarning2.setVisibility(View.VISIBLE);
+                    map.put(position, true);
+                    if (hideLayout.getVisibility() == View.GONE) {
+                        if (flowWarning.getVisibility() == View.VISIBLE) {
+                            hideLayout.setVisibility(View.VISIBLE);
+                            downImg.setVisibility(View.GONE);
+                            upImg.setVisibility(View.VISIBLE);
+                            historyWarning.setVisibility(View.GONE);
+                            historyWarning2.setVisibility(View.VISIBLE);
+                            flowWarning.setVisibility(View.GONE);
+                            flowWarning2.setVisibility(View.VISIBLE);
+                        } else {
+                            hideLayout.setVisibility(View.VISIBLE);
+                            downImg.setVisibility(View.GONE);
+                            upImg.setVisibility(View.VISIBLE);
+                            historyWarning.setVisibility(View.GONE);
+                            historyWarning2.setVisibility(View.VISIBLE);
+                            flowWarning.setVisibility(View.GONE);
+                            flowWarning2.setVisibility(View.GONE);
+                        }
                     } else {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        historyWarning.setVisibility(View.GONE);
-                        historyWarning2.setVisibility(View.VISIBLE);
-                        flowWarning.setVisibility(View.GONE);
-                        flowWarning2.setVisibility(View.GONE);
+                        if (flowWarning2.getVisibility() == View.VISIBLE) {
+                            hideLayout.setVisibility(View.GONE);
+                            downImg.setVisibility(View.VISIBLE);
+                            upImg.setVisibility(View.GONE);
+                            historyWarning.setVisibility(View.VISIBLE);
+                            historyWarning2.setVisibility(View.GONE);
+                            flowWarning.setVisibility(View.VISIBLE);
+                            flowWarning2.setVisibility(View.GONE);
+                        } else {
+                            hideLayout.setVisibility(View.GONE);
+                            downImg.setVisibility(View.VISIBLE);
+                            upImg.setVisibility(View.GONE);
+                            historyWarning.setVisibility(View.VISIBLE);
+                            historyWarning2.setVisibility(View.GONE);
+                            flowWarning.setVisibility(View.GONE);
+                            flowWarning2.setVisibility(View.GONE);
+                        }
+
                     }
-                } else {
-                    if (flowWarning2.getVisibility() == View.VISIBLE) {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        historyWarning.setVisibility(View.VISIBLE);
-                        historyWarning2.setVisibility(View.GONE);
-                        flowWarning.setVisibility(View.VISIBLE);
-                        flowWarning2.setVisibility(View.GONE);
+
+                    //对item点击后展开 或者收缩的处理
+                    Warning warning = mlist.get(position);
+                    if (oldPostion == position) {
+                        if (warning.isExpend()) {
+                            oldPostion = -1;
+                        }
+                        mlist.get(position).setExpend(false);
                     } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        historyWarning.setVisibility(View.VISIBLE);
-                        historyWarning2.setVisibility(View.GONE);
-                        flowWarning.setVisibility(View.GONE);
-                        flowWarning2.setVisibility(View.GONE);
+                        if (oldPostion != -1) {
+                            mlist.get(oldPostion).setExpend(false);
+                        }
+                        oldPostion = position;
+                        mlist.get(oldPostion).setExpend(true);
                     }
-
+                    adapter.notifyDataSetChanged();
                 }
-
-                //对item点击后展开 或者收缩的处理
-                Warning warning = mlist.get(position);
-                if (oldPostion == position) {
-                    if (warning.isExpend()) {
-                        oldPostion = -1;
-                    }
-                    mlist.get(position).setExpend(false);
-                } else {
-                    if (oldPostion != -1) {
-                        mlist.get(oldPostion).setExpend(false);
-                    }
-                    oldPostion = position;
-                    mlist.get(oldPostion).setExpend(true);
-                }
-                adapter.notifyDataSetChanged();
             }
-        }
         });
     }
 
@@ -616,67 +689,15 @@ public class WarningFragment extends Fragment {
     }
 
 
-    // 用于接收线程发送的消息
-    public Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message m) {
-            Log.d("TAG_1","what:"+m.what);
-            switch (m.what) {
+    private void getData(JSONArray alarmsArrayList) {
 
-                case 1: {
-                    Toast.makeText(WarningFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case 2:{
-                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
-                    break;
-                }
-                case 3:{
-                    adapter = new WarningListViewAdapter(WarningFragment.super.getActivity(),mlist);
-                    mlistview.setAdapter(adapter);
-                    mlistview.setVisibility(View.VISIBLE);
-
-                    if(pageNo != 1){
-                        mlistview.setSelection((pageNo-1) * 5+1);
-                    }
-
-                    if(mlist.size() >= limit){
-                        //设置最后一页时，提示没有数据
-                        int len = mlist.size() % limit;
-                        if( len != 0){
-                            Toast.makeText(getActivity(),"已经是最后一页",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
-                        refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-                    } else {
-                        refreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
-                    }
-                    break;
-                }
-                case 4:{
-                    Toast.makeText(WarningFragment.super.getActivity(),"请求服务端异常！",Toast.LENGTH_SHORT).show();
-                    break;
-                }
-//                default:{
-//                    Toast.makeText(WarningFragment.super.getActivity(), "无法识别！", Toast.LENGTH_SHORT).show();
-//                    break;
-//                }
-            }
-            progressDialog.closeProcessDialog();
-        }
-    };
-
-    private void getData(JSONArray alarmsArrayList){
-
-        if(isClearList){
+        if (isClearList) {
             mlist.clear();
         }
-        for (int i = 0;i<alarmsArrayList.size();i++){
+        for (int i = 0; i < alarmsArrayList.size(); i++) {
             JSONObject object = alarmsArrayList.getJSONObject(i);
             Warning warning = new Warning();
-            warning.setWarningLevel(object.getString("almStdLevel")+"级");
+            warning.setWarningLevel(object.getString("almStdLevel") + "级");
             warning.setWarningAddress(object.getString("neCName"));
             warning.setWarningContext(object.getString("specificProblems"));
             warning.setBusinessType(object.getString("state"));
@@ -704,10 +725,10 @@ public class WarningFragment extends Fragment {
         private Context mcontext = null;
         public List<Warning> list;
 
-        public WarningListViewAdapter(Context context, List<Warning> list){
+        public WarningListViewAdapter(Context context, List<Warning> list) {
 
             this.mcontext = context;
-            this.list =list;
+            this.list = list;
         }
 
         @Override
@@ -730,7 +751,7 @@ public class WarningFragment extends Fragment {
 
             int length = list.size();
             //list长度等于1，直接让其展开数据
-            if(length == 1) {
+            if (length == 1) {
                 ViewHolder holder = null;
                 if (view == null) {
                     view = LayoutInflater.from(this.mcontext).inflate(R.layout.fragment_warning_item_single, null);
@@ -793,10 +814,10 @@ public class WarningFragment extends Fragment {
                 }
             }
             //list长度大于1
-            else{
+            else {
 
                 ViewHolder viewHolder = null;
-                if(view == null) {
+                if (view == null) {
                     view = LayoutInflater.from(this.mcontext).inflate(R.layout.fragment_warning_item, null);
 
                     viewHolder = new ViewHolder();
@@ -812,119 +833,119 @@ public class WarningFragment extends Fragment {
                     viewHolder.longitude = (TextView) view.findViewById(R.id.longitude);
                     viewHolder.addText = (TextView) view.findViewById(R.id.add_text);
                     view.setTag(viewHolder);
-                }else{
+                } else {
                     viewHolder = (ViewHolder) view.getTag();
                 }
-                    final ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
-                    final ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
-                    final LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
-                    final TextView historyWarning = (TextView) view.findViewById(R.id.history_warning);
-                    final TextView historyWarning2 = (TextView) view.findViewById(R.id.history_warning2);
-                    final TextView flowWarning = (TextView) view.findViewById(R.id.flow_warning);
-                    final TextView flowWarning2 = (TextView) view.findViewById(R.id.flow_warning2);
+                final ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
+                final ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
+                final LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
+                final TextView historyWarning = (TextView) view.findViewById(R.id.history_warning);
+                final TextView historyWarning2 = (TextView) view.findViewById(R.id.history_warning2);
+                final TextView flowWarning = (TextView) view.findViewById(R.id.flow_warning);
+                final TextView flowWarning2 = (TextView) view.findViewById(R.id.flow_warning2);
 
-                    final Warning warning = list.get(i);
-                    viewHolder.warningLevel.setText(warning.getWarningLevel());
-                    viewHolder.warningAddress.setText(warning.getWarningAddress());
-                    viewHolder.warningContext.setText(warning.getWarningContext());
-                    viewHolder.businessType.setText(warning.getBusinessType());
-                    viewHolder.warningTime.setText(warning.getWarningTime());
-                    viewHolder.happenTime.setText(warning.getHappenTime());
-                    viewHolder.warningCode.setText(warning.getWarningCode());
-                    viewHolder.handlePerson.setText(warning.getHandlePerson());
-                    viewHolder.netLocation.setText(warning.getNetLocation());
-                    viewHolder.longitude.setText(warning.getLongitude());
-                    viewHolder.addText.setText(warning.getAddText());
+                final Warning warning = list.get(i);
+                viewHolder.warningLevel.setText(warning.getWarningLevel());
+                viewHolder.warningAddress.setText(warning.getWarningAddress());
+                viewHolder.warningContext.setText(warning.getWarningContext());
+                viewHolder.businessType.setText(warning.getBusinessType());
+                viewHolder.warningTime.setText(warning.getWarningTime());
+                viewHolder.happenTime.setText(warning.getHappenTime());
+                viewHolder.warningCode.setText(warning.getWarningCode());
+                viewHolder.handlePerson.setText(warning.getHandlePerson());
+                viewHolder.netLocation.setText(warning.getNetLocation());
+                viewHolder.longitude.setText(warning.getLongitude());
+                viewHolder.addText.setText(warning.getAddText());
 
-                    //判断工单按钮是否可以展示
-                    final  String tisyn = warning.getTisyn();
-                    if(!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)){
-                        flowWarning.setVisibility(view.VISIBLE);
-                        flowWarning2.setVisibility(view.VISIBLE);
-                        View.OnClickListener  flowOnClick=new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Warning warnvo = list.get(i);
-                                Intent intent = new Intent(mcontext, WoDetailActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("marnInfo", warnvo);
-                                intent.putExtras(bundle);
-                                mcontext.startActivity(intent);
-                            }
-                        };
-                        flowWarning.setOnClickListener(flowOnClick);
-                        flowWarning2.setOnClickListener(flowOnClick);
+                //判断工单按钮是否可以展示
+                final String tisyn = warning.getTisyn();
+                if (!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)) {
+                    flowWarning.setVisibility(view.VISIBLE);
+                    flowWarning2.setVisibility(view.VISIBLE);
+                    View.OnClickListener flowOnClick = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Warning warnvo = list.get(i);
+                            Intent intent = new Intent(mcontext, WoDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("marnInfo", warnvo);
+                            intent.putExtras(bundle);
+                            mcontext.startActivity(intent);
+                        }
+                    };
+                    flowWarning.setOnClickListener(flowOnClick);
+                    flowWarning2.setOnClickListener(flowOnClick);
 
+                }
+
+                boolean flag = warning.isExpend();
+                if (flag) {
+                    hideLayout.setVisibility(View.VISIBLE);
+                    downImg.setVisibility(View.GONE);
+                    upImg.setVisibility(View.VISIBLE);
+                    historyWarning.setVisibility(View.GONE);
+                    historyWarning2.setVisibility(View.VISIBLE);
+                    if (!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)) {
+                        flowWarning.setVisibility(View.GONE);
+                        flowWarning2.setVisibility(View.VISIBLE);
                     }
+                } else {
+                    hideLayout.setVisibility(View.GONE);
+                    downImg.setVisibility(View.VISIBLE);
+                    upImg.setVisibility(View.GONE);
+                    historyWarning.setVisibility(View.VISIBLE);
+                    historyWarning2.setVisibility(View.GONE);
+                    if (!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)) {
+                        flowWarning.setVisibility(View.VISIBLE);
+                        flowWarning2.setVisibility(View.GONE);
+                    }
+                }
 
-                    boolean flag = warning.isExpend();
-                    if(flag) {
+                downImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         hideLayout.setVisibility(View.VISIBLE);
                         downImg.setVisibility(View.GONE);
                         upImg.setVisibility(View.VISIBLE);
                         historyWarning.setVisibility(View.GONE);
                         historyWarning2.setVisibility(View.VISIBLE);
-                        if(!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)){
+                        if (!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)) {
                             flowWarning.setVisibility(View.GONE);
                             flowWarning2.setVisibility(View.VISIBLE);
                         }
-                    }else{
+                    }
+                });
+                upImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         hideLayout.setVisibility(View.GONE);
                         downImg.setVisibility(View.VISIBLE);
                         upImg.setVisibility(View.GONE);
                         historyWarning.setVisibility(View.VISIBLE);
                         historyWarning2.setVisibility(View.GONE);
-                        if(!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)){
+                        if (!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)) {
                             flowWarning.setVisibility(View.VISIBLE);
                             flowWarning2.setVisibility(View.GONE);
                         }
                     }
-
-                    downImg.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            historyWarning.setVisibility(View.GONE);
-                            historyWarning2.setVisibility(View.VISIBLE);
-                            if(!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)){
-                                flowWarning.setVisibility(View.GONE);
-                                flowWarning2.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                    upImg.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            historyWarning.setVisibility(View.VISIBLE);
-                            historyWarning2.setVisibility(View.GONE);
-                            if(!StringUtil.isBlank(tisyn) && !"0".equals(tisyn)){
-                                flowWarning.setVisibility(View.VISIBLE);
-                                flowWarning2.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                    historyWarning.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(mcontext, WarningHistoryActivity.class);
-                            intent.putExtra("VCSITECODE", warning.getNeeName());
-                            mcontext.startActivity(intent);
-                        }
-                    });
-                    historyWarning2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(mcontext, WarningHistoryActivity.class);
-                            intent.putExtra("VCSITECODE", warning.getNeeName());
-                            mcontext.startActivity(intent);
-                        }
-                    });
-                }
+                });
+                historyWarning.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mcontext, WarningHistoryActivity.class);
+                        intent.putExtra("VCSITECODE", warning.getNeeName());
+                        mcontext.startActivity(intent);
+                    }
+                });
+                historyWarning2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mcontext, WarningHistoryActivity.class);
+                        intent.putExtra("VCSITECODE", warning.getNeeName());
+                        mcontext.startActivity(intent);
+                    }
+                });
+            }
             return view;
         }
     }
@@ -945,14 +966,14 @@ public class WarningFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data != null){
+        if (data != null) {
             levels = data.getStringExtra("ALARMLEVEL");
             state = data.getStringExtra("ALARMSTATE");
             flashed = data.getStringExtra("flash");
             order_flag = true;
-            if(flashed != null){
+            if (flashed != null) {
                 flash_flag = true;
-            }else{
+            } else {
                 flash_flag = false;
             }
             pageNo = 1;
