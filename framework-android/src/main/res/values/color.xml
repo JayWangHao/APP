@@ -5,9 +5,9 @@
     <color name="background">#f2eae8</color>
     <color name="red">#e27f66</color>
     <color name="pink">#d866e2</color>
-    <color name="green">#c6e266</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
+    <color name="green">#32CD32</color>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
     <color name="gray">#93908b</color>
     <color name="gray1">#646464</color>
     <color name="orange">#f78514</color>
@@ -18,7 +18,7 @@
     <!-- 文字的颜色 -->
     <color name="textBlack">#FF000000</color>
     <color name="list_item_color">#fefefe</color>
-    <color name="blue">#1cbde9</color>
+    <color name="blue">#436EEE</color>
     <color name="transparent_text">#55000000</color>
     <color name="tuijian">#00B5c3</color>
     <color name="fujin">#585858</color>

@@ -19,19 +19,19 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="区域名"
-            android:textColor="#ff0000"
+            android:textColor="#636363"
             android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/noBrokenStationNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="非断站数"
-            android:textColor="#ff0000"
-            android:textSize="16dp" />
+        <!--<TextView-->
+            <!--android:id="@+id/noBrokenStationNumber"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="非断站数"-->
+            <!--android:textColor="#DC143C"-->
+            <!--android:textSize="16dp" />-->
         <TextView
             android:id="@+id/workingNumber"
             android:layout_width="0dp"
@@ -40,12 +40,11 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="工单数"
-            android:textColor="#ff0000"
+            android:textColor="#DC143C"
             android:textSize="16dp" />
 
         <TextView
 
-            android:drawableRight="@drawable/lift_right"
             android:id="@+id/brokenStationNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,9 +52,15 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="断站数"
-            android:layout_marginRight="10dp"
-            android:textColor="#ff0000"
             android:textSize="16dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/lift_right"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            />
 
 
     </LinearLayout>

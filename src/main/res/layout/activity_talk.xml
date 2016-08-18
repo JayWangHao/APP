@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ll_talk_gen"
+    >
+    <LinearLayout
+        android:id="@+id/ll_talkBack"
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:background="@color/small_title_text_color"
+        >
+
+        <ImageView
+            android:id="@+id/back_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/title_left_back"
+            />
+        <TextView
+            android:id="@+id/back_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="返回"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            />
+    </LinearLayout>
+
+    <com.cattsoft.framework.view.pullableview.PullToRefreshLayout
+        android:id="@+id/comment_refresh_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_with_frame"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <include layout="@layout/refresh_head" />
+        <!-- 列表布局文件 -->
+        <com.cattsoft.framework.view.pullableview.PullableListView
+            android:id="@+id/commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:divider="#D4D4D4"
+            android:dividerHeight="0.5dp"
+            android:scrollbars="none"
+            android:visibility="visible" />
+    </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#CD5555"
+        android:id="@+id/commentLinear"
+        android:visibility="visible"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+        <!-- 输入框 -->
+        <EditText
+            android:id="@+id/commentEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:maxLength="100"
+            android:minHeight="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:inputType="textMultiLine"
+            android:gravity="left"
+            android:maxLines="6"
+            android:hint="请输入评论"
+            android:textColorHint="#E5E5E5"
+            android:textSize="22sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"/>
+        <!-- 留言按钮 -->
+        <Button
+            android:id="@+id/commentButton"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:textColor="#ffffff"
+            android:text="评论"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_wh_6"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+</LinearLayout>

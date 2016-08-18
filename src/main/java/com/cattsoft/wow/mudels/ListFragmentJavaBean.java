@@ -10,11 +10,30 @@ import java.io.Serializable;
 public class ListFragmentJavaBean implements Serializable {
 
     private String BREAK1;
+    private String UNBREAK1;
     private String BREAK2;
     private String NGEOID;
     private String NGEONAME;
     private String ONCE;
     private String TIYSN;
+
+    public String getUNBREAK1() {
+        return UNBREAK1;
+    }
+
+    public void setUNBREAK1(String UNBREAK1) {
+        this.UNBREAK1 = UNBREAK1;
+    }
+
+    public String getUNTIYSN() {
+        return UNTIYSN;
+    }
+
+    public void setUNTIYSN(String UNTIYSN) {
+        this.UNTIYSN = UNTIYSN;
+    }
+
+    private String UNTIYSN;
 
     public String getBREAK1() {
         return BREAK1;
@@ -72,12 +91,14 @@ public class ListFragmentJavaBean implements Serializable {
         ListFragmentJavaBean listFragmentBean = new ListFragmentJavaBean();
 
         listFragmentBean.setBREAK1(obj.getString("BREAK1"));
+        listFragmentBean.setUNBREAK1(obj.getString("UNBREAK1"));
         listFragmentBean.setBREAK2(obj.getString("BREAK2"));
         listFragmentBean.setNGEOID(obj.getString("NGEOID"));
 
         listFragmentBean.setNGEONAME(obj.getString("NGEONAME"));
         listFragmentBean.setONCE(obj.getString("ONCE"));
         listFragmentBean.setTIYSN(obj.getString("TIYSN"));
+        listFragmentBean.setUNTIYSN(obj.getString("UNTIYSN"));
 
         return  listFragmentBean;
     }

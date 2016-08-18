@@ -60,7 +60,7 @@ function on(complete,total,address){
 			};
 			var radius = [40, 55];
 			
-			option = {
+option = {
 
     tooltip : {
         trigger: 'axis'
@@ -107,26 +107,27 @@ function on(complete,total,address){
     ],
     
   "series" : [
-    {
-      "barCategoryGap" : "10%",
-      "data" : complete,
-      "stack" : "sum",
-      "type" : "bar",
-      "barWidth" : 10,
-      "itemStyle" : {
-        "normal" : {
-          "label" : {
-            "show" : true,
-            "position" : "insideRight"
-          },
-          "barBorderWidth" : 0.2,
-          "barBorderRadius" : 1,
-          "barBorderColor" : "blue",
-          "color" : function(value){i = value.dataIndex;if(value.data/(option.series[1].data[i]+value.data)>0.6 & value.data/(option.series[1].data[i]+value.data)<0.8 ){return "orange";}if(value.data/(option.series[1].data[i]+value.data)>0.8){return "red";}else{return "green";}}
-        }
-      }
-    },
-    {
+         {
+           "barCategoryGap" : "10%",
+           "data" : complete,
+           "stack" : "sum",
+           "type" : "bar",
+           "barWidth" : 10,
+           "itemStyle" : {
+             "normal" : {
+               "label" : {
+                 "show" : false,
+                 "position" : "bottom",
+                  "formatter":function (params) {for (var i = 0, l = option.yAxis[0].data.length; i < l; i++) {if (option.yAxis[0].data[i] == params.name) {return parseInt(params.value/(option.series[1].data[i] + params.value)*100)+'%';}}}
+               },
+               "barBorderWidth" : 0.2,
+               "barBorderRadius" : 1,
+               "barBorderColor" : "blue",
+               "color" : function(value){i =value.dataIndex;if(value.data/(option.series[1].data[i]+value.data)>0.5){return "green";}else{return "red";}}
+             }
+           }
+         },
+         {
       "barCategoryGap" : 20,
       "data" : total,
       "stack" : "sum",
@@ -140,8 +141,10 @@ function on(complete,total,address){
               "color" : "white"
             },
             "position" : "right",
-            "formatter" : function (params) {for (var i = 0, l = option.yAxis[0].data.length; i < l; i++) {if (option.yAxis[0].data[i] == params.name) {return option.series[0].data[i] + params.value;}}}
-          },
+            "formatter" :
+//            function (params) {for (var i = 0, l = option.yAxis[0].data.length; i < l; i++) {if (option.yAxis[0].data[i] == params.name) {return option.series[0].data[i] + params.value;}}}
+            function (params) {for (var i = 0, l = option.yAxis[0].data.length; i < l; i++) {if (option.yAxis[0].data[i] == params.name) {var display = option.series[0].data[i] + params.value +'('+parseInt(option.series[0].data[i]/(option.series[0].data[i] + params.value)*100)+'%)';return display}}}
+            },
           "barBorderWidth" : 0.2,
           "barBorderRadius" : 1,
           "barBorderColor" : "blue",
@@ -188,7 +191,7 @@ function on(complete,total,address){
     "show" : true,
     "z" : 0,
     "borderWidth" : 0,
-    "text" : "工单完成率(%)   0~60 绿色  60~80橙色  80~100红色",
+    "text" : "工单完成率(%)   0~50 红色   50~100绿色",
     "subtext" : "",
     "zlevel" : 0
   },
@@ -213,6 +216,7 @@ function on(complete,total,address){
       "type" : "shadow"
     },
     "islandFormmater" : "{a} < br\/>{b} : {c}",
+    "formatter":function(params){ var show = params[0].name + '<br/>' +'已完成：'+params[0].value+ '<br/>'+'未完成：'+params[1].value+'<br/>';return show},
     "backgroundColor" : "rgba(0,0,0,0.70)",
     "trigger" : "axis",
     "show" : true,
@@ -245,8 +249,7 @@ function on(complete,total,address){
     }
   ]
 
-};
-             
+};   
 			
 			// 为echarts对象加载数据 
 			myChart.setOption(option);

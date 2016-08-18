@@ -12,10 +12,11 @@ public class Constant {
 	// ServerURL="http://svr913.cattsoft.com:9961/web_mos/";//公司演示环境地址
 
 //	public static String ServerURL = "http://10.21.1.24:8080/system-mobile/webservice/jaxrs/";// 本机地址
+//	public static String ServerURL = "http://221.5.203.219:8080/wonms2/"; // 重庆测试地址
 	public static String ServerURL = "http://124.162.56.217:7070/wonms2/"; // 重庆地址
+//
 
-
-	//public static String ServerURL = "http://113.204.227.78:9897/wonms2/"; // 重庆生产环境地址
+//	public static String ServerURL = "http://113.204.227.78:9897/wonms2/"; // 重庆生产环境地址
 
 	public static String crashURL = "tm/MosHandleFileAction.do?method=uploadFile4MOS";// 发送客户端崩溃日志的地址
 

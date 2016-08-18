@@ -10,7 +10,8 @@ import java.io.Serializable;
  */
 public class Wo implements Serializable {
 
-    private String acceptPerson; //受理人
+    private String acceptPerson; //待受理人
+    private String alsoAcceptPerson; //受理人
     private String cTime;//告警时长
     private String dacceptTime;//告警时长
     private String finishTime;//完成时间
@@ -84,7 +85,13 @@ public class Wo implements Serializable {
         return vcFlowid;
 
     }
+    public String getAlsoAcceptPerson() {
+        return alsoAcceptPerson;
+    }
 
+    public void setAlsoAcceptPerson(String alsoAcceptPerson) {
+        this.alsoAcceptPerson = alsoAcceptPerson;
+    }
     public void setVcAccperiPersonList(String vcAccperiPersonList) {
         this.vcAccperiPersonList = vcAccperiPersonList;
     }
@@ -268,6 +275,7 @@ public class Wo implements Serializable {
             return null;
         }
         Wo wo = new Wo();
+        wo.setAlsoAcceptPerson(obj.getString("ACCEPTPERSON"));
         wo.setVcFlowid(obj.getString("VCFLOWID"));
         wo.setVcAccperiPersonList(obj.getString("VCACCEPTPERSONLIST"));
         wo.seteMosId(obj.getString("VCEMOSID"));

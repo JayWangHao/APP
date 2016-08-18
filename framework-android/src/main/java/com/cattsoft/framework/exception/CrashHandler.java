@@ -219,16 +219,16 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
 //			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String sdpath = Environment.getExternalStorageDirectory() + "/";
-            String path  = sdpath + "crash/";
+            String path  = sdpath + "ZNCX_crash/";
 				File dir = new File(path);
 				if (!dir.exists()) {
 					dir.mkdirs();
 				}
-//				FileOutputStream fos = new FileOutputStream(path + fileName);
-//			if (fos != null){
-//				fos.write(sb.toString().getBytes());
-//				fos.close();
-//			}
+				FileOutputStream fos = new FileOutputStream(path + fileName);
+			if (fos != null){
+				fos.write(sb.toString().getBytes());
+				fos.close();
+			}
 
 //			}
 			// sendToHost(fileName);

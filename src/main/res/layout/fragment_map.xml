@@ -1,20 +1,244 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
     tools:context="com.cattsoft.wow.fragment.MapFragment">
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:id="@+id/processBar"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/processbar"
-        />
+
+
+    <!--<ProgressBar-->
+        <!--style="?android:attr/progressBarStyleHorizontal"-->
+        <!--android:id="@+id/processBar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="5dp"-->
+        <!--android:background="@drawable/processbar"-->
+        <!--/>-->
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+android:layout_marginTop="100dp"
+        />
+    <RelativeLayout
+        android:layout_marginTop="8dp"
+        android:id="@+id/over_biaoge"
+        android:layout_width="180dp"
+        android:layout_height="100dp"
+        android:background="@color/transparent"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未恢复数/总断站数"
+            android:textColor="#9E9E9E"
+            android:textSize="12sp"
+            android:layout_marginLeft="4dp"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/tv_over_da"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/0"
+            android:layout_marginTop="20dp"
+            android:textSize="27sp"
+            android:textColor="#FF4040"
+            android:layout_centerHorizontal="true"
+            />
+        <LinearLayout
+            android:id="@+id/ll_234G"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/tv_over_da"
+            >
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_2g"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="2G"
+                android:textColor="#9E9E9E"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_3g"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="3G"
+                android:textColor="#9E9E9E"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_4g"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="4G"
+                android:textColor="#9E9E9E"
+                android:textSize="10sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/ll_234G"
+            >
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_2x"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_3x"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textSize="10sp"
+
+                />
+            <TextView
+                android:gravity="center_horizontal"
+
+                android:id="@+id/tv_over_4x"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="0/0"
+                android:textSize="10sp"
+
+                />
+
+
+
+        </LinearLayout>
+
+        <!--<TextView-->
+        <!--android:id="@+id/over_zong"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="总断站数"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--/>-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="未恢复"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_toRightOf="@+id/over_zong"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:id="@+id/over_2G"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="2G"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:id="@+id/over_3G"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="3G"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:id="@+id/over_4G"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="4G"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginTop="60dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#3A5FCD"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="150"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#3A5FCD"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="150"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#3A5FCD"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="150"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="60dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#CD2626"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="50"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="60dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#CD2626"-->
+
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="50"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--/>-->
+        <!--<TextView-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#CD2626"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="50"-->
+        <!--android:layout_marginLeft="100dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--/>-->
+
+    </RelativeLayout>
+</RelativeLayout>

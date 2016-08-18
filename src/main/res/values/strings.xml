@@ -11,4 +11,19 @@
     <string name="title_activity_text">Text</string>
     <string name="title_activity_baidu_map">BaiduMapActivity</string>
     <string name="title_activity_work_order">WorkOrderActivity</string>
+
+    <string-array name="spingarr">
+        <item>工单数</item>
+        <item>断站数</item>
+        <item>区域编码</item>
+        <item>区域名</item>
+        <item>非断站数</item>
+        <item>告警数</item>
+    </string-array>
+    <string-array name="spingarr_jiantou">
+        <item>升序</item>
+        <item>降序</item>
+
+    </string-array>
+    <string name="net_unavailable">世界上最遥远的距离就是没网，检查设置</string>
 </resources>

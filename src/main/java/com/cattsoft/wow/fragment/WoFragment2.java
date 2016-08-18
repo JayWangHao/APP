@@ -5,18 +5,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,8 +59,17 @@ import com.cattsoft.framework.view.pullableview.PullableListView;
 import com.cattsoft.wow.R;
 import com.cattsoft.wow.activity.RelevanceWarningActivity;
 import com.cattsoft.wow.adapter.ActivityWoItemListViewAdapter;
+import com.cattsoft.wow.bean.NetEvent;
 import com.cattsoft.wow.mudels.Wo;
 import com.cattsoft.wow.mudels.WoFragmentListViewItemMessageJavaBean;
+import com.cattsoft.wow.receiver.NetReceiver;
+import com.cattsoft.wow.utils.NetUtils;
+import com.cattsoft.wow.view.ActionItem;
+import com.cattsoft.wow.view.GuideView.HoleBean;
+import com.cattsoft.wow.view.GuideView.NewbieGuideManager;
+import com.cattsoft.wow.view.RotateAnimation;
+import com.cattsoft.wow.view.TitlePopup;
+import com.cattsoft.wow.view.ToastCommom;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase;
 
 import java.io.IOException;
@@ -63,9 +77,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import de.greenrobot.event.EventBus;
 
 
-public class WoFragment extends Fragment {
+public class WoFragment2 extends Fragment implements RotateAnimation.InterpolatedTimeListener {
 
     ViewHolder holder = null;
 
@@ -87,9 +105,11 @@ public class WoFragment extends Fragment {
     private String allCount;//今日总量
     private String finishCount;//已处理
     private String noFinishCount;//未处理
+    private String doingCount;//处理中
     private PullableListView mlistview;
     private View view;
     private TextView allCountTxt;
+    private TextView doingCountTxt;
     private TextView finishCountTxt;
     private TextView noFinishCountTxt;
     private TextView processingText;
@@ -156,238 +176,44 @@ public class WoFragment extends Fragment {
 
     private boolean isClearWoList = false;
     private String cross;//标示是否是最后一页；
-
+    private ToastCommom toastCommom;
+    private Boolean isSearch = false;
+    private RelativeLayout no_network_rl;
+    private Boolean isNet = true;
+    private LinearLayout ll_gd;
+    private TextView tv_gd_all;
+    private Boolean isAll = false;
+    private boolean isFirst;
+    private boolean isShowDialog;
+    private boolean isClick = false;
+    private TextView tv_gd_today;
+    private TitlePopup titlePopup;
+    private int flag_date = 1;//1,7,30
+    //    private NetReceiver mReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                         | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //SDKInitializer.initialize(getApplicationContext());
         view = inflater.inflate(R.layout.fragment_wo, container, false);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        isShowDialog = sharedPreferences.getBoolean("isShowDialog", true);
         myLocation(getActivity());
         initView();
+//        isFirst = true;
         initDataThread(true);
         register();
+
+        EventBus.getDefault().register(this);
+
+//        Log.d("TAG_4",isShowDialog+"");
+//        showDialog(isShowDialog);
+
+
         return view;
-    }
-
-    public void register() {
-
-        queryImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                woList.clear();
-                queryTextValue = querytext.getText().toString();
-                initDataThread(true);
-
-            }
-        });
-        processingText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                state = "1";
-                processingText.setTextColor(getResources().getColor(R.color.small_title_text_color));
-                pendingText.setTextColor(getResources().getColor(R.color.black));
-                confirmText.setTextColor(getResources().getColor(R.color.black));
-                pageNo = 0;
-                if (currIndex == 1) {
-                    moveOnetoLeft(perSpacing);      // 从2 到 1
-                } else if (currIndex == 2) {
-                    moveTwoToLeft(perSpacing);       // 从3 到 1
-                }
-                currIndex = 0;
-                if (animation == null) {
-
-                } else {
-                    isClearWoList = true;
-                    animation.setFillAfter(true);   // True:图片停在动画结束位置
-                    animation.setDuration(300);
-                    cursor.startAnimation(animation);
-                    initDataThread(true);
-                }
-            }
-        });
-        pendingText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.clear();
-                state = "2";
-                processingText.setTextColor(getResources().getColor(R.color.black));
-                pendingText.setTextColor(getResources().getColor(R.color.small_title_text_color));
-                confirmText.setTextColor(getResources().getColor(R.color.black));
-                pageNo = 0;
-                if (currIndex == 0) {
-                    moveOneToRight(perSpacing);      // 从1 到 2
-                } else if (currIndex == 2) {
-                    moveOnetoLeft(perSpacing);       // 从 3到 2
-                }
-                currIndex = 1;
-                animation.setFillAfter(true);   // True:图片停在动画结束位置
-                animation.setDuration(300);
-                cursor.startAnimation(animation);
-                isClearWoList = true;
-                initDataThread(true);
-            }
-        });
-        confirmText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                map.clear();
-                state = "3";
-                processingText.setTextColor(getResources().getColor(R.color.black));
-                pendingText.setTextColor(getResources().getColor(R.color.black));
-                confirmText.setTextColor(getResources().getColor(R.color.small_title_text_color));
-                pageNo = 0;
-                if (currIndex == 0) {
-                    moveTwoToRight(perSpacing);      // 从 1 到3
-                } else if (currIndex == 1) {
-                    moveOneToRight(perSpacing);      // 从 2 到3
-                }
-                currIndex = 2;
-                animation.setFillAfter(true);   // True:图片停在动画结束位置
-                animation.setDuration(300);
-                cursor.startAnimation(animation);
-                isClearWoList = true;
-                initDataThread(true);
-            }
-        });
-
-
-        refreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-                isClearWoList = true;
-                //下拉刷新
-                mRefreshMode = PULL_DOWN_TO_REFRESH;
-                message = 1;
-                pageNo = 0;
-                refreshLayout.setCanLoadMore(true);
-                initDataThread(true);
-            }
-
-            @Override
-            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
-                //上拉加载
-                mRefreshMode = PULL_UP_TO_LOAD_MORE;
-                pageNo = pageNo + 5;
-                message = 2;
-                isClearWoList = false;
-                initDataThread(false);
-            }
-        });
-        user_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getActivity() instanceof SlidingActivityBase) {
-                    ((SlidingActivityBase) getActivity()).toggle();
-                }
-            }
-        });
-
-
-        /*mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
-                ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
-                ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
-                TextView accept_wo = (TextView) view.findViewById(R.id.accept_wo);
-                TextView accept_wo2 = (TextView) view.findViewById(R.id.accept_wo2);
-                TextView warning = (TextView) view.findViewById(R.id.warning);
-                TextView warning2 = (TextView) view.findViewById(R.id.warning2);
-                TextView start = (TextView) view.findViewById(R.id.start);
-                TextView start2 = (TextView) view.findViewById(R.id.start2);
-                TextView warning3 = (TextView) view.findViewById(R.id.warning3);
-                TextView warning4 = (TextView) view.findViewById(R.id.warning4);
-                TextView finsh = (TextView) view.findViewById(R.id.finish);
-                TextView finsh2 = (TextView) view.findViewById(R.id.finish2);
-                TextView warning5 = (TextView) view.findViewById(R.id.warning5);
-                TextView warning6 = (TextView) view.findViewById(R.id.warning6);
-
-                map.put(position, true);
-                if ("1".equals(state)) {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        accept_wo.setVisibility(View.GONE);
-                        accept_wo2.setVisibility(View.VISIBLE);
-                        warning.setVisibility(View.GONE);
-                        warning2.setVisibility(View.VISIBLE);
-
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        accept_wo2.setVisibility(View.GONE);
-                        accept_wo.setVisibility(View.VISIBLE);
-                        warning2.setVisibility(View.GONE);
-                        warning.setVisibility(View.VISIBLE);
-                    }
-                } else if ("2".equals(state)) {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        start.setVisibility(View.GONE);
-                        start2.setVisibility(View.VISIBLE);
-                        warning3.setVisibility(View.GONE);
-                        warning4.setVisibility(View.VISIBLE);
-                        finsh.setVisibility(View.GONE);
-                        finsh2.setVisibility(View.VISIBLE);
-
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        start2.setVisibility(View.GONE);
-                        start.setVisibility(View.VISIBLE);
-                        warning4.setVisibility(View.GONE);
-                        warning3.setVisibility(View.VISIBLE);
-                        finsh2.setVisibility(View.GONE);
-                        finsh.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        warning5.setVisibility(View.GONE);
-                        warning6.setVisibility(View.VISIBLE);
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        warning5.setVisibility(View.VISIBLE);
-                        warning6.setVisibility(View.GONE);
-                    }
-                }
-                Wo wo = woList.get(position);
-                //对itm点击后展开 或者收缩的处理 start
-                if (oldPostion == position) {
-                    if (wo.isExpend()) {
-                        oldPostion = -1;
-                    }
-                    woList.get(position).setExpend(false);
-                } else {
-                    if (oldPostion != -1) {
-                        woList.get(oldPostion).setExpend(false);
-                    }
-                    oldPostion = position;
-                    woList.get(oldPostion).setExpend(true);
-                }
-                myWoListAdapter.notifyDataSetChanged();
-                //end
-            }
-        });*/
     }
 
     /**
@@ -431,6 +257,7 @@ public class WoFragment extends Fragment {
 //                        + ":add:" + location.getAddrStr());
                 mLatitude = location.getLatitude() + "";
                 mLongitude = location.getLongitude() + "";
+                Log.d("TAG", mLatitude + "||" + mLongitude);
                 // 这里停掉,需要的时候再次开启
                 mLocClient.stop();
             }
@@ -454,6 +281,7 @@ public class WoFragment extends Fragment {
 
         mlistview = (PullableListView) view.findViewById(R.id.listview);
         allCountTxt = (TextView) view.findViewById(R.id.all_count);
+        doingCountTxt = (TextView) view.findViewById(R.id.doing_count);
         finishCountTxt = (TextView) view.findViewById(R.id.finish_count);
         noFinishCountTxt = (TextView) view.findViewById(R.id.nofinish_count);
         processingText = (TextView) view.findViewById(R.id.processing);
@@ -464,17 +292,50 @@ public class WoFragment extends Fragment {
         user_name = (ImageView) view.findViewById(R.id.user_name_img);
         queryImgBtn = (TextView) view.findViewById(R.id.wo_sreach_btn);
         querytext = (TextView) view.findViewById(R.id.sreach_text);
-
+        no_network_rl = (RelativeLayout) view.findViewById(R.id.net_view_rl);
+        no_network_rl.setVisibility(isNet ? View.GONE : View.VISIBLE);
+        ll_gd = (LinearLayout) view.findViewById(R.id.ll_gd);
+        tv_gd_all = (TextView) view.findViewById(R.id.tv_gd_all);
+//        tv_gd_today = (TextView) view.findViewById(R.id.tv_gd_today);
+//        tv_gd_all = (TextView) view.findViewById(R.id.tv_gd_all);
         initPageTitles();
 
         initImageView();
+        toastCommom = ToastCommom.createToastConfig();
 
+        titlePopup = new TitlePopup(getActivity(), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        titlePopup.addAction(new ActionItem(getActivity(), "今日总量", R.drawable.listsfragment_red_point));
+        titlePopup.addAction(new ActionItem(getActivity(), "工单总量", R.drawable.listsfragment_red_point));
+//        titlePopup.addAction(new ActionItem(getActivity(), "本月总量", R.drawable.listsfragment_red_point));
+//        titlePopup.addAction(new ActionItem(getActivity(), "本月总量", R.drawable.listsfragment_red_point));
     }
 
+    public void onEventMainThread(NetEvent event) {
+
+        setNetState(event.isNet());
+    }
+
+    public void setNetState(boolean netState) {
+        if (netState) {
+            isNet = true;
+        } else {
+            isNet = false;
+        }
+        if (no_network_rl != null) {
+            no_network_rl.setVisibility(netState ? View.GONE : View.VISIBLE);
+            no_network_rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    NetUtils.startToSettings(WoFragment2.super.getActivity());
+                }
+            });
+        }
+    }
 
     private void initDataThread(boolean isprogress) {
         if (isprogress) {
-            progressDialog = new ProgressDialog(WoFragment.super.getActivity());
+            progressDialog = new ProgressDialog(com.cattsoft.wow.fragment.WoFragment2.super.getActivity());
             progressDialog.showProcessDialog();
         }
         Thread mThread = new Thread(new Runnable() {
@@ -487,28 +348,57 @@ public class WoFragment extends Fragment {
     }
 
     public void initData(boolean flag) {
+        queryTextValue = querytext.getText().toString();
         JSONObject requestJson = new JSONObject();
         userId = sharedPreferences.getString("userId", "");
         geoId = sharedPreferences.getString("geoId", "");
         requestJson.put("USERID", userId);
         requestJson.put("geoId", geoId);
-        requestJson.put("needpage", "5");
+        requestJson.put("needpage", "4");
         requestJson.put("presentpage", pageNo);
         requestJson.put("status", state);
+        if (flag_date == 1) {
+            requestJson.put("daylimit", "1");
+        }
+
         if (queryTextValue != null && !"".equals(queryTextValue)) {
-            requestJson.put("FLOWID", queryTextValue);
+            Pattern p = Pattern.compile("[0-9]*");
+            Matcher m = p.matcher(queryTextValue);
+
+            if (m.matches()) {//数字
+                requestJson.put("FLOWID", queryTextValue);//入参
+            } else {
+                requestJson.put("VCLOGIDS", queryTextValue);//新入参
+            }
         }
 
         String url = "tz/TZDeviceAction.do?method=QuerytFaultlist";
         Message m = new Message();
         try {
             result = Communication.getPostResponseForNetManagement(url, requestJson.toString());
-            //Log.i("TAG", "数据：" + result);
+            if (result.contains("解压或解密")) {
+                m.what = 2;
+                woListHandler.sendMessage(m);
+                return;
+            }
+//            Log.d("TAG_3", "数据：" + result);
             if (StringUtil.isBlank(result)) {
                 m.what = 1;
                 woListHandler.sendMessage(m);
                 return;
             }
+            if (queryTextValue != null && !"".equals(queryTextValue)) {
+                if (!result.contains("VCEMOSID")) {
+                    if (isClearWoList) {
+                        oldPostion = -1;
+                        woList.clear();
+                    }
+                    m.what = 6;
+                    woListHandler.sendMessage(m);
+                    return;
+                }
+            }
+
             getData(result);
             m.what = 3;
             woListHandler.sendMessage(m);
@@ -524,10 +414,15 @@ public class WoFragment extends Fragment {
 
     public void getData(String result) {
         JSONObject returnJson = JSON.parseObject(result);
-        allCount = returnJson.getString("s1count");
-        finishCount = returnJson.getString("s2count");
-        noFinishCount = returnJson.getString("s3count");
+//        allCount = returnJson.getString("s1count");
+//        Log.d("TAG_3", "returnJson：" + returnJson);
+        allCount = returnJson.getString("s4count");
+        finishCount = returnJson.getString("s3count");
+        noFinishCount = returnJson.getString("s1count");
+        doingCount = returnJson.getString("s2count");
         cross = returnJson.getString("cross");
+//        Log.d("TAG_3", "allCount：" + allCount);
+
 
         finallyAllCount = Integer.parseInt(allCount) + Integer.parseInt(finishCount) + Integer.parseInt(noFinishCount);
         finallyFinishCount = Integer.parseInt(finishCount) + Integer.parseInt(noFinishCount);
@@ -544,21 +439,22 @@ public class WoFragment extends Fragment {
         }
     }
 
+
     public Handler woListHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1: {
-                    Toast.makeText(WoFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 2: {
-                    Toast.makeText(WoFragment.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 3: {
                     if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
-                        myWoListAdapter = new MyWoListAdapter(WoFragment.super.getActivity(), woList);
+                        myWoListAdapter = new MyWoListAdapter(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), woList);
                         refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                         mlistview.setAdapter(myWoListAdapter);
                     } else {
@@ -567,35 +463,69 @@ public class WoFragment extends Fragment {
 
                     mlistview.setVisibility(View.VISIBLE);
                     myWoListAdapter.notifyDataSetChanged();
+                    if (isClick) {
+                        today2All();
+                    } else {
+                        allCountTxt.setText(String.valueOf(allCount));
+                        finishCountTxt.setText(String.valueOf(finishCount));
+                        noFinishCountTxt.setText(String.valueOf(noFinishCount));
+                        doingCountTxt.setText(String.valueOf(doingCount));
+                    }
 
-                    allCountTxt.setText(String.valueOf(finallyAllCount));
-                    finishCountTxt.setText(String.valueOf(finallyFinishCount));
-                    noFinishCountTxt.setText(allCount);
 
                     if ("end".equals(cross)) {
                         refreshLayout.setCanLoadMore(false);
                     } else {
                         refreshLayout.setCanLoadMore(true);
                     }
+//                    if (isShowDialog){
+                        new NewbieGuideManager(WoFragment2.super.getActivity(), NewbieGuideManager.TYPE_COLLECT).addView(tv_gd_all, HoleBean.TYPE_RECTANGLE).show();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("isShowDialog",false);
+                        editor.commit();
+//                    }
+//                    if (NewbieGuideManager.isNeverShowed(WoFragment2.super.getActivity(), NewbieGuideManager.TYPE_COLLECT)) {
+//                        new NewbieGuideManager(WoFragment2.super.getActivity(), NewbieGuideManager.TYPE_COLLECT).addView(tv_gd_all, HoleBean.TYPE_RECTANGLE).show();
+//                    }
+
                     break;
                 }
                 case 4: {
-                    Toast.makeText(WoFragment.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 5: {
-                    Toast.makeText(WoFragment.super.getActivity(), result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), result, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case 6: {
+                    if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
+                        myWoListAdapter = new MyWoListAdapter(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), woList);
+                        refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                        mlistview.setAdapter(myWoListAdapter);
+                    } else {
+                        refreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                    }
+                    if (isSearch || !TextUtils.isEmpty(queryTextValue)) {
+                        toastCommom.ToastShow(WoFragment2.super.getActivity(), (ViewGroup) WoFragment2.super.getActivity().findViewById(R.id.toast_layout_root), "服务器暂无该数据");
+                    }
+//                    isSearch = false;
+//                    progressDialog.closeProcessDialog();
+//                    initDataThread(true);
+
                     break;
                 }
 
-
             }
             progressDialog.closeProcessDialog();
-
-
+            if (isSearch) {
+                isSearch = false;
+            }
+            if (isClick) {
+                isClick = false;
+            }
         }
     };
-
 
     // 初始化页卡(上方)的标题
     private void initPageTitles() {
@@ -725,6 +655,214 @@ public class WoFragment extends Fragment {
         }
     }
 
+    private void today2All() {
+        float cX = ll_gd.getWidth() / 2.0f;
+        float cY = ll_gd.getHeight() / 2.0f;
+
+        RotateAnimation rotateAnim = new RotateAnimation(cX, cY, RotateAnimation.ROTATE_DECREASE);
+        rotateAnim.setInterpolatedTimeListener(WoFragment2.this);
+        rotateAnim.setFillAfter(true);
+        ll_gd.startAnimation(rotateAnim);
+
+    }
+
+    private void all2Today() {
+        float cX = ll_gd.getWidth() / 2.0f;
+        float cY = ll_gd.getHeight() / 2.0f;
+
+        RotateAnimation rotateAnim = new RotateAnimation(cX, cY, RotateAnimation.ROTATE_INCREASE);
+        rotateAnim.setInterpolatedTimeListener(WoFragment2.this);
+        rotateAnim.setFillAfter(true);
+        ll_gd.startAnimation(rotateAnim);
+    }
+
+    @Override
+    public void interpolatedTime(float interpolatedTime) {
+// 监听到翻转进度过半时，更新txtNumber显示内容。
+        if (interpolatedTime > 0.5f && interpolatedTime < 0.6f) {
+            if (flag_date == 1) {
+                tv_gd_all.setText("今日总量");
+                allCountTxt.setText(String.valueOf(allCount));
+                finishCountTxt.setText(String.valueOf(finishCount));
+                noFinishCountTxt.setText(String.valueOf(noFinishCount));
+                doingCountTxt.setText(String.valueOf(doingCount));
+            } else if (flag_date == 7) {
+                tv_gd_all.setText("工单总量");
+                allCountTxt.setText(String.valueOf(allCount));
+                finishCountTxt.setText(String.valueOf(finishCount));
+                noFinishCountTxt.setText(String.valueOf(noFinishCount));
+                doingCountTxt.setText(String.valueOf(doingCount));
+//            } else if (flag_date == 30) {
+//                tv_gd_all.setText("本月总量");
+//                allCountTxt.setText(String.valueOf("120"));
+//                finishCountTxt.setText(String.valueOf("21"));
+//                noFinishCountTxt.setText(String.valueOf("44"));
+//                doingCountTxt.setText(String.valueOf("23"));
+//            }
+
+
+            }
+
+            if (interpolatedTime == 1.0f) {
+                ll_gd.setClickable(true);
+            }
+        }
+    }
+
+    public void register() {
+
+        tv_gd_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                titlePopup.show(v);
+                titlePopup.setItemOnClickListener(new TitlePopup.OnItemOnClickListener() {
+                    @Override
+                    public void onItemClick(ActionItem item, int position) {
+                        switch (position) {
+                            case 0:
+//                                Toast.makeText(WoFragment2.super.getActivity(), "今日", Toast.LENGTH_SHORT).show();
+                                isClick = true;
+                                flag_date = 1;
+                                initDataThread(true);
+                                break;
+                            case 1:
+//                                Toast.makeText(WoFragment2.super.getActivity(), "本周", Toast.LENGTH_SHORT).show();
+                                isClick = true;
+                                flag_date = 7;
+                                initDataThread(true);
+                                break;
+//                            case 2:
+//                                Toast.makeText(WoFragment2.super.getActivity(), "本月", Toast.LENGTH_SHORT).show();
+//                                isClick = true;
+//                                flag_date = 30;
+//                                initDataThread(true);
+//                                break;
+                        }
+                    }
+                });
+            }
+        });
+
+        queryImgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                woList.clear();
+                queryTextValue = querytext.getText().toString();
+                if (TextUtils.isEmpty(queryTextValue)) {
+                    Toast.makeText(WoFragment2.super.getActivity(), "请输入站点关键字或EMOSID", Toast.LENGTH_SHORT).show();
+                    isSearch = false;
+                    return;
+                } else {
+                    isSearch = true;
+                }
+
+                initDataThread(true);
+
+            }
+        });
+        processingText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                state = "1";
+                processingText.setTextColor(getResources().getColor(R.color.small_title_text_color));
+                pendingText.setTextColor(getResources().getColor(R.color.black));
+                confirmText.setTextColor(getResources().getColor(R.color.black));
+                pageNo = 0;
+                if (currIndex == 1) {
+                    moveOnetoLeft(perSpacing);      // 从2 到 1
+                } else if (currIndex == 2) {
+                    moveTwoToLeft(perSpacing);       // 从3 到 1
+                }
+                currIndex = 0;
+                if (animation == null) {
+
+                } else {
+                    isClearWoList = true;
+                    animation.setFillAfter(true);   // True:图片停在动画结束位置
+                    animation.setDuration(300);
+                    cursor.startAnimation(animation);
+                    initDataThread(true);
+                }
+            }
+        });
+        pendingText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.clear();
+                state = "2";
+                processingText.setTextColor(getResources().getColor(R.color.black));
+                pendingText.setTextColor(getResources().getColor(R.color.small_title_text_color));
+                confirmText.setTextColor(getResources().getColor(R.color.black));
+                pageNo = 0;
+                if (currIndex == 0) {
+                    moveOneToRight(perSpacing);      // 从1 到 2
+                } else if (currIndex == 2) {
+                    moveOnetoLeft(perSpacing);       // 从 3到 2
+                }
+                currIndex = 1;
+                animation.setFillAfter(true);   // True:图片停在动画结束位置
+                animation.setDuration(300);
+                cursor.startAnimation(animation);
+                isClearWoList = true;
+                initDataThread(true);
+            }
+        });
+        confirmText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                map.clear();
+                state = "3";
+                processingText.setTextColor(getResources().getColor(R.color.black));
+                pendingText.setTextColor(getResources().getColor(R.color.black));
+                confirmText.setTextColor(getResources().getColor(R.color.small_title_text_color));
+                pageNo = 0;
+                if (currIndex == 0) {
+                    moveTwoToRight(perSpacing);      // 从 1 到3
+                } else if (currIndex == 1) {
+                    moveOneToRight(perSpacing);      // 从 2 到3
+                }
+                currIndex = 2;
+                animation.setFillAfter(true);   // True:图片停在动画结束位置
+                animation.setDuration(300);
+                cursor.startAnimation(animation);
+                isClearWoList = true;
+                initDataThread(true);
+            }
+        });
+
+
+        refreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
+                isClearWoList = true;
+                //下拉刷新
+                mRefreshMode = PULL_DOWN_TO_REFRESH;
+                message = 1;
+                pageNo = 0;
+                refreshLayout.setCanLoadMore(true);
+                initDataThread(true);
+            }
+
+            @Override
+            public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
+                //上拉加载
+                mRefreshMode = PULL_UP_TO_LOAD_MORE;
+                pageNo = pageNo + 5;
+                message = 2;
+                isClearWoList = false;
+                initDataThread(false);
+            }
+        });
+        user_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getActivity() instanceof SlidingActivityBase) {
+                    ((SlidingActivityBase) getActivity()).toggle();
+                }
+            }
+        });
+
+    }
 
     public class MyWoListAdapter extends BaseAdapter {
         private Context mcontext = null;
@@ -760,15 +898,14 @@ public class WoFragment extends Fragment {
 
 
             if (view == null) {
-                view = LayoutInflater.from(this.mcontext).inflate(R.layout.activity_wo_item, null);
+                view = LayoutInflater.from(this.mcontext).inflate(R.layout.activity_wo_item2, null);
                 holder = new ViewHolder();
                 holder.siteTxt = (TextView) view.findViewById(R.id.site_name);//站点名称
                 holder.woTitleTxt = (TextView) view.findViewById(R.id.wo_title);//工单标题
                 holder.woDurationTxt = (TextView) view.findViewById(R.id.wo_duration);//工单历时
                 holder.distributePresonTxt = (TextView) view.findViewById(R.id.distribute_person);//派发人员
-                holder.distributeTimeTxt = (TextView) view.findViewById(R.id.distribute_time);//派发时间
                 holder.noticeTimeTxt = (TextView) view.findViewById(R.id.notic_time);//通知时间
-                holder.woContentTxt = (TextView) view.findViewById(R.id.wo_content);//工单内容
+//                holder.woContentTxt = (TextView) view.findViewById(R.id.wo_content);//工单内容
                 holder.emosStepTxt = (TextView) view.findViewById(R.id.emos_step);//EMOS环节
                 holder.warningLevelTxt = (TextView) view.findViewById(R.id.warning_level);//工单等级
 
@@ -778,7 +915,6 @@ public class WoFragment extends Fragment {
                 holder.npromptTimeTex = (TextView) view.findViewById(R.id.nprompttime);//催单次数
                 holder.acceptTanceTxt = (TextView) view.findViewById(R.id.acceptance);//受理时间
                 holder.finishTimeTxt = (TextView) view.findViewById(R.id.finishtime);//完成时间
-                holder.faultLevelTxt = (TextView) view.findViewById(R.id.faultlevel);// 故障单等级
 
                 holder.vip = (ImageView) view.findViewById(R.id.vip);
                 holder.alarm = (ImageView) view.findViewById(R.id.alarm);
@@ -789,11 +925,12 @@ public class WoFragment extends Fragment {
                 //holder.et_message.setText("输入留言内容");
                 holder.btn_message_submit = (Button) view.findViewById(R.id.btn_message_submit);//
 
-                holder. hide_text=(LinearLayout) view.findViewById(R.id.hide_text);//
-                holder. ll_down=(LinearLayout) view.findViewById(R.id.ll_down);//
-                holder. rel_up=(LinearLayout) view.findViewById(R.id.rel_up);//
+                holder.hide_text = (LinearLayout) view.findViewById(R.id.hide_text);//
+                holder.ll_down = (LinearLayout) view.findViewById(R.id.ll_down);//
+                holder.ll_shoulitime = (LinearLayout) view.findViewById(R.id.ll_shuolitime);//受理时间
+                holder.rel_up = (LinearLayout) view.findViewById(R.id.rel_up);//
 
-                holder.leftLinlay=(LinearLayout) view.findViewById(R.id.left_linlay);
+                holder.leftLinlay = (LinearLayout) view.findViewById(R.id.left_linlay);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
@@ -835,25 +972,42 @@ public class WoFragment extends Fragment {
             holder.woTitleTxt.setText(wo.getVcTitle());
             holder.woDurationTxt.setText(wo.getcTime());
             holder.distributePresonTxt.setText(wo.getDisPathPerson());
-            holder.distributeTimeTxt.setText(wo.getDsendTime());
             holder.noticeTimeTxt.setText(wo.getDnoiifyTime());
-            holder.woContentTxt.setText(wo.getVcConnect());
+//            holder.woContentTxt.setText(wo.getVcConnect());
             holder.emosStepTxt.setText(wo.getNcurrlink());
-            holder.acceptPersonTxt.setText(wo.getVcAccperiPersonList());
+            if (state.equals("1")) {
+                holder.acceptPersonTxt.setText(wo.getVcAccperiPersonList());
+                holder.ll_shoulitime.setVisibility(View.GONE);
+            } else if (state.equals("2")) {
+                holder.acceptPersonTxt.setText(wo.getAlsoAcceptPerson());
+                holder.ll_shoulitime.setVisibility(View.VISIBLE);
+
+            } else if (state.equals("3")) {
+                holder.acceptPersonTxt.setText(wo.getAlsoAcceptPerson());
+                holder.ll_shoulitime.setVisibility(View.VISIBLE);
+
+            }
             holder.emosid.setText(wo.geteMosId());
             holder.overTimeTxt.setText(wo.getNiSoutTime());
             holder.npromptTimeTex.setText(wo.getNpromptTimes());
             holder.acceptTanceTxt.setText(wo.getDacceptTime());
             holder.finishTimeTxt.setText(wo.getFinishTime());
-            holder.faultLevelTxt.setText(wo.getNfaultLevel());
+
+            if (state.equals("1")) {
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_1);
+            } else if (state.equals("2")) {
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_2);
+            } else {
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_3);
+            }
 
             //左侧工单等级
             if ("1".equals(wo.getNfaultLevel())) {
-                holder.warningLevelTxt.setText("一级");
+                holder.warningLevelTxt.setText("1级");
             } else if ("2".equals(wo.getNfaultLevel())) {
-                holder.warningLevelTxt.setText("二级");
+                holder.warningLevelTxt.setText("2级");
             } else {
-                holder.warningLevelTxt.setText("三级");
+                holder.warningLevelTxt.setText("3级");
             }
 
             if ("1".equals(wo.getVip())) {//判断是否是VIP
@@ -873,29 +1027,27 @@ public class WoFragment extends Fragment {
                 alphaAnimation2.start();
             }
 
-//            if(map !=null && map.size()>0){
-//
-//                if(!map.containsKey(i) || !map.get(i)){
-//                    hideLayout.setVisibility(View.GONE);
-//                    downImg.setVisibility(View.VISIBLE);
-//                    upImg.setVisibility(View.GONE);
-//                    accept_wo2.setVisibility(View.GONE);
-//                    accept_wo.setVisibility(View.VISIBLE);
-//                    warning2.setVisibility(View.GONE);
-//                    warning.setVisibility(View.VISIBLE);
-//                }
-//            }
-//
             final boolean flag = wo.isExpend();
             if (flag) {
+                if ("1".equals(state)) {
+                    accept_wo2.setVisibility(View.VISIBLE);
+                    accept_wo.setVisibility(View.GONE);
+                    warning2.setVisibility(View.VISIBLE);
+                    warning.setVisibility(View.GONE);
+                } else if ("2".equals(state)) {
+                    start.setVisibility(View.GONE);
+                    start2.setVisibility(View.VISIBLE);
+                    finsh.setVisibility(View.GONE);
+                    finsh2.setVisibility(View.VISIBLE);
+                    warning3.setVisibility(View.GONE);
+                    warning4.setVisibility(View.VISIBLE);
+                } else {
+                    warning5.setVisibility(View.GONE);
+                    warning6.setVisibility(View.VISIBLE);
+                }
                 hideLayout.setVisibility(View.VISIBLE);
                 downImg.setVisibility(View.GONE);
                 upImg.setVisibility(View.VISIBLE);
-                accept_wo2.setVisibility(View.VISIBLE);
-                accept_wo.setVisibility(View.GONE);
-                warning2.setVisibility(View.VISIBLE);
-                warning.setVisibility(View.GONE);
-
                 Wo expendedWo = woList.get(i);
                 String expendedEMosId = expendedWo.geteMosId();
 
@@ -906,75 +1058,81 @@ public class WoFragment extends Fragment {
                 isInsertData = false;
                 initMessageDataThread();
 
-
             } else {
+                if ("1".equals(state)) {
+                    accept_wo2.setVisibility(View.GONE);
+                    accept_wo.setVisibility(View.VISIBLE);
+                    warning2.setVisibility(View.GONE);
+                    warning.setVisibility(View.VISIBLE);
+                } else if ("2".equals(state)) {
+                    start2.setVisibility(View.GONE);
+                    start.setVisibility(View.VISIBLE);
+                    finsh2.setVisibility(View.GONE);
+                    finsh.setVisibility(View.VISIBLE);
+                    warning4.setVisibility(View.GONE);
+                    warning3.setVisibility(View.VISIBLE);
+                } else {
+                    warning6.setVisibility(View.GONE);
+                    warning5.setVisibility(View.VISIBLE);
+                }
                 hideLayout.setVisibility(View.GONE);
                 downImg.setVisibility(View.VISIBLE);
                 upImg.setVisibility(View.GONE);
-                accept_wo2.setVisibility(View.GONE);
-                accept_wo.setVisibility(View.VISIBLE);
-                warning2.setVisibility(View.GONE);
-                warning.setVisibility(View.VISIBLE);
+
             }
 
 
-            if ("1".equals(state)) {//待处理
+            if ("1".equals(state)) {//待守理
                 linearLayout1.setVisibility(View.VISIBLE);
                 linearLayout2.setVisibility(View.VISIBLE);
                 linearLayout3.setVisibility(View.GONE);
                 linearLayout4.setVisibility(View.GONE);
+                linearLayout5.setVisibility(View.GONE);
+                linearLayout6.setVisibility(View.GONE);
                 finshtimeLin.setVisibility(View.GONE);
+                jiTextView.setBackgroundResource(R.drawable.button_wh_1);
                 action = "2";
-
+                people.setText("待受理人：");
 
             } else if ("2".equals(state)) {//处理中
                 linearLayout1.setVisibility(View.GONE);
                 linearLayout2.setVisibility(View.GONE);
                 linearLayout3.setVisibility(View.VISIBLE);
                 linearLayout4.setVisibility(View.VISIBLE);
-                downImg.setImageResource(R.drawable.xia);
-                upImg.setImageResource(R.drawable.shang);
+                linearLayout5.setVisibility(View.GONE);
+                linearLayout6.setVisibility(View.GONE);
+//                downImg.setImageResource(R.drawable.xia);
+//                upImg.setImageResource(R.drawable.shang);
                 finshtimeLin.setVisibility(View.GONE);
                 people.setText("受理人：");
-                jiTextView.setBackgroundResource(R.color.wo_button_blue);
+
+                jiTextView.setBackgroundResource(R.drawable.button_wh_2);
+//                jiTextView.setBackgroundResource(R.color.wo_button_blue);
 
                 if ("1".equals(wo.getVcdeallink())) {//判断可是点了“开始”
-                    start.setBackgroundResource(R.color.wo_button_blue_selected);
-                    start2.setBackgroundResource(R.color.wo_button_blue_selected);
-                    finsh.setBackgroundResource(R.color.wo_button_blue);
-                    finsh2.setBackgroundResource(R.color.wo_button_blue);
+                    Log.d("TBG", "颜色改变");
+                    start.setBackgroundResource(R.drawable.button_wh_4);
+                    start2.setBackgroundResource(R.drawable.button_wh_4);
+                    finsh.setBackgroundResource(R.drawable.button_wh_2);
+                    finsh2.setBackgroundResource(R.drawable.button_wh_2);
+                    start.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.black));
+                    start2.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.black));
+                    finsh.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.white));
+                    finsh2.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.white));
+//                    start.setBackgroundResource(R.color.wo_button_blue_selected);
+//                    start2.setBackgroundResource(R.color.wo_button_blue_selected);
+//                    finsh.setBackgroundResource(R.color.wo_button_blue);
+//                    finsh2.setBackgroundResource(R.color.wo_button_blue);
                 } else {
+                    start.setBackgroundResource(R.drawable.button_wh_2);
+                    start2.setBackgroundResource(R.drawable.button_wh_2);
+                    finsh.setBackgroundResource(R.drawable.button_wh_4);
+                    finsh2.setBackgroundResource(R.drawable.button_wh_4);
+                    start.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.white));
+                    start2.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.white));
+                    finsh.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.black));
+                    finsh2.setTextColor(WoFragment2.super.getActivity().getResources().getColor(R.color.black));
                 }
-
-//                view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        if (hideLayout.getVisibility()==View.GONE) {
-//                            hideLayout.setVisibility(View.VISIBLE);
-//                            downImg.setVisibility(View.GONE);
-//                            upImg.setVisibility(View.VISIBLE);
-//                            start.setVisibility(View.GONE);
-//                            start2.setVisibility(View.VISIBLE);
-//                            warning3.setVisibility(View.GONE);
-//                            warning4.setVisibility(View.VISIBLE);
-//                            finsh.setVisibility(View.GONE);
-//                            finsh2.setVisibility(View.VISIBLE);
-//
-//                        } else {
-//                            hideLayout.setVisibility(View.GONE);
-//                            downImg.setVisibility(View.VISIBLE);
-//                            upImg.setVisibility(View.GONE);
-//                            start2.setVisibility(View.GONE);
-//                            start.setVisibility(View.VISIBLE);
-//                            warning4.setVisibility(View.GONE);
-//                            warning3.setVisibility(View.VISIBLE);
-//                            finsh2.setVisibility(View.GONE);
-//                            finsh.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//                });
-
             } else {//待确认
                 linearLayout1.setVisibility(View.GONE);
                 linearLayout2.setVisibility(View.GONE);
@@ -983,66 +1141,22 @@ public class WoFragment extends Fragment {
                 linearLayout5.setVisibility(View.VISIBLE);
                 linearLayout6.setVisibility(View.VISIBLE);
                 people.setText("受理人：");
-                jiTextView.setBackgroundResource(R.color.wo_text_green);
-                downImg.setImageResource(R.drawable.greendown);
-                upImg.setImageResource(R.drawable.greenup);
+                jiTextView.setBackgroundResource(R.drawable.button_wh_3);
 
-//                view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        if (hideLayout.getVisibility() == View.GONE) {
-//                            hideLayout.setVisibility(View.VISIBLE);
-//                            downImg.setVisibility(View.GONE);
-//                            upImg.setVisibility(View.VISIBLE);
-//                            warning5.setVisibility(View.GONE);
-//                            warning6.setVisibility(View.VISIBLE);
-//                        } else {
-//                            hideLayout.setVisibility(View.GONE);
-//                            downImg.setVisibility(View.VISIBLE);
-//                            upImg.setVisibility(View.GONE);
-//                            warning5.setVisibility(View.VISIBLE);
-//                            warning6.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
             }
 
-            downImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideLayout.setVisibility(View.GONE);
-                    downImg.setVisibility(View.GONE);
-                    upImg.setVisibility(View.VISIBLE);
-                    accept_wo.setVisibility(View.GONE);
-                    accept_wo2.setVisibility(View.VISIBLE);
-                    warning.setVisibility(View.GONE);
-                    warning2.setVisibility(View.VISIBLE);
-                }
-            });
-//小图标的收缩
-            upImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideLayout.setVisibility(View.GONE);
-                    downImg.setVisibility(View.VISIBLE);
-                    upImg.setVisibility(View.GONE);
-                    accept_wo2.setVisibility(View.GONE);
-                    accept_wo.setVisibility(View.VISIBLE);
-                    warning2.setVisibility(View.GONE);
-                    warning.setVisibility(View.VISIBLE);
-                }
-            });
             accept_wo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     itemWo = list.get(i);
+//                    Log.d("TAG_3", "开始||" + "vcLowId:" + itemWo.getVcFlowid() + "||" + "vcemosid:" + itemWo.geteMosId());
                     new AlertDialog.Builder(getActivity()).setTitle("受理接单确认")
                             .setMessage("提示：点击确认后其他人将无法接该工单，您确定接故障标题为\"" + list.get(i).getVcTitle() + "\"的故障工单吗？")
                             .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     vcLowId = itemWo.getVcFlowid();
+                                    vcemosid = itemWo.geteMosId();
                                     new initThread().start();   // 线程请求数据
                                 }
                             })
@@ -1066,6 +1180,7 @@ public class WoFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
                                     vcLowId = itemWo.getVcFlowid();
+                                    vcemosid = itemWo.geteMosId();
                                     new initThread().start();   // 线程请求数据
                                 }
                             })
@@ -1128,18 +1243,25 @@ public class WoFragment extends Fragment {
             start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     itemWo = list.get(i);
+                    vcLowId = itemWo.getVcFlowid();
+                    vcemosid = itemWo.geteMosId();
+                    Log.d("TAG_3", "开始||" + itemWo.getVcTitle() + "vcLowId:" + vcLowId + "||" + "vcemosid:" + vcemosid);
                     action = "2";
-                    Drawable background = start.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    if (color == -13324289) {
+//                    Drawable background = start.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor(); -13324289
+
+                    int color = start.getCurrentTextColor();
+
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("开始处理确认")
                                 .setMessage("提示：您已确定到故障发生位置了吗？\n点击\"确认\"确认故障发生位置！")
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        vcLowId = itemWo.getVcFlowid();
+
                                         new initThread().start();
                                     }
                                 })
@@ -1151,7 +1273,7 @@ public class WoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
-
+                        Toast.makeText(WoFragment2.super.getActivity(), "已经开始了", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -1160,21 +1282,22 @@ public class WoFragment extends Fragment {
                 public void onClick(View view) {
                     itemWo = list.get(i);
                     action = "2";
-                    Drawable background = start2.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    //Log.i("TAG", "开始颜色" + color);
-                    if (color == -13324289) {
+                    vcLowId = itemWo.getVcFlowid();
+                    vcemosid = itemWo.geteMosId();
+                    Log.d("TAG_3", "开始||" + itemWo.getVcTitle() + "vcLowId:" + vcLowId + "||" + "vcemosid:" + vcemosid);
+
+//                    Drawable background = start2.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+//                    //Log.i("TAG", "开始颜色" + color);
+                    int color = start2.getCurrentTextColor();
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("开始处理确认")
                                 .setMessage("提示：您已确定到故障发生位置了吗？\n点击\"确认\"确认故障发生位置！")
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        /*start.setBackgroundResource(R.color.wo_button_blue_selected);
-                                        start2.setBackgroundResource(R.color.wo_button_blue_selected);
-                                        finsh.setBackgroundResource(R.color.wo_button_blue);
-                                        finsh2.setBackgroundResource(R.color.wo_button_blue);*/
-                                        vcLowId = itemWo.getVcFlowid();
+
                                         new initThread().start();
 
                                     }
@@ -1182,12 +1305,13 @@ public class WoFragment extends Fragment {
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+//                                        Toast.makeText(WoFragment2.super.getActivity(),"已经开始了",Toast.LENGTH_SHORT).show();
 
                                     }
                                 })
                                 .show();
                     } else {
-
+                        Toast.makeText(WoFragment2.super.getActivity(), "已经开始了", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -1197,22 +1321,26 @@ public class WoFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     itemWo = list.get(i);
+                    vcLowId = itemWo.getVcFlowid();
+                    vcemosid = itemWo.geteMosId();
+
+                    Log.d("TAG_3", "finsh||" + "vcLowId:" + vcLowId + "||" + "vcemosid:" + vcemosid);
                     action = "3";
                     final View viewDia = LayoutInflater.from(getActivity()).inflate(R.layout.custom_dialog, null);
                     editText = (EditText) viewDia.findViewById(R.id.contentText);
                     editText.setText("故障已恢复，请确认！");
 
-                    Drawable background = finsh.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    if (color == -13324289) {
+//                    Drawable background = finsh.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+                    int color = finsh.getCurrentTextColor();
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("工单完成确认")
                                 .setMessage("提示：点击完成后故障单将等待派单人员确认故障恢复，这期间无法再操作工单，您确认工单完成吗？")
                                 .setView(viewDia)
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        vcLowId = itemWo.getVcFlowid();
                                         remark = editText.getText().toString();
                                         new initThread().start();
                                     }
@@ -1225,6 +1353,7 @@ public class WoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
+                        Toast.makeText(WoFragment2.super.getActivity(), "请先按开始", Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -1239,11 +1368,13 @@ public class WoFragment extends Fragment {
 
                     editText2.setText("故障已恢复，请确认！");
 
-                    Drawable background = finsh2.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
+//                    Drawable background = finsh2.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
                     //Log.i("TAG", "颜色：" + color);
-                    if (color == -13324289) {
+                    int color = finsh2.getCurrentTextColor();
+
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("工单完成确认")
                                 .setMessage("提示：点击完成后故障单将等待派单人员确认故障恢复，这期间无法再操作工单，您确认工单完成吗？")
                                 .setView(viewDia)
@@ -1251,6 +1382,7 @@ public class WoFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         vcLowId = itemWo.getVcFlowid();
+                                        vcemosid = itemWo.geteMosId();
                                         remark = editText2.getText().toString();
                                         new initThread().start();
                                     }
@@ -1263,89 +1395,17 @@ public class WoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
+                        Toast.makeText(WoFragment2.super.getActivity(), "请先按开始", Toast.LENGTH_SHORT).show();
 
                     }
                 }
 
             });
 
-
-            holder.leftLinlay.setOnClickListener(new View.OnClickListener() {
+            jiTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    map.put(i, true);
-                    if ("1".equals(state)) {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            accept_wo.setVisibility(View.GONE);
-                            accept_wo2.setVisibility(View.VISIBLE);
-                            warning.setVisibility(View.GONE);
-                            warning2.setVisibility(View.VISIBLE);
-
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            accept_wo2.setVisibility(View.GONE);
-                            accept_wo.setVisibility(View.VISIBLE);
-                            warning2.setVisibility(View.GONE);
-                            warning.setVisibility(View.VISIBLE);
-                        }
-                    } else if ("2".equals(state)) {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            start.setVisibility(View.GONE);
-                            start2.setVisibility(View.VISIBLE);
-                            warning3.setVisibility(View.GONE);
-                            warning4.setVisibility(View.VISIBLE);
-                            finsh.setVisibility(View.GONE);
-                            finsh2.setVisibility(View.VISIBLE);
-
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            start2.setVisibility(View.GONE);
-                            start.setVisibility(View.VISIBLE);
-                            warning4.setVisibility(View.GONE);
-                            warning3.setVisibility(View.VISIBLE);
-                            finsh2.setVisibility(View.GONE);
-                            finsh.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            warning5.setVisibility(View.GONE);
-                            warning6.setVisibility(View.VISIBLE);
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            warning5.setVisibility(View.VISIBLE);
-                            warning6.setVisibility(View.GONE);
-                        }
-                    }
-                    Wo wo = woList.get(i);
-                    //对itm点击后展开 或者收缩的处理 start
-                    if (oldPostion == i) {
-                        if (wo.isExpend()) {
-                            oldPostion = -1;
-                        }
-                        woList.get(i).setExpend(false);
-                    } else {
-                        if (oldPostion != -1) {
-                            woList.get(oldPostion).setExpend(false);
-                        }
-                        oldPostion = i;
-                        woList.get(oldPostion).setExpend(true);
-                    }
-                    myWoListAdapter.notifyDataSetChanged();
+                public void onClick(View v) {
+                    Toast.makeText(WoFragment2.super.getActivity(), "暂无服务", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -1353,6 +1413,7 @@ public class WoFragment extends Fragment {
             holder.rel_up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    Log.d("TAG_3", "position:" + i);
                     map.put(i, true);
                     if ("1".equals(state)) {
                         if (hideLayout.getVisibility() == View.GONE) {
@@ -1430,116 +1491,7 @@ public class WoFragment extends Fragment {
 
                 }
             });
-//            holder.ll_down.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View view, MotionEvent motionEvent) {
-//
-//                    Boolean isScroll=false;
-//                    switch (motionEvent.getAction()) {
-//                        case MotionEvent.ACTION_DOWN:
-//
-//
-//                            isScroll=false;
-//
-//                            break;
-//                        case MotionEvent.ACTION_MOVE:
-//                       isScroll=true;
-//                            break;
-//                        case MotionEvent.ACTION_UP:
-//                            isScroll=false;
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                    return isScroll;
-//                }
-//            });
 
-
-
-            holder.ll_down.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//
-                    map.put(i, true);
-                    if ("1".equals(state)) {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            accept_wo.setVisibility(View.GONE);
-                            accept_wo2.setVisibility(View.VISIBLE);
-                            warning.setVisibility(View.GONE);
-                            warning2.setVisibility(View.VISIBLE);
-
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            accept_wo2.setVisibility(View.GONE);
-                            accept_wo.setVisibility(View.VISIBLE);
-                            warning2.setVisibility(View.GONE);
-                            warning.setVisibility(View.VISIBLE);
-                        }
-                    } else if ("2".equals(state)) {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            start.setVisibility(View.GONE);
-                            start2.setVisibility(View.VISIBLE);
-                            warning3.setVisibility(View.GONE);
-                            warning4.setVisibility(View.VISIBLE);
-                            finsh.setVisibility(View.GONE);
-                            finsh2.setVisibility(View.VISIBLE);
-
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            start2.setVisibility(View.GONE);
-                            start.setVisibility(View.VISIBLE);
-                            warning4.setVisibility(View.GONE);
-                            warning3.setVisibility(View.VISIBLE);
-                            finsh2.setVisibility(View.GONE);
-                            finsh.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        if (hideLayout.getVisibility() == View.GONE) {
-                            hideLayout.setVisibility(View.VISIBLE);
-                            downImg.setVisibility(View.GONE);
-                            upImg.setVisibility(View.VISIBLE);
-                            warning5.setVisibility(View.GONE);
-                            warning6.setVisibility(View.VISIBLE);
-                        } else {
-                            hideLayout.setVisibility(View.GONE);
-                            downImg.setVisibility(View.VISIBLE);
-                            upImg.setVisibility(View.GONE);
-                            warning5.setVisibility(View.VISIBLE);
-                            warning6.setVisibility(View.GONE);
-                        }
-                    }
-                    Wo wo = woList.get(i);
-                    //对itm点击后展开 或者收缩的处理 start
-                    if (oldPostion == i) {
-                        if (wo.isExpend()) {
-                            oldPostion = -1;
-                        }
-                        woList.get(i).setExpend(false);
-                    } else {
-                        if (oldPostion != -1) {
-                            woList.get(oldPostion).setExpend(false);
-                        }
-                        oldPostion = i;
-                        woList.get(oldPostion).setExpend(true);
-                    }
-                    myWoListAdapter.notifyDataSetChanged();
-                    //end
-                }
-
-
-
-            });
 
             TextWatcher textWatcher = new TextWatcher() {
                 @Override
@@ -1573,12 +1525,10 @@ public class WoFragment extends Fragment {
 
                     isInsertData = true;
 
-                    if ("".equals(returnedmessageData)||returnedmessageData==null) {
-                       Toast.makeText(getActivity(), "留言内容不能为空", Toast.LENGTH_SHORT).show();
+                    if ("".equals(returnedmessageData) || returnedmessageData == null) {
+                        Toast.makeText(getActivity(), "留言内容不能为空", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-
 
 
                     initMessageDataThread();
@@ -1593,7 +1543,7 @@ public class WoFragment extends Fragment {
             holder.lv_message.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                    if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                         mlistview.requestDisallowInterceptTouchEvent(true);
                     }
                     return false;
@@ -1635,9 +1585,16 @@ public class WoFragment extends Fragment {
                 if (action.equals("3")) {
                     jsonParmter.put("REMARK", remark);
                 }
+//                Log.d("TAG_3", "request" + "||" + "vcLowId:" + vcLowId + "||" + "userId：" + userId + "||" + "vcemosid：" + vcemosid + "||");
 
                 String parameter = jsonParmter.toString();
                 resultB = Communication.getPostResponseForNetManagement(url, parameter);
+//                Log.d("TAG_3","接单返回数据："+resultB);
+                if (resultB.contains("解压或解密")) {
+                    msg.what = 2;
+                    handler.sendMessage(msg);
+                    return;
+                }
                 msg.what = 1;
                 handler.sendMessage(msg);
             } catch (JSONException e) {
@@ -1656,6 +1613,10 @@ public class WoFragment extends Fragment {
                         handleResult(resultB);
                         break;
                     }
+                    case 2: {
+                        Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "请求服务端异常！或没开通EMOS。", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                 }
             }
         };
@@ -1663,7 +1624,7 @@ public class WoFragment extends Fragment {
         private void handleResult(String result) {
             //处理数据，解析数据
             JSONObject resultJson = JSON.parseObject(result);
-
+//            Log.d("TBG","解析接单返回数据");
             if ("成功".equals(resultJson.getString("result"))) {
                 new AlertDialog.Builder(getActivity()).setTitle("处理信息")
                         .setMessage(resultJson.getString("reason"))
@@ -1697,13 +1658,13 @@ public class WoFragment extends Fragment {
                 /*Toast toast=Toast.makeText(mcontext, "失败原因：" + resultJson.getString("reason"), Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER,0,0);
                 toast.show();*/
-                queryTextValue = "";
-                mRefreshMode = PULL_DOWN_TO_REFRESH;
-                message = 1;
-                //pageNo = 0;
-                refreshLayout.setCanLoadMore(true);
-                woList.clear();
-                initDataThread(true);
+//                queryTextValue = "";
+//                mRefreshMode = PULL_DOWN_TO_REFRESH;
+//                message = 1;
+//                //pageNo = 0;
+//                refreshLayout.setCanLoadMore(true);
+//                woList.clear();
+//                initDataThread(true);
             }
 
         }
@@ -1715,9 +1676,8 @@ public class WoFragment extends Fragment {
         TextView woTitleTxt;//工单标题
         TextView woDurationTxt;//工单历时
         TextView distributePresonTxt;//派发人员
-        TextView distributeTimeTxt;//派发时间
         TextView noticeTimeTxt;//通知时间
-        TextView woContentTxt;//工单内容
+        //        TextView woContentTxt;//工单内容
         TextView emosStepTxt;//EMOS环节
         TextView acceptPersonTxt;//待受理人
         TextView emosid;//EmosId
@@ -1725,7 +1685,6 @@ public class WoFragment extends Fragment {
         TextView npromptTimeTex;//催单次数
         TextView acceptTanceTxt;//受理时间
         TextView finishTimeTxt;//完成时间
-        TextView faultLevelTxt;//故障单等级
         ImageView vip;//VIP图标
         ImageView alarm;//闹钟图标
         TextView warningLevelTxt;//工单等级
@@ -1734,10 +1693,11 @@ public class WoFragment extends Fragment {
         EditText et_message;//
         Button btn_message_submit;//
 
-     LinearLayout   hide_text;
+        LinearLayout hide_text;
         LinearLayout rel_up;
         LinearLayout ll_down;
         LinearLayout leftLinlay;
+        LinearLayout ll_shoulitime;//受理时间
     }
 
     public static HashMap<Integer, Boolean> getIsExpand() {
@@ -1798,6 +1758,11 @@ public class WoFragment extends Fragment {
                 messageListHandler.sendMessage(m);
                 return;
             }
+            if (result.contains("解压或解密")) {
+                m.what = 2;
+                messageListHandler.sendMessage(m);
+                return;
+            }
             getMessageData(result);
             m.what = 3;
             messageListHandler.sendMessage(m);
@@ -1836,11 +1801,11 @@ public class WoFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1: {
-                    Toast.makeText(WoFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 2: {
-                    Toast.makeText(WoFragment.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 3: {
@@ -1873,11 +1838,11 @@ public class WoFragment extends Fragment {
                     break;
                 }
                 case 4: {
-                    Toast.makeText(WoFragment.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 5: {
-                    Toast.makeText(WoFragment.super.getActivity(), result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.WoFragment2.super.getActivity(), result, Toast.LENGTH_SHORT).show();
                     break;
                 }
 
@@ -1887,4 +1852,10 @@ public class WoFragment extends Fragment {
         }
     };
 
+    @Override
+    public void onDestroyView() {
+//        WoFragment2.super.getActivity().unregisterReceiver(mReceiver);
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
+    }
 }

@@ -1,9 +1,13 @@
 package com.cattsoft.wow.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,7 +22,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cattsoft.framework.cache.MosApp;
 import com.cattsoft.framework.connect.Communication;
+import com.cattsoft.framework.view.ToastCommom;
 import com.cattsoft.wow.R;
 import com.cattsoft.wow.base.BaseSlidingActivity;
 import com.cattsoft.wow.fragment.LeftSlidingFragment;
@@ -28,8 +34,9 @@ import com.cattsoft.wow.fragment.MapWoFragment;
 import com.cattsoft.wow.fragment.OverviewFragment;
 import com.cattsoft.wow.fragment.ReportFragment;
 import com.cattsoft.wow.fragment.TrendFragment;
-import com.cattsoft.wow.fragment.WarningFragment;
-import com.cattsoft.wow.fragment.WoFragment;
+import com.cattsoft.wow.fragment.WarningFragment2;
+import com.cattsoft.wow.fragment.WoFragment2;
+import com.cattsoft.wow.receiver.NetReceiver;
 import com.cattsoft.wow.service.PalpitateService;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -42,7 +49,7 @@ public class HomeActivity extends BaseSlidingActivity {
 
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private Fragment overviewFragment, reprotFragment, warningFragment, woFragment, leftSlidingFragment, listsFragment, trendFragment;
+    private Fragment overviewFragment, reprotFragment, warningFragment,warningFragment2, woFragment, leftSlidingFragment, listsFragment, trendFragment;
     private FrameLayout FLayout;
     private RadioGroup rgp;
     private SlidingMenu sm;
@@ -50,6 +57,7 @@ public class HomeActivity extends BaseSlidingActivity {
 
     private String userType;//判断是什么账号；3是包机，2是维护，1是监管
     private String nid;
+    private NetReceiver mReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,12 +79,27 @@ public class HomeActivity extends BaseSlidingActivity {
         initData();
         initView();
         setWarningOrderInfo();
+        initReceive();
 
+    }
+
+
+    private void initReceive() {
+        mReceiver = new NetReceiver();
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mReceiver, mFilter);
     }
 
     private void startSerice() {
         Intent intent = new Intent(HomeActivity.this, PalpitateService.class);
         startService(intent);
+    }
+
+    public static boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) MosApp.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnectedOrConnecting();
     }
 
     protected void initView() {
@@ -152,7 +175,7 @@ public class HomeActivity extends BaseSlidingActivity {
                             radioBut_warning.setTextColor(getResources().getColor(R.color.text_checked));
                             radioBut_report.setTextColor(getResources().getColor(R.color.text_nochecked));
                             FragmentTransaction transaction2 = fm.beginTransaction();
-                            transaction2.replace(R.id.layout, warningFragment);
+                            transaction2.replace(R.id.layout, warningFragment2);
                             transaction2.commit();
                             break;
                         case R.id.radioBut_report:
@@ -177,8 +200,8 @@ public class HomeActivity extends BaseSlidingActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         reprotFragment = new ReportFragment();
-        warningFragment = new WarningFragment();
-        woFragment = new WoFragment();
+        warningFragment2 = new WarningFragment2();
+        woFragment = new com.cattsoft.wow.fragment.WoFragment2();
         leftSlidingFragment = new LeftSlidingFragment();
         overviewFragment = new OverviewFragment();
         listsFragment = new ListsFragment();
@@ -189,14 +212,14 @@ public class HomeActivity extends BaseSlidingActivity {
     public void setWarningOrderInfo() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("first_level_checked", false);
-        editor.putBoolean("second_level_checked", false);
-        editor.putBoolean("third_level_checked", false);
-        editor.putBoolean("fourth_level_checked", false);
-        editor.putBoolean("flash_checked", false);
-        editor.putBoolean("avtivity_state_checked", true);
-        editor.putBoolean("recover_state_checked", false);
-        editor.putBoolean("all_state_checked", false);
+//        editor.putBoolean("first_level_checked", false);
+//        editor.putBoolean("second_level_checked", false);
+//        editor.putBoolean("third_level_checked", false);
+//        editor.putBoolean("fourth_level_checked", false);
+//        editor.putBoolean("flash_checked", false);
+//        editor.putBoolean("avtivity_state_checked", true);
+//        editor.putBoolean("recover_state_checked", false);
+//        editor.putBoolean("all_state_checked", false);
         editor.putString("Break_Value", "1");
         editor.putString("Data_Value", "1");
         editor.commit();
@@ -222,12 +245,30 @@ public class HomeActivity extends BaseSlidingActivity {
             transaction.commit();
         }else {
 
-            new AlertDialog.Builder(this).setTitle("退出登录确认")
-                    .setMessage("提示：退出后，请重新再登录！")
+//            new AlertDialog.Builder(this).setTitle("退出登录确认")
+//                    .setMessage("提示：退出后，请重新再登录！")
+//                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            new zhuThread().start();
+//                            finish();
+//                        }
+//                    })
+//                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        }
+//                    })
+//                    .show();
+
+            new AlertDialog.Builder(this).setTitle("退出确认")
+                    .setMessage("提示：退出后请重新登陆！")
                     .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             new zhuThread().start();
+                            stopService(new Intent(HomeActivity.this,PalpitateService.class));
                             finish();
                         }
                     })
@@ -278,4 +319,10 @@ public class HomeActivity extends BaseSlidingActivity {
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
 }

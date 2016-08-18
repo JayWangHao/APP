@@ -16,7 +16,7 @@ function on(data) {
 			// 基于准备好的dom，初始化echarts图表
 			var myChart = ec.init(document.getElementById('main'));
 
-			var labelTop = {
+		var labelTop = {
 				normal: {
 					label: {
 						show: true,
@@ -59,11 +59,13 @@ function on(data) {
 				}
 			};
 			var radius = [40, 55];
-			
+
+
 option = {
     
     tooltip : {
-        trigger: 'item'
+        trigger: 'item',
+        fontSize: 500
     },
     
     dataRange: {
@@ -71,14 +73,13 @@ option = {
         y: 'bottom',
         splitList: [
            
-            {start: 80, end: 100},
-            {start: 60, end: 80},
-            {start: 40, end: 60},
-            {start: 20, end: 40},
-            {start: 0, end: 20}
+
+            {start: 70, end: 100},
+            {start: 30, end: 70},
+            {start: 0, end: 30}
             
         ],
-        color: ['#E0022B', '#FF6699', '#A3E00B','#FFFF00','#00FF00']
+        color: ['#0000FF', '#00FF00', '#CCFF00']
     },
     /*toolbox: {
         show: true,
@@ -217,15 +218,14 @@ option = {
     "min" : 0,
     "y" : 5,
     "realtime" : false,
-    "show" : true,
+    "show" : false,
     "calculable" : false,
     "itemHeight" : 3,
+    "splitNumber":3,
     "color" : [
-      "#FF0033",
-      "#FF6699",
-      "#E47833",
-      " #FFFF00",
-      "#00FF00"
+      "#00FF00",
+       "#FFFF00",
+      "#FF0000"
     ],
     "max" : 100,
     "textStyle" : {
@@ -265,8 +265,8 @@ option = {
       }
     },
     "position" : [
-      520,
-      20
+      500,
+      200
     ],
     "islandFormmater" : "{a} < br\/>{b} : {c}",
     "backgroundColor" : "rgba(0,0,0,0.70)",
@@ -275,7 +275,7 @@ option = {
     "z" : 8,
     "showContent" : true,
     "showDelay" : 20,
-    "formatter" : function (params,ticket,callback) {for (var p in option.series[0].nameMap){if(option.series[0].nameMap[p] ==  params.data.name){break;}} var res = '地势:' + p + '<br/>工单占比 : ' + params.data.value+'%<br/>工单数量 : ' + params.data.value2;return res;},
+    "formatter" :function (params,ticket,callback) {for (var p in option.series[0].nameMap) {if(option.series[0].nameMap[p] == params.data.name) {break;} } var res = '地势:' + p + '<br/>工单总数 : ' + params.data.ONCE+'<br/>工单未恢复数 : ' + params.data.ONCEUNFIN+'<br/>断站总数 : ' + params.data.ONCEALARM +'<br/>断站未恢复数 : ' + params.data.ALARMUNFIN +'<br/>平均恢复时长 : ' + params.data.ALARMRATE;return res; },
     "enterable" : false,
     "hideDelay" : 100,
     "zlevel" : 1,

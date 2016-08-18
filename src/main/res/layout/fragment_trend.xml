@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context="com.cattsoft.wow.fragment.TrendFragment"
     android:background="@color/black"
-    tools:context="com.cattsoft.wow.fragment.TrendFragment">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,8 +13,8 @@
         <RelativeLayout
             android:id="@+id/title"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:background="#FF0000" >
+            android:layout_height="40dp"
+            android:background="@color/small_title_text_color" >
 
             <ImageView
                 android:id="@+id/user_name_img"
@@ -34,21 +35,89 @@
                 android:textColor="#ffffff"
                 android:textSize="22sp"/>
         </RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/webViewLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/webViewBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"/>
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/webViewPie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"/>
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/webViewLine"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+    <RadioGroup
+        android:layout_marginTop="4dp"
+        android:id="@+id/rg_content"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_week_trend"
+            style="@style/RadioButtonStyle"
+            android:drawableLeft="@drawable/selector_radio_btn_service"
+            android:text="10天内" />
+
+        <RadioButton
+            android:layout_marginLeft="6dp"
+            android:id="@+id/rb_month_trend"
+            style="@style/RadioButtonStyle"
+            android:drawableLeft="@drawable/selector_radio_btn_service"
+            android:text="今年" />
+
+    </RadioGroup>
+
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/webViewBar"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/webViewLine"
+        />
+    <Button
+        android:id="@+id/bt_trend_all"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:text="查看全部"
+        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="420dp"
+        android:layout_marginRight="55dp"
+        android:layout_alignParentRight="true"
+        />
+    <Button
+        android:id="@+id/bt_trend_gongdan"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:text="按工单"
+        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="420dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/bt_trend_all"
+        />
+    <Button
+        android:id="@+id/bt_trend_gaojing"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:text="按告警"
+        android:textSize="11sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="420dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/bt_trend_gongdan"
+        />
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/webViewPie"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/webViewBar"
+        />
+</RelativeLayout>
+
+
+
 
     </LinearLayout>
 

@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.cattsoft.wow.R;
 import com.cattsoft.wow.activity.AmendPasswordActivity;
 import com.cattsoft.wow.activity.MainActivity;
+import com.cattsoft.wow.activity.TalkActivity;
 import com.cattsoft.wow.service.PalpitateService;
 
 
@@ -21,6 +22,7 @@ public class LeftSlidingFragment extends Fragment {
     private Button changePassword;
     private Button logout;
     private Button about;
+    private Button talk;
     private Context context;
     View view;
 
@@ -31,7 +33,17 @@ public class LeftSlidingFragment extends Fragment {
         view=inflater.inflate(R.layout.fragment_left_sliding,container,false);
         changePassword=(Button)view.findViewById(R.id.change_password_btn);
         logout=(Button)view.findViewById(R.id.logout_btn);
-        about=(Button)view.findViewById(R.id.about_btn);
+//        about=(Button)view.findViewById(R.id.about_btn);
+        talk = (Button) view.findViewById(R.id.talk_btn);
+
+        talk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), TalkActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
         changePassword.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -49,6 +61,7 @@ public class LeftSlidingFragment extends Fragment {
                 Intent intent=new Intent(getActivity(),MainActivity.class);
                 intent.putExtra("isLogout","Y");
                 getActivity().startActivity(intent);
+                getActivity().finish();
             }
         });
         return view;

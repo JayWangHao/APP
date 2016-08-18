@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="#FF0000">
+        android:layout_height="40dp"
+        android:background="@color/small_title_text_color">
 
         <ImageView
             android:id="@+id/user_name_img"
@@ -39,10 +39,70 @@
 
     </RelativeLayout>
 
-    <!--TextView areaName;//区域名-->
-    <!--TextView noBrokenStationNumber;//非断站数-->
-    <!--TextView workingNumber;//工单数-->
-    <!--TextView brokenStationNumber ;//断站数-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00a2dc"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1.8"
+            android:text="排序类型："
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2.5"
+            android:entries="@array/spingarr" />
+
+        <ImageView
+            android:id="@+id/list_jiantou"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/nsdk_drawable_rg_ic_turn_front_s" />
+
+        <RadioGroup
+            android:id="@+id/rg_content"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3.5"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_day"
+                style="@style/RadioButtonStyle"
+                android:drawableLeft="@drawable/selector_radio_btn_service"
+                android:text="本日" />
+
+            <RadioButton
+                android:id="@+id/rb_month"
+                style="@style/RadioButtonStyle"
+                android:drawableLeft="@drawable/selector_radio_btn_service"
+                android:text="本月" />
+
+            <RadioButton
+                android:id="@+id/rb_year"
+                style="@style/RadioButtonStyle"
+
+                android:drawableLeft="@drawable/selector_radio_btn_service"
+                android:text="历史" />
+
+        </RadioGroup>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/data_choose"
@@ -51,54 +111,80 @@
 
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/areaName"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/quyuming"
-            android:drawableRight="@drawable/xialajiantou"
             android:gravity="center"
-            android:text="区域名"
-            android:textColor="#000000"
-            android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/noBrokenStationNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/feiduanzhan"
-            android:gravity="center"
-            android:text="非断站数"
-            android:textColor="#000000"
-            android:textSize="16dp" />
+            >
 
-        <TextView
-            android:id="@+id/workingNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/gongdanshu"
-            android:gravity="center"
-            android:text="工单数"
-            android:textColor="#000000"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/areaName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:drawableLeft="@drawable/quyuming"
+                android:gravity="center"
+                android:text="区域名"
+                android:textColor="#919191"
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/brokenStationNumber"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/duanzhanshu"
             android:gravity="center"
-            android:text="断站数"
-            android:textColor="#000000"
-            android:textSize="16dp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/workingNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/gongdanshu"
+                android:text="工单数"
+                android:textColor="#919191"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未完成/总数"
+                android:textColor="#919191"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp"
+            >
+
+            <TextView
+                android:id="@+id/brokenStationNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/duanzhanshu"
+                android:text="断站数"
+                android:textColor="#919191"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未恢复/总数"
+                android:textColor="#919191"
+                android:textSize="8sp" />
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -126,9 +212,9 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:cacheColorHint="#00000000"
-            android:scrollbars="none"
             android:divider="#FF0000"
             android:dividerHeight="1dp"
+            android:scrollbars="none"
 
             />
     </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>

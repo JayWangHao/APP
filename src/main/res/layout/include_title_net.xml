@@ -5,7 +5,7 @@
         android:id="@+id/title1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        mos:title_backgroundColor="#FF0000"
+        mos:title_backgroundColor="#FF4040"
         mos:left_img="@drawable/titlebar_img_btn_back"
         mos:title_text_color="#ffffff"
         mos:title_text_size="22sp"

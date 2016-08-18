@@ -1,6 +1,7 @@
 package com.cattsoft.wow.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cattsoft.wow.R;
+import com.cattsoft.wow.activity.MapItemActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,16 +118,10 @@ public class AreaChartPeiFragment extends Fragment {
 
                         } else {
                             //跳转到工单页面
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            MapWoFragment mapWoFragment = new MapWoFragment();
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("geoId", dianjiangNGEOID);
-
-                            mapWoFragment.setArguments(bundle);
-                            transaction.replace(R.id.layout, mapWoFragment);
-
-                            transaction.commit();
+                            Intent intent = new Intent(getActivity(), MapItemActivity.class);
+                            intent.putExtra("geoId", dianjiangNGEOID);
+                            intent.putExtra("cityName", "垫江");
+                            getActivity().startActivity(intent);
                         }
 
                         break;
@@ -167,16 +163,10 @@ public class AreaChartPeiFragment extends Fragment {
                         if (redValue == 0) {
                         } else {
                             //跳转到工单页面
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            MapWoFragment mapWoFragment = new MapWoFragment();
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("geoId", fengduNGEOID);
-
-                            mapWoFragment.setArguments(bundle);
-                            transaction.replace(R.id.layout, mapWoFragment);
-
-                            transaction.commit();
+                            Intent intent = new Intent(getActivity(), MapItemActivity.class);
+                            intent.putExtra("geoId", fengduNGEOID);
+                            intent.putExtra("cityName", "丰都");
+                            getActivity().startActivity(intent);
                         }
 
                         break;
@@ -220,16 +210,10 @@ public class AreaChartPeiFragment extends Fragment {
 
                         } else {
                             //跳转到工单页面
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            MapWoFragment mapWoFragment = new MapWoFragment();
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("geoId", peilingNGEOID);
-
-                            mapWoFragment.setArguments(bundle);
-                            transaction.replace(R.id.layout, mapWoFragment);
-
-                            transaction.commit();
+                            Intent intent = new Intent(getActivity(), MapItemActivity.class);
+                            intent.putExtra("geoId", peilingNGEOID);
+                            intent.putExtra("cityName", "涪陵");
+                            getActivity().startActivity(intent);
                         }
 
                         break;
@@ -271,16 +255,10 @@ public class AreaChartPeiFragment extends Fragment {
 
                         } else {
                             //跳转到工单页面
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            MapWoFragment mapWoFragment = new MapWoFragment();
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("geoId", wulongNGEOID);
-
-                            mapWoFragment.setArguments(bundle);
-                            transaction.replace(R.id.layout, mapWoFragment);
-
-                            transaction.commit();
+                            Intent intent = new Intent(getActivity(), MapItemActivity.class);
+                            intent.putExtra("geoId", wulongNGEOID);
+                            intent.putExtra("cityName", "武隆");
+                            getActivity().startActivity(intent);
                         }
 
                         break;
@@ -322,16 +300,10 @@ public class AreaChartPeiFragment extends Fragment {
 
                         } else {
                             //跳转到工单页面
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            MapWoFragment mapWoFragment = new MapWoFragment();
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("geoId", nanchuanNGEOID);
-
-                            mapWoFragment.setArguments(bundle);
-                            transaction.replace(R.id.layout, mapWoFragment);
-
-                            transaction.commit();
+                            Intent intent = new Intent(getActivity(), MapItemActivity.class);
+                            intent.putExtra("geoId", nanchuanNGEOID);
+                            intent.putExtra("cityName", "南川");
+                            getActivity().startActivity(intent);
                         }
 
                         break;
@@ -346,9 +318,10 @@ public class AreaChartPeiFragment extends Fragment {
     public void setData() {
 
         JSONObject dianjiang = (JSONObject) respsoneJson.get("垫江");
+//        String rank = "18";
         String rank = dianjiang.get("RANK").toString();
         String once = dianjiang.get("ONCE").toString();
-        dianjiangNGEOID = dianjiang.get("NGEOID").toString();
+        dianjiangNGEOID = dianjiang.get("GEO_ID").toString();
         tvDianjiangRankingNum.setText(rank);
         tvDianjiangWorkNum.setText(once);
 
@@ -357,7 +330,7 @@ public class AreaChartPeiFragment extends Fragment {
         JSONObject fengdu = (JSONObject) respsoneJson.get("丰都");
         rank = fengdu.get("RANK").toString();
         once = fengdu.get("ONCE").toString();
-        fengduNGEOID = fengdu.get("NGEOID").toString();
+        fengduNGEOID = fengdu.get("GEO_ID").toString();
         tvFengduRankingNum.setText(rank);
         tvFengduWorkNum.setText(once);
 
@@ -365,21 +338,21 @@ public class AreaChartPeiFragment extends Fragment {
         JSONObject peiling = (JSONObject) respsoneJson.get("涪陵");
         rank = peiling.get("RANK").toString();
         once = peiling.get("ONCE").toString();
-        peilingNGEOID = peiling.get("NGEOID").toString();
+        peilingNGEOID = peiling.get("GEO_ID").toString();
         tvPeilingRankingNum.setText(rank);
         tvPeilingWorkNum.setText(once);
 
         JSONObject wulong = (JSONObject) respsoneJson.get("武隆");
         rank = wulong.get("RANK").toString();
         once = wulong.get("ONCE").toString();
-        wulongNGEOID = wulong.get("NGEOID").toString();
+        wulongNGEOID = wulong.get("GEO_ID").toString();
         tvWulongRankingNum.setText(rank);
         tvWulongWorkNum.setText(once);
 
         JSONObject nanchuan = (JSONObject) respsoneJson.get("南川");
         rank = nanchuan.get("RANK").toString();
         once = nanchuan.get("ONCE").toString();
-        nanchuanNGEOID = nanchuan.get("NGEOID").toString();
+        nanchuanNGEOID = nanchuan.get("GEO_ID").toString();
         tvNanchuanRankingNum.setText(rank);
         tvNanchuanWorkNum.setText(once);
 

@@ -452,6 +452,7 @@ public class StringUtil {
 			out.write(buffer, 0, n);
 		}
 		// 使用指定的 charsetName，通过解码字节将缓冲区内容转换为字符串
+//		return out.toString("UTF-8");
 		return out.toString("GBK");
 	}
 

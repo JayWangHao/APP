@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Echarts</title>
-		<style>
-			html{
-				background: black;
-			}
-			
-		</style>
-		<script type="text/javascript" src="js/echarts.js" charset="utf-8"></script>
-		<script src="js/trendBar.js"></script>
+<head>
+    <meta charset="utf-8"/>
+    <title>Echarts</title>
+    <style>
+        html{
+        background: black;
+        }
 
-		<script >
+    </style>
+    <script type="text/javascript" src="js/echarts.js" charset="utf-8"></script>
+    <script src="js/trendBarAll.js"></script>
+
+    <script>
 
 		function connectWebViewJavascriptBridge(callback) {
 		if (window.WebViewJavascriptBridge) {
@@ -41,151 +41,30 @@
 		//这里就是Js注册的functionInJs方法，data即为原生带来的参数
 		bridge.registerHandler("BAR", function(data, responseCallback) {
 		//将原生带来的参数，显示在show标签位置
+var responseJSON=eval('('+data+')');
+	      var alarm=new Array();
+	    	var once=new Array();
+				var city=new Array();
+				var count = 0;
+  			for(var i in responseJSON){
+    			city[count] = i;
+    			alarm[count] = responseJSON[i].ONCE;
+    			once[count] = responseJSON[i].ALARM;
+    			count++;
+				}
+		trend(once,alarm,city);
 
-	    var responseJSON=eval('('+data+')');
-
-	    var alarm=new Array();
-	    var once=new Array();
-	    	var bananJson=responseJSON.巴南;
-	    		alarm[0]=bananJson.ALARM;
-	    		once[0]=bananJson.ONCE;
-            var beixinJson=responseJSON.北新;
-            alarm[1]=beixinJson.ALARM;
-	    		once[1]=beixinJson.ONCE;
-            var beipeiJson=responseJSON.北碚;
-             alarm[2]=beipeiJson.ALARM;
-	    		once[2]=beipeiJson.ONCE;
-            var dadukouJson=responseJSON.大渡口;
-           alarm[3]=dadukouJson.ALARM;
-	    		once[3]=dadukouJson.ONCE;
-            var jiangbeiJson=responseJSON.江北;
-            alarm[4]=jiangbeiJson.ALARM;
-	    		once[4]=jiangbeiJson.ONCE;
-            var jiulongpoJson=responseJSON.九龙坡;
-             alarm[5]=jiulongpoJson.ALARM;
-	    		once[5]=jiulongpoJson.ONCE;
-            var nananJson=responseJSON.南岸;
-           alarm[6]=nananJson.ALARM;
-	    		once[6]=nananJson.ONCE;
-            var shapinbaJson=responseJSON.沙坪坝;
-            alarm[7]=shapinbaJson.ALARM;
-	    		once[7]=shapinbaJson.ONCE;
-            var yubeiJson=responseJSON.渝北;
-             alarm[8]=yubeiJson.ALARM;
-	    		once[8]=yubeiJson.ONCE;
-            var yuzhongJson=responseJSON.渝中;
-           alarm[9]=yuzhongJson.ALARM;
-	    		once[9]=yuzhongJson.ONCE;
-            var dazuJson=responseJSON.大足;
-             alarm[10]=dazuJson.ALARM;
-	    		once[10]=dazuJson.ONCE;
-            var hechuanJson=responseJSON.合川;
-           alarm[11]=hechuanJson.ALARM;
-	    		once[11]=hechuanJson.ONCE;
-            var yongchuanJson=responseJSON.永川;
-             alarm[12]=yongchuanJson.ALARM;
-	    		once[12]=yongchuanJson.ONCE;
-            var mojiangJson=responseJSON.綦江;
-           alarm[13]=mojiangJson.ALARM;
-	    		once[13]=mojiangJson.ONCE;
-            var tongliangJson=responseJSON.铜梁;
-            alarm[14]=tongliangJson.ALARM;
-	    		once[14]=tongliangJson.ONCE;
-            var changshouJson=responseJSON.长寿;
-            alarm[15]=changshouJson.ALARM;
-	    		once[15]=changshouJson.ONCE;
-            var bishanJson=responseJSON.璧山;
-            alarm[16]=bishanJson.ALARM;
-	    		once[16]=bishanJson.ONCE;
-            var jiangjinJson=responseJSON.江津;
-            alarm[17]=jiangjinJson.ALARM;
-	    		once[17]=jiangjinJson.ONCE;
-            var tongnanJson=responseJSON.潼南;
-             alarm[18]=tongnanJson.ALARM;
-	    		once[18]=tongnanJson.ONCE;
-            var wanshengJson=responseJSON.万盛;
-            alarm[19]=wanshengJson.ALARM;
-	    		once[19]=wanshengJson.ONCE;
-            var rongchangJson=responseJSON.荣昌;
-           alarm[20]=rongchangJson.ALARM;
-	    		once[20]=rongchangJson.ONCE;
-            var fulinJson=responseJSON.涪陵;
-            alarm[21]=fulinJson.ALARM;
-	    		once[21]=fulinJson.ONCE;
-            var dianjiangJson=responseJSON.垫江;
-             alarm[22]=dianjiangJson.ALARM;
-	    		once[22]=dianjiangJson.ONCE;
-            var fengduJson=responseJSON.丰都;
-             alarm[23]=fengduJson.ALARM;
-	    		once[23]=fengduJson.ONCE;
-            var wulongJson=responseJSON.武隆;
-            alarm[24]=wulongJson.ALARM;
-	    		once[24]=wulongJson.ONCE;
-            var nanchuanJson=responseJSON.南川;
-           alarm[25]=nanchuanJson.ALARM;
-	    		once[25]=nanchuanJson.ONCE;
-            var qianjiangJson=responseJSON.黔江;
-            alarm[26]=qianjiangJson.ALARM;
-	    		once[26]=qianjiangJson.ONCE;
-            var penshuiJson=responseJSON.彭水;
-             alarm[27]=penshuiJson.ALARM;
-	    		once[27]=penshuiJson.ONCE;
-            var shizhuJson=responseJSON.石柱;
-            alarm[28]=shizhuJson.ALARM;
-	    		once[28]=shizhuJson.ONCE;
-            var xiushanJson=responseJSON.秀山;
-           alarm[29]=xiushanJson.ALARM;
-	    		once[29]=xiushanJson.ONCE;
-            var youyangJson=responseJSON.酉阳;
-            alarm[30]=youyangJson.ALARM;
-	    		once[30]=youyangJson.ONCE;
-            var wanzhouJson=responseJSON.万州;
-             alarm[31]=wanzhouJson.ALARM;
-	    		once[31]=wanzhouJson.ONCE;
-            var fengjieJson=responseJSON.奉节;
-           alarm[32]=fengjieJson.ALARM;
-	    		once[32]=fengjieJson.ONCE;
-            var kaixianJson=responseJSON.开县;
-            alarm[33]=kaixianJson.ALARM;
-	    		once[33]=kaixianJson.ONCE;
-            var liangpinJson=responseJSON.梁平;
-            alarm[34]=liangpinJson.ALARM;
-	    		once[34]=liangpinJson.ONCE;
-            var yunyangJson=responseJSON.云阳;
-            alarm[35]=yunyangJson.ALARM;
-	    		once[35]=yunyangJson.ONCE;
-            var zhongxianJson=responseJSON.忠县;
-            alarm[36]=zhongxianJson.ALARM;
-	    		once[36]=zhongxianJson.ONCE;
-            var chengkouJson=responseJSON.城口;
-            alarm[37]=chengkouJson.ALARM;
-	    		once[37]=chengkouJson.ONCE;
-            var wushanJson=responseJSON.巫山;
-             alarm[38]=wushanJson.ALARM;
-	    		once[38]=wushanJson.ONCE;
-            var wuxiJson=responseJSON.巫溪;
-            alarm[39]=wuxiJson.ALARM;
-	    		once[39]=wuxiJson.ONCE;
-
-
-
-
-
-
-
-		trend(once,alarm);
-
-
-		/*var responseData = "Javascript Says Right back aka!";
+		var responseData = "Javascript Says Right back aka!";
 		//调用responseCallback方法可以带传参数到原生
-		responseCallback(responseData);*/
+		responseCallback(responseJSON);
 		});
 		})
 
-		</script>
-	</head>
-	<body >
-    <div  id="bar" class="bar" style="width:350%;height:200px; overflow: auto;"></div>
-	</body>
+
+    </script>
+</head>
+<body>
+<div id="bar" class="bar" style="width:350%;height:1200px; overflow: auto;"></div>
+</body>
 
 </html>

@@ -1,4 +1,4 @@
-function trend(once,alarm){
+﻿function trend(once,alarm,city){
 	require.config({
 		paths: {
 			echarts: './echarts-2.2.7/build/dist'
@@ -66,7 +66,7 @@ function trend(once,alarm){
     tooltip : {
         trigger: 'axis'
     },
-    xAxis : [
+    yAxis : [
         {
         	axisLabel : {
                 show:true,
@@ -85,7 +85,7 @@ function trend(once,alarm){
             data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
         }
     ],
-    yAxis : [
+    xAxis : [
         {
         	axisLabel : {
                 show:true,
@@ -139,53 +139,12 @@ function trend(once,alarm){
     }
   ],
   "renderAsImage" : false,
-  "xAxis" : [
+  "yAxis" : [
     {
       "splitLine" : {
         "show" : false
       },
-      "data" : [
-        "巴南",
-        "北新",
-        "北碚",
-        "大渡口",
-        "江北",
-        "九龙坡",
-        "南岸",
-        "沙坪坝",
-        "渝北",
-        "渝中",
-        "大足",
-        "合川",
-        "永川",
-        "綦江",
-        "铜梁",
-        "长寿",
-        "璧山县",
-        "江津",
-        "潼南",
-        "万盛",
-        "荣昌",
-        "涪陵",
-        "垫江",
-        "丰都",
-        "武隆",
-        "南川",
-        "黔江",
-        "彭水",
-        "石柱",
-        "秀山",
-        "酉阳",
-        "万州",
-        "奉节",
-        "开县",
-        "梁平",
-        "云阳",
-        "忠县",
-        "城口",
-        "巫山",
-        "巫溪"
-      ],
+      "data" : city,
       "type" : "category",
       "axisLabel" : {
         "interval" : 0,
@@ -226,7 +185,7 @@ function trend(once,alarm){
     "show" : true,
     "z" : 0,
     "borderWidth" : 0,
-    "text" : "工单告警分布(当天)",
+    "text" : "工单告警分布(今日top5)      红色：告警     蓝色：工单",
     "subtext" : "",
     "zlevel" : 0
   },
@@ -263,7 +222,7 @@ function trend(once,alarm){
     "zlevel" : 1,
     "borderRadius" : 4
   },
-  "yAxis" : [
+  "xAxis" : [
     {
       "type" : "value",
       "splitLine" : {

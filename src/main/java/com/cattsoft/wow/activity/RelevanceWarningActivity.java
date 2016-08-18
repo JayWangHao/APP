@@ -140,11 +140,9 @@ public class RelevanceWarningActivity extends BaseActivity {
             jsonParmters.put("VCEMOSID",eMosid);
             jsonParmters.put("limit",limit);
             jsonParmters.put("page",page+"");
-            Log.i("TAG","入参："+eMosid+limit+page);
 
             String parameter = jsonParmters.toString();
             resultC = Communication.getPostResponseForNetManagement(url, parameter);
-            Log.i("TAG", "返回的是：" + resultC);
             handleResult(resultC);
             msg.what = 1;
             handler.sendMessage(msg);

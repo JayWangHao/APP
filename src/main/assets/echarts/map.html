@@ -45,14 +45,16 @@
 		
 		var data = [];
 		for(var i in responseJSON){ 
-  			data.push({name:responseJSON[i].NGEOID,value:responseJSON[i].BASEBI,value2:responseJSON[i].ONCE})
+  			data.push({name:responseJSON[i].GEO_ID,ONCE:responseJSON[i].ONCE,value:responseJSON[i].RATE,ONCEUNFIN:responseJSON[i].ONCEUNFIN,ONCEALARM:responseJSON[i].ONCEALARM,ALARMUNFIN:responseJSON[i].ALARMUNFIN,ALARMRATE:responseJSON[i].ALARMRATE})
+  			<!--data.push({name:responseJSON[i].NGEOID,value:responseJSON[i].BASEBI,value2:responseJSON[i].ONCE})//原来的-->
 		}
 		console.log(data);
 		on(data);
-
+//调用responseCallback方法可以带传参数到原生
+		responseCallback(responseJSON);
 		});
 		})
-    		
+
     		</script>
 	</head>
 	<body >

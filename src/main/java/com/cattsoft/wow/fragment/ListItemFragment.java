@@ -233,7 +233,6 @@ public class ListItemFragment extends Fragment {
         String ss = jsonParmter.toString();
         try {
             result = Communication.getPostResponseForNetManagement(url, ss);
-            Log.e("数据", result);
             if (StringUtil.isBlank(result)) {
                 msg.what = 1;
                 handler.sendMessage(msg);
@@ -249,7 +248,6 @@ public class ListItemFragment extends Fragment {
             }
 
             JSONArray alarmsArrayList = resultJson.getJSONArray("alarms");
-            Log.e("数据", alarmsArrayList.toString());
             getData(alarmsArrayList);
             msg.what = 3;
             handler.sendMessage(msg);
@@ -669,10 +667,12 @@ public class ListItemFragment extends Fragment {
             switch (m.what) {
                 case 1: {
                     Toast.makeText(ListItemFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
+                    refreshLayout.refreshFinish(PullToRefreshLayout.FAIL);
                     break;
                 }
                 case 2: {
                     Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                    refreshLayout.refreshFinish(PullToRefreshLayout.FAIL);
                     break;
                 }
                 case 3: {

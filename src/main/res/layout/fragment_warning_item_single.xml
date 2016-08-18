@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--告警本周-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,22 +12,30 @@
         android:orientation="horizontal"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
             >
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="40dp"
+                android:layout_height="44dp"
+                android:src="@drawable/level"
+                />
+
             <TextView
                 android:id="@+id/warning_level2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="二级"
-                android:textSize="20sp"
-                android:textColor="#FF0000"
+                android:text="11级"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:layout_centerHorizontal="true"
+                android:textColor="#000000"
                 android:textStyle="italic"
                 />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -218,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:text="附加文本："
                         />
-                        <TextView
+                    <TextView
                         android:id="@+id/add_text2"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
@@ -229,35 +238,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="168dp"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="168dp"
+                        android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/flow_warning_single"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="10dp"
-                    android:text="工 单"
-                    android:textColor="#FFFFFF"
-                    android:padding="5dp"
-                    android:background="#FF0000"
-                    android:visibility="gone"
-                    />
+                    <Button
+                        android:id="@+id/flow_warning_single"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:text="工 单"
+                        android:textColor="#FFFFFF"
+                        android:padding="5dp"
+                        android:background="@drawable/button_wh_1"
+                        android:visibility="gone"
+                        android:textSize="@dimen/text_size"
 
-                <TextView
-                    android:id="@+id/history_warning22"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="历史告警"
-                    android:textColor="#FFFFFF"
-                    android:padding="5dp"
-                    android:background="#FF0000"
-                    />
+                        />
 
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/history_warning22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:text="历史告警"
+                        android:textColor="#FFFFFF"
+                        android:padding="5dp"
+                        android:background="@drawable/button_wh_1"
+                        android:textSize="@dimen/text_size"
+
+                        />
+
+                </LinearLayout>
 
                 <!--下面的空隙-->
                 <LinearLayout

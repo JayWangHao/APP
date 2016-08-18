@@ -16,7 +16,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
@@ -55,6 +59,7 @@ import com.cattsoft.wow.activity.RelevanceWarningActivity;
 import com.cattsoft.wow.adapter.ActivityWoItemListViewAdapter;
 import com.cattsoft.wow.mudels.Wo;
 import com.cattsoft.wow.mudels.WoFragmentListViewItemMessageJavaBean;
+import com.cattsoft.wow.view.ToastCommom;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase;
 
 import java.io.IOException;
@@ -62,10 +67,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- *工单页面
- */
+
 public class MapWoFragment extends Fragment {
 
     ViewHolder holder = null;
@@ -80,7 +85,7 @@ public class MapWoFragment extends Fragment {
     private TextView queryImgBtn;
     private TextView querytext;
     private String queryTextValue;
-    private ImageView user_name;
+//    private ImageView user_name;
     private MyWoListAdapter myWoListAdapter;
     private String result;
     private List<Wo> woList = new ArrayList<Wo>();
@@ -88,9 +93,11 @@ public class MapWoFragment extends Fragment {
     private String allCount;//今日总量
     private String finishCount;//已处理
     private String noFinishCount;//未处理
+    private String doingCount;//处理中
     private PullableListView mlistview;
     private View view;
     private TextView allCountTxt;
+    private TextView doingCountTxt;
     private TextView finishCountTxt;
     private TextView noFinishCountTxt;
     private TextView processingText;
@@ -157,22 +164,26 @@ public class MapWoFragment extends Fragment {
 
     private boolean isClearWoList = false;
     private String cross;//标示是否是最后一页；
-
-    public MapWoFragment() {
-
-    }
-
+    private ToastCommom toastCommom;
+    private Boolean isSearch = false;
+    private Button back_btn_btn;
+    private FragmentManager fm;
+    private TextView tv_city_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view= inflater.inflate(R.layout.fragment_wo, container, false);
 
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+                        | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //SDKInitializer.initialize(getApplicationContext());
+        view = inflater.inflate(R.layout.fragment_wo_jianguan, container, false);
         if(getArguments()!=null){
             geoId=getArguments().getString("geoId");
         }
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         myLocation(getActivity());
         initView();
@@ -188,6 +199,14 @@ public class MapWoFragment extends Fragment {
             public void onClick(View view) {
                 woList.clear();
                 queryTextValue = querytext.getText().toString();
+                if (TextUtils.isEmpty(queryTextValue)){
+                    Toast.makeText(MapWoFragment.super.getActivity(),"请输入站点关键字或EMOSID",Toast.LENGTH_SHORT).show();
+                    isSearch = false;
+                    return;
+                }else {
+                    isSearch = true;
+                }
+
                 initDataThread(true);
 
             }
@@ -285,113 +304,17 @@ public class MapWoFragment extends Fragment {
                 initDataThread(false);
             }
         });
-        user_name.setOnClickListener(new View.OnClickListener() {
+        back_btn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getActivity() instanceof SlidingActivityBase) {
-                    ((SlidingActivityBase) getActivity()).toggle();
-                }
+//退出
+                FragmentTransaction transaction4 = fm.beginTransaction();
+                OverviewFragment overviewFragment = new OverviewFragment();
+                transaction4.replace(R.id.layout, overviewFragment);
+                transaction4.commit();
+//            getActivity().finish();
             }
         });
-
-
-        /*mlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                LinearLayout hideLayout = (LinearLayout) view.findViewById(R.id.hide_layout);
-                ImageView downImg = (ImageView) view.findViewById(R.id.down_img);
-                ImageView upImg = (ImageView) view.findViewById(R.id.up_img);
-                TextView accept_wo = (TextView) view.findViewById(R.id.accept_wo);
-                TextView accept_wo2 = (TextView) view.findViewById(R.id.accept_wo2);
-                TextView warning = (TextView) view.findViewById(R.id.warning);
-                TextView warning2 = (TextView) view.findViewById(R.id.warning2);
-                TextView start = (TextView) view.findViewById(R.id.start);
-                TextView start2 = (TextView) view.findViewById(R.id.start2);
-                TextView warning3 = (TextView) view.findViewById(R.id.warning3);
-                TextView warning4 = (TextView) view.findViewById(R.id.warning4);
-                TextView finsh = (TextView) view.findViewById(R.id.finish);
-                TextView finsh2 = (TextView) view.findViewById(R.id.finish2);
-                TextView warning5 = (TextView) view.findViewById(R.id.warning5);
-                TextView warning6 = (TextView) view.findViewById(R.id.warning6);
-
-                map.put(position, true);
-                if ("1".equals(state)) {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        accept_wo.setVisibility(View.GONE);
-                        accept_wo2.setVisibility(View.VISIBLE);
-                        warning.setVisibility(View.GONE);
-                        warning2.setVisibility(View.VISIBLE);
-
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        accept_wo2.setVisibility(View.GONE);
-                        accept_wo.setVisibility(View.VISIBLE);
-                        warning2.setVisibility(View.GONE);
-                        warning.setVisibility(View.VISIBLE);
-                    }
-                } else if ("2".equals(state)) {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        start.setVisibility(View.GONE);
-                        start2.setVisibility(View.VISIBLE);
-                        warning3.setVisibility(View.GONE);
-                        warning4.setVisibility(View.VISIBLE);
-                        finsh.setVisibility(View.GONE);
-                        finsh2.setVisibility(View.VISIBLE);
-
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        start2.setVisibility(View.GONE);
-                        start.setVisibility(View.VISIBLE);
-                        warning4.setVisibility(View.GONE);
-                        warning3.setVisibility(View.VISIBLE);
-                        finsh2.setVisibility(View.GONE);
-                        finsh.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (hideLayout.getVisibility() == View.GONE) {
-                        hideLayout.setVisibility(View.VISIBLE);
-                        downImg.setVisibility(View.GONE);
-                        upImg.setVisibility(View.VISIBLE);
-                        warning5.setVisibility(View.GONE);
-                        warning6.setVisibility(View.VISIBLE);
-                    } else {
-                        hideLayout.setVisibility(View.GONE);
-                        downImg.setVisibility(View.VISIBLE);
-                        upImg.setVisibility(View.GONE);
-                        warning5.setVisibility(View.VISIBLE);
-                        warning6.setVisibility(View.GONE);
-                    }
-                }
-                Wo wo = woList.get(position);
-                //对itm点击后展开 或者收缩的处理 start
-                if (oldPostion == position) {
-                    if (wo.isExpend()) {
-                        oldPostion = -1;
-                    }
-                    woList.get(position).setExpend(false);
-                } else {
-                    if (oldPostion != -1) {
-                        woList.get(oldPostion).setExpend(false);
-                    }
-                    oldPostion = position;
-                    woList.get(oldPostion).setExpend(true);
-                }
-                myWoListAdapter.notifyDataSetChanged();
-                //end
-            }
-        });*/
     }
 
     /**
@@ -431,10 +354,11 @@ public class MapWoFragment extends Fragment {
                 /**
                  * 定位当前位置的经纬度，和当前的地址
                  */
-                Log.e(">>>>>>>>", location.getLatitude() + ":la:lo:" + location.getLongitude()
-                        + ":add:" + location.getAddrStr());
+//                Log.e(">>>>>>>>", location.getLatitude() + ":la:lo:" + location.getLongitude()
+//                        + ":add:" + location.getAddrStr());
                 mLatitude = location.getLatitude() + "";
                 mLongitude = location.getLongitude() + "";
+                Log.d("TAG",mLatitude+"||"+mLongitude);
                 // 这里停掉,需要的时候再次开启
                 mLocClient.stop();
             }
@@ -455,9 +379,10 @@ public class MapWoFragment extends Fragment {
     }
 
     public void initView() {
-
+        fm = getFragmentManager();
         mlistview = (PullableListView) view.findViewById(R.id.listview);
         allCountTxt = (TextView) view.findViewById(R.id.all_count);
+        doingCountTxt = (TextView) view.findViewById(R.id.doing_count);
         finishCountTxt = (TextView) view.findViewById(R.id.finish_count);
         noFinishCountTxt = (TextView) view.findViewById(R.id.nofinish_count);
         processingText = (TextView) view.findViewById(R.id.processing);
@@ -465,20 +390,24 @@ public class MapWoFragment extends Fragment {
         pendingText = (TextView) view.findViewById(R.id.pending);
         confirmText = (TextView) view.findViewById(R.id.confirm);
         refreshLayout = (PullToRefreshLayout) view.findViewById(R.id.refresh_view);
-        user_name = (ImageView) view.findViewById(R.id.user_name_img);
+//        user_name = (ImageView) view.findViewById(R.id.user_name_img);
         queryImgBtn = (TextView) view.findViewById(R.id.wo_sreach_btn);
         querytext = (TextView) view.findViewById(R.id.sreach_text);
+        back_btn_btn = (Button) view.findViewById(R.id.back_btn_btn);
+
+        tv_city_name = (TextView) view.findViewById(R.id.tv_city_name);
+//        tv_city_name.setText(areaName);//设置区域名
 
         initPageTitles();
 
         initImageView();
-
+        toastCommom = ToastCommom.createToastConfig();
     }
 
 
     private void initDataThread(boolean isprogress) {
         if (isprogress) {
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity());
             progressDialog.showProcessDialog();
         }
         Thread mThread = new Thread(new Runnable() {
@@ -491,28 +420,58 @@ public class MapWoFragment extends Fragment {
     }
 
     public void initData(boolean flag) {
+        queryTextValue = querytext.getText().toString();
         JSONObject requestJson = new JSONObject();
         userId = sharedPreferences.getString("userId", "");
-
+        Log.d("TAG_2", "geoid:" + geoId + "userId:"+userId);
         requestJson.put("USERID", userId);
         requestJson.put("geoId", geoId);
         requestJson.put("needpage", "5");
         requestJson.put("presentpage", pageNo);
         requestJson.put("status", state);
+//        Log.d("TAG", "geoId：" + geoId);
         if (queryTextValue != null && !"".equals(queryTextValue)) {
-            requestJson.put("FLOWID", queryTextValue);
+            Pattern p = Pattern.compile("[0-9]*");
+            Matcher m = p.matcher(queryTextValue);
+//            Log.d("TAG", "输入~~~~" + queryTextValue);
+
+            if(m.matches() ){//数字
+                requestJson.put("FLOWID", queryTextValue);//入参
+//                Log.d("TAG","数字~~~~");
+            }else {
+                requestJson.put("VCLOGIDS", queryTextValue);//新入参
+            }
         }
 
         String url = "tz/TZDeviceAction.do?method=QuerytFaultlist";
         Message m = new Message();
         try {
             result = Communication.getPostResponseForNetManagement(url, requestJson.toString());
-            Log.i("TAG", "数据：" + result);
+//            Log.d("TAG","state="+state+"||"+"userId="+userId+"||"+"geoId="+geoId+"||"+"pageNo="+pageNo+"||"+result);
+            if (result.contains("解压或解密")){
+                m.what = 2;
+                woListHandler.sendMessage(m);
+                return;
+            }
+            //Log.i("TAG", "数据：" + result);
             if (StringUtil.isBlank(result)) {
                 m.what = 1;
                 woListHandler.sendMessage(m);
                 return;
             }
+            if (queryTextValue != null && !"".equals(queryTextValue)){
+                if (!result.contains("VCEMOSID")){
+//                    Log.d("TAG", "66");
+                    if (isClearWoList) {
+                        oldPostion = -1;
+                        woList.clear();
+                    }
+                    m.what = 6;
+                    woListHandler.sendMessage(m);
+                    return;
+                }
+            }
+
             getData(result);
             m.what = 3;
             woListHandler.sendMessage(m);
@@ -528,10 +487,14 @@ public class MapWoFragment extends Fragment {
 
     public void getData(String result) {
         JSONObject returnJson = JSON.parseObject(result);
-        allCount = returnJson.getString("s1count");
-        finishCount = returnJson.getString("s2count");
-        noFinishCount = returnJson.getString("s3count");
+//        allCount = returnJson.getString("s1count");
+        allCount = returnJson.getString("s4count");
+        finishCount = returnJson.getString("s3count");
+        noFinishCount = returnJson.getString("s1count");
+        doingCount = returnJson.getString("s2count");
         cross = returnJson.getString("cross");
+
+//        Log.d("TAG","all："+allCount+"f:"+finishCount+"n:"+noFinishCount+"d:"+doingCount);
 
         finallyAllCount = Integer.parseInt(allCount) + Integer.parseInt(finishCount) + Integer.parseInt(noFinishCount);
         finallyFinishCount = Integer.parseInt(finishCount) + Integer.parseInt(noFinishCount);
@@ -553,16 +516,16 @@ public class MapWoFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1: {
-                    Toast.makeText(getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 2: {
-                    Toast.makeText(getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 3: {
                     if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
-                        myWoListAdapter = new MyWoListAdapter(getActivity(), woList);
+                        myWoListAdapter = new MyWoListAdapter(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), woList);
                         refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
                         mlistview.setAdapter(myWoListAdapter);
                     } else {
@@ -572,9 +535,10 @@ public class MapWoFragment extends Fragment {
                     mlistview.setVisibility(View.VISIBLE);
                     myWoListAdapter.notifyDataSetChanged();
 
-                    allCountTxt.setText(String.valueOf(finallyAllCount));
-                    finishCountTxt.setText(String.valueOf(finallyFinishCount));
-                    noFinishCountTxt.setText(allCount);
+                    allCountTxt.setText(String.valueOf(allCount));
+                    finishCountTxt.setText(String.valueOf(finishCount));
+                    noFinishCountTxt.setText(String.valueOf(noFinishCount));
+                    doingCountTxt.setText(String.valueOf(doingCount));
 
                     if ("end".equals(cross)) {
                         refreshLayout.setCanLoadMore(false);
@@ -584,22 +548,39 @@ public class MapWoFragment extends Fragment {
                     break;
                 }
                 case 4: {
-                    Toast.makeText(getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 5: {
-                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), result, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case 6: {
+//                    Log.i("TAG", "工单返回数据：case 6");
+                    if (mRefreshMode == PULL_DOWN_TO_REFRESH) {
+                        myWoListAdapter = new MyWoListAdapter(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), woList);
+                        refreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
+                        mlistview.setAdapter(myWoListAdapter);
+                    } else {
+                        refreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+                    }
+                    if (isSearch || !TextUtils.isEmpty(queryTextValue)){
+                        toastCommom.ToastShow(MapWoFragment.super.getActivity(), (ViewGroup) MapWoFragment.super.getActivity().findViewById(R.id.toast_layout_root), "服务器暂无该数据");
+                    }
+//                    isSearch = false;
+//                    progressDialog.closeProcessDialog();
+//                    initDataThread(true);
+
                     break;
                 }
 
-
             }
             progressDialog.closeProcessDialog();
-
-
+            if (isSearch){
+                isSearch = false;
+            }
         }
     };
-
 
     // 初始化页卡(上方)的标题
     private void initPageTitles() {
@@ -764,15 +745,14 @@ public class MapWoFragment extends Fragment {
 
 
             if (view == null) {
-                view = LayoutInflater.from(this.mcontext).inflate(R.layout.activity_wo_item, null);
+                view = LayoutInflater.from(this.mcontext).inflate(R.layout.activity_wo_item2, null);
                 holder = new ViewHolder();
                 holder.siteTxt = (TextView) view.findViewById(R.id.site_name);//站点名称
                 holder.woTitleTxt = (TextView) view.findViewById(R.id.wo_title);//工单标题
                 holder.woDurationTxt = (TextView) view.findViewById(R.id.wo_duration);//工单历时
                 holder.distributePresonTxt = (TextView) view.findViewById(R.id.distribute_person);//派发人员
-                holder.distributeTimeTxt = (TextView) view.findViewById(R.id.distribute_time);//派发时间
                 holder.noticeTimeTxt = (TextView) view.findViewById(R.id.notic_time);//通知时间
-                holder.woContentTxt = (TextView) view.findViewById(R.id.wo_content);//工单内容
+//                holder.woContentTxt = (TextView) view.findViewById(R.id.wo_content);//工单内容
                 holder.emosStepTxt = (TextView) view.findViewById(R.id.emos_step);//EMOS环节
                 holder.warningLevelTxt = (TextView) view.findViewById(R.id.warning_level);//工单等级
 
@@ -782,7 +762,6 @@ public class MapWoFragment extends Fragment {
                 holder.npromptTimeTex = (TextView) view.findViewById(R.id.nprompttime);//催单次数
                 holder.acceptTanceTxt = (TextView) view.findViewById(R.id.acceptance);//受理时间
                 holder.finishTimeTxt = (TextView) view.findViewById(R.id.finishtime);//完成时间
-                holder.faultLevelTxt = (TextView) view.findViewById(R.id.faultlevel);// 故障单等级
 
                 holder.vip = (ImageView) view.findViewById(R.id.vip);
                 holder.alarm = (ImageView) view.findViewById(R.id.alarm);
@@ -795,6 +774,7 @@ public class MapWoFragment extends Fragment {
 
                 holder. hide_text=(LinearLayout) view.findViewById(R.id.hide_text);//
                 holder. ll_down=(LinearLayout) view.findViewById(R.id.ll_down);//
+                holder. ll_shoulitime=(LinearLayout) view.findViewById(R.id.ll_shuolitime);//受理时间
                 holder. rel_up=(LinearLayout) view.findViewById(R.id.rel_up);//
 
                 holder.leftLinlay=(LinearLayout) view.findViewById(R.id.left_linlay);
@@ -821,6 +801,8 @@ public class MapWoFragment extends Fragment {
             final RelativeLayout linearLayout3 = (RelativeLayout) view.findViewById(R.id.layout_11);
             final RelativeLayout linearLayout4 = (RelativeLayout) view.findViewById(R.id.layout_12);
             final TextView start = (TextView) view.findViewById(R.id.start);
+            int color = start.getCurrentTextColor();
+            Log.d("TBG","开始按钮："+color);
             final TextView warning3 = (TextView) view.findViewById(R.id.warning3);
             final TextView finsh = (TextView) view.findViewById(R.id.finish);
             final TextView start2 = (TextView) view.findViewById(R.id.start2);
@@ -839,25 +821,42 @@ public class MapWoFragment extends Fragment {
             holder.woTitleTxt.setText(wo.getVcTitle());
             holder.woDurationTxt.setText(wo.getcTime());
             holder.distributePresonTxt.setText(wo.getDisPathPerson());
-            holder.distributeTimeTxt.setText(wo.getDsendTime());
             holder.noticeTimeTxt.setText(wo.getDnoiifyTime());
-            holder.woContentTxt.setText(wo.getVcConnect());
+//            holder.woContentTxt.setText(wo.getVcConnect());
             holder.emosStepTxt.setText(wo.getNcurrlink());
-            holder.acceptPersonTxt.setText(wo.getVcAccperiPersonList());
+            if (state.equals("1")){
+                holder.acceptPersonTxt.setText(wo.getVcAccperiPersonList());
+                holder.ll_shoulitime.setVisibility(View.GONE);
+            }else if (state.equals("2")){
+                holder.acceptPersonTxt.setText(wo.getAlsoAcceptPerson());
+                holder.ll_shoulitime.setVisibility(View.VISIBLE);
+
+            }else if (state.equals("3")){
+                holder.acceptPersonTxt.setText(wo.getAlsoAcceptPerson());
+                holder.ll_shoulitime.setVisibility(View.VISIBLE);
+
+            }
             holder.emosid.setText(wo.geteMosId());
             holder.overTimeTxt.setText(wo.getNiSoutTime());
             holder.npromptTimeTex.setText(wo.getNpromptTimes());
             holder.acceptTanceTxt.setText(wo.getDacceptTime());
             holder.finishTimeTxt.setText(wo.getFinishTime());
-            holder.faultLevelTxt.setText(wo.getNfaultLevel());
+
+            if (state.equals("1")){
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_1);
+            }else if (state.equals("2")){
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_2);
+            }else {
+                holder.btn_message_submit.setBackgroundResource(R.drawable.button_wh_3);
+            }
 
             //左侧工单等级
             if ("1".equals(wo.getNfaultLevel())) {
-                holder.warningLevelTxt.setText("一级");
+                holder.warningLevelTxt.setText("1级");
             } else if ("2".equals(wo.getNfaultLevel())) {
-                holder.warningLevelTxt.setText("二级");
+                holder.warningLevelTxt.setText("2级");
             } else {
-                holder.warningLevelTxt.setText("三级");
+                holder.warningLevelTxt.setText("3级");
             }
 
             if ("1".equals(wo.getVip())) {//判断是否是VIP
@@ -927,58 +926,52 @@ public class MapWoFragment extends Fragment {
                 linearLayout2.setVisibility(View.VISIBLE);
                 linearLayout3.setVisibility(View.GONE);
                 linearLayout4.setVisibility(View.GONE);
+                linearLayout5.setVisibility(View.GONE);
+                linearLayout6.setVisibility(View.GONE);
                 finshtimeLin.setVisibility(View.GONE);
+                jiTextView.setBackgroundResource(R.drawable.button_wh_1);
                 action = "2";
-
+                people.setText("待受理人：");
 
             } else if ("2".equals(state)) {//处理中
                 linearLayout1.setVisibility(View.GONE);
                 linearLayout2.setVisibility(View.GONE);
                 linearLayout3.setVisibility(View.VISIBLE);
                 linearLayout4.setVisibility(View.VISIBLE);
-                downImg.setImageResource(R.drawable.xia);
-                upImg.setImageResource(R.drawable.shang);
+                linearLayout5.setVisibility(View.GONE);
+                linearLayout6.setVisibility(View.GONE);
+//                downImg.setImageResource(R.drawable.xia);
+//                upImg.setImageResource(R.drawable.shang);
                 finshtimeLin.setVisibility(View.GONE);
                 people.setText("受理人：");
-                jiTextView.setBackgroundResource(R.color.wo_button_blue);
+
+                jiTextView.setBackgroundResource(R.drawable.button_wh_2);
+//                jiTextView.setBackgroundResource(R.color.wo_button_blue);
 
                 if ("1".equals(wo.getVcdeallink())) {//判断可是点了“开始”
-                    start.setBackgroundResource(R.color.wo_button_blue_selected);
-                    start2.setBackgroundResource(R.color.wo_button_blue_selected);
-                    finsh.setBackgroundResource(R.color.wo_button_blue);
-                    finsh2.setBackgroundResource(R.color.wo_button_blue);
+                    Log.d("TBG","颜色改变");
+                    start.setBackgroundResource(R.drawable.button_wh_4);
+                    start2.setBackgroundResource(R.drawable.button_wh_4);
+                    finsh.setBackgroundResource(R.drawable.button_wh_2);
+                    finsh2.setBackgroundResource(R.drawable.button_wh_2);
+                    start.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.black));
+                    start2.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.black));
+                    finsh.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.white));
+                    finsh2.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.white));
+//                    start.setBackgroundResource(R.color.wo_button_blue_selected);
+//                    start2.setBackgroundResource(R.color.wo_button_blue_selected);
+//                    finsh.setBackgroundResource(R.color.wo_button_blue);
+//                    finsh2.setBackgroundResource(R.color.wo_button_blue);
                 } else {
+                    start.setBackgroundResource(R.drawable.button_wh_2);
+                    start2.setBackgroundResource(R.drawable.button_wh_2);
+                    finsh.setBackgroundResource(R.drawable.button_wh_4);
+                    finsh2.setBackgroundResource(R.drawable.button_wh_4);
+                    start.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.white));
+                    start2.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.white));
+                    finsh.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.black));
+                    finsh2.setTextColor(MapWoFragment.super.getActivity().getResources().getColor(R.color.black));
                 }
-
-//                view.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        if (hideLayout.getVisibility()==View.GONE) {
-//                            hideLayout.setVisibility(View.VISIBLE);
-//                            downImg.setVisibility(View.GONE);
-//                            upImg.setVisibility(View.VISIBLE);
-//                            start.setVisibility(View.GONE);
-//                            start2.setVisibility(View.VISIBLE);
-//                            warning3.setVisibility(View.GONE);
-//                            warning4.setVisibility(View.VISIBLE);
-//                            finsh.setVisibility(View.GONE);
-//                            finsh2.setVisibility(View.VISIBLE);
-//
-//                        } else {
-//                            hideLayout.setVisibility(View.GONE);
-//                            downImg.setVisibility(View.VISIBLE);
-//                            upImg.setVisibility(View.GONE);
-//                            start2.setVisibility(View.GONE);
-//                            start.setVisibility(View.VISIBLE);
-//                            warning4.setVisibility(View.GONE);
-//                            warning3.setVisibility(View.VISIBLE);
-//                            finsh2.setVisibility(View.GONE);
-//                            finsh.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//                });
-
             } else {//待确认
                 linearLayout1.setVisibility(View.GONE);
                 linearLayout2.setVisibility(View.GONE);
@@ -987,9 +980,10 @@ public class MapWoFragment extends Fragment {
                 linearLayout5.setVisibility(View.VISIBLE);
                 linearLayout6.setVisibility(View.VISIBLE);
                 people.setText("受理人：");
-                jiTextView.setBackgroundResource(R.color.wo_text_green);
-                downImg.setImageResource(R.drawable.greendown);
-                upImg.setImageResource(R.drawable.greenup);
+                jiTextView.setBackgroundResource(R.drawable.button_wh_3);
+//                jiTextView.setBackgroundResource(R.color.wo_text_green);
+//                downImg.setImageResource(R.drawable.greendown);
+//                upImg.setImageResource(R.drawable.greenup);
 
 //                view.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -1012,19 +1006,19 @@ public class MapWoFragment extends Fragment {
 //                });
             }
 
-            downImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideLayout.setVisibility(View.GONE);
-                    downImg.setVisibility(View.GONE);
-                    upImg.setVisibility(View.VISIBLE);
-                    accept_wo.setVisibility(View.GONE);
-                    accept_wo2.setVisibility(View.VISIBLE);
-                    warning.setVisibility(View.GONE);
-                    warning2.setVisibility(View.VISIBLE);
-                }
-            });
-//小图标的收缩
+//            downImg.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    hideLayout.setVisibility(View.GONE);
+//                    downImg.setVisibility(View.GONE);
+//                    upImg.setVisibility(View.VISIBLE);
+//                    accept_wo.setVisibility(View.GONE);
+//                    accept_wo2.setVisibility(View.VISIBLE);
+//                    warning.setVisibility(View.GONE);
+//                    warning2.setVisibility(View.VISIBLE);
+//                }
+//            });
+////小图标的收缩
             upImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1132,17 +1126,23 @@ public class MapWoFragment extends Fragment {
             start.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("TAG_3","开始");
                     itemWo = list.get(i);
                     action = "2";
-                    Drawable background = start.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    if (color == -13324289) {
+//                    Drawable background = start.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor(); -13324289
+
+                    int color = start.getCurrentTextColor();
+
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("开始处理确认")
                                 .setMessage("提示：您已确定到故障发生位置了吗？\n点击\"确认\"确认故障发生位置！")
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        Log.d("TAG_3","开始1");
+
                                         vcLowId = itemWo.getVcFlowid();
                                         new initThread().start();
                                     }
@@ -1155,7 +1155,7 @@ public class MapWoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
-
+                        Toast.makeText(MapWoFragment.super.getActivity(),"已经开始了",Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -1164,11 +1164,12 @@ public class MapWoFragment extends Fragment {
                 public void onClick(View view) {
                     itemWo = list.get(i);
                     action = "2";
-                    Drawable background = start2.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    Log.i("TAG", "开始颜色" + color);
-                    if (color == -13324289) {
+//                    Drawable background = start2.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+//                    //Log.i("TAG", "开始颜色" + color);
+                    int color = start2.getCurrentTextColor();
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("开始处理确认")
                                 .setMessage("提示：您已确定到故障发生位置了吗？\n点击\"确认\"确认故障发生位置！")
                                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -1186,6 +1187,7 @@ public class MapWoFragment extends Fragment {
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        Toast.makeText(MapWoFragment.super.getActivity(),"已经开始了",Toast.LENGTH_SHORT).show();
 
                                     }
                                 })
@@ -1206,10 +1208,11 @@ public class MapWoFragment extends Fragment {
                     editText = (EditText) viewDia.findViewById(R.id.contentText);
                     editText.setText("故障已恢复，请确认！");
 
-                    Drawable background = finsh.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    if (color == -13324289) {
+//                    Drawable background = finsh.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+                    int color = finsh.getCurrentTextColor();
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("工单完成确认")
                                 .setMessage("提示：点击完成后故障单将等待派单人员确认故障恢复，这期间无法再操作工单，您确认工单完成吗？")
                                 .setView(viewDia)
@@ -1229,6 +1232,7 @@ public class MapWoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
+                        Toast.makeText(MapWoFragment.super.getActivity(),"请先按开始",Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -1243,11 +1247,13 @@ public class MapWoFragment extends Fragment {
 
                     editText2.setText("故障已恢复，请确认！");
 
-                    Drawable background = finsh2.getBackground();
-                    ColorDrawable colorDrawable = (ColorDrawable) background;
-                    int color = colorDrawable.getColor();
-                    Log.i("TAG", "颜色：" + color);
-                    if (color == -13324289) {
+//                    Drawable background = finsh2.getBackground();
+//                    ColorDrawable colorDrawable = (ColorDrawable) background;
+//                    int color = colorDrawable.getColor();
+                    //Log.i("TAG", "颜色：" + color);
+                    int color = finsh2.getCurrentTextColor();
+
+                    if (color == -1) {
                         new AlertDialog.Builder(getActivity()).setTitle("工单完成确认")
                                 .setMessage("提示：点击完成后故障单将等待派单人员确认故障恢复，这期间无法再操作工单，您确认工单完成吗？")
                                 .setView(viewDia)
@@ -1267,10 +1273,18 @@ public class MapWoFragment extends Fragment {
                                 })
                                 .show();
                     } else {
+                        Toast.makeText(MapWoFragment.super.getActivity(),"请先按开始",Toast.LENGTH_SHORT).show();
 
                     }
                 }
 
+            });
+
+            jiTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MapWoFragment.super.getActivity(),"暂无服务",Toast.LENGTH_SHORT).show();
+                }
             });
 
 
@@ -1558,7 +1572,7 @@ public class MapWoFragment extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Log.i("TAG", "afterTextChanged：" + s);
+                    //Log.i("TAG", "afterTextChanged：" + s);
 
                     returnedmessageData = new String(s.toString());
 
@@ -1617,6 +1631,7 @@ public class MapWoFragment extends Fragment {
         }
 
         private void request() {
+            Log.d("TAG_3","开始request()");
 
             String url = "tz/TZDeviceAction.do?method=QueryFaultdetailOperating";
             userId = sharedPreferences.getString("userId", "");
@@ -1639,9 +1654,16 @@ public class MapWoFragment extends Fragment {
                 if (action.equals("3")) {
                     jsonParmter.put("REMARK", remark);
                 }
+                Log.d("TAG_3","state"+state+"||"+"action"+action+"||"+"coor"+coor+"||"+"vcLowId"+vcLowId+"||"+"userId"+userId+"||"+"vcemosid"+vcemosid+"||");
 
                 String parameter = jsonParmter.toString();
                 resultB = Communication.getPostResponseForNetManagement(url, parameter);
+                Log.d("TAG_3","接单返回数据："+resultB);
+                if (resultB.contains("解压或解密")){
+                    msg.what = 2;
+                    handler.sendMessage(msg);
+                    return;
+                }
                 msg.what = 1;
                 handler.sendMessage(msg);
             } catch (JSONException e) {
@@ -1660,6 +1682,10 @@ public class MapWoFragment extends Fragment {
                         handleResult(resultB);
                         break;
                     }
+                    case 2: {
+                        Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                 }
             }
         };
@@ -1667,7 +1693,7 @@ public class MapWoFragment extends Fragment {
         private void handleResult(String result) {
             //处理数据，解析数据
             JSONObject resultJson = JSON.parseObject(result);
-
+            Log.d("TBG","解析接单返回数据");
             if ("成功".equals(resultJson.getString("result"))) {
                 new AlertDialog.Builder(getActivity()).setTitle("处理信息")
                         .setMessage(resultJson.getString("reason"))
@@ -1719,9 +1745,8 @@ public class MapWoFragment extends Fragment {
         TextView woTitleTxt;//工单标题
         TextView woDurationTxt;//工单历时
         TextView distributePresonTxt;//派发人员
-        TextView distributeTimeTxt;//派发时间
         TextView noticeTimeTxt;//通知时间
-        TextView woContentTxt;//工单内容
+        //        TextView woContentTxt;//工单内容
         TextView emosStepTxt;//EMOS环节
         TextView acceptPersonTxt;//待受理人
         TextView emosid;//EmosId
@@ -1729,7 +1754,6 @@ public class MapWoFragment extends Fragment {
         TextView npromptTimeTex;//催单次数
         TextView acceptTanceTxt;//受理时间
         TextView finishTimeTxt;//完成时间
-        TextView faultLevelTxt;//故障单等级
         ImageView vip;//VIP图标
         ImageView alarm;//闹钟图标
         TextView warningLevelTxt;//工单等级
@@ -1742,6 +1766,7 @@ public class MapWoFragment extends Fragment {
         LinearLayout rel_up;
         LinearLayout ll_down;
         LinearLayout leftLinlay;
+        LinearLayout ll_shoulitime;//受理时间
     }
 
     public static HashMap<Integer, Boolean> getIsExpand() {
@@ -1776,7 +1801,7 @@ public class MapWoFragment extends Fragment {
         if (StringUtil.isBlank(expendedVcemosid)) {
             return;
         } else {
-            Log.i("TAG", "expendedVcemosid：" + expendedVcemosid);
+            //Log.i("TAG", "expendedVcemosid：" + expendedVcemosid);
             requestJson.put("VCEMOSID", expendedVcemosid);//这个是你要查看或插入留言的工单的EMOSID
 
         }
@@ -1793,12 +1818,17 @@ public class MapWoFragment extends Fragment {
         String url = "tz/TZDeviceAction.do?method=MessageInfo";
         Message m = new Message();
         try {
-            Log.i("TAG", "数据：" + requestJson.toString());
+            //Log.i("TAG", "数据：" + requestJson.toString());
             result = Communication.getPostResponseForNetManagement(url, requestJson.toString());
-            Log.i("TAG", "数据：" + result);
+            //Log.i("TAG", "数据：" + result);
 
             if (StringUtil.isBlank(result)) {
                 m.what = 1;
+                messageListHandler.sendMessage(m);
+                return;
+            }
+            if (result.contains("解压或解密")){
+                m.what = 2;
                 messageListHandler.sendMessage(m);
                 return;
             }
@@ -1840,11 +1870,11 @@ public class MapWoFragment extends Fragment {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1: {
-                    Toast.makeText(getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "服务端返回为空！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 2: {
-                    Toast.makeText(getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "请求服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 3: {
@@ -1877,11 +1907,11 @@ public class MapWoFragment extends Fragment {
                     break;
                 }
                 case 4: {
-                    Toast.makeText(getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), "登录调用服务端异常！", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 case 5: {
-                    Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(com.cattsoft.wow.fragment.MapWoFragment.super.getActivity(), result, Toast.LENGTH_SHORT).show();
                     break;
                 }
 

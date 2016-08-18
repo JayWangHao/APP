@@ -9,8 +9,8 @@
     <!-- 标题栏 -->
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="#FF0000" >
+        android:layout_height="40dp"
+        android:background="@color/small_title_text_color" >
 
         <Button
             android:id="@+id/back_btn"
@@ -52,7 +52,7 @@
             android:layout_height="fill_parent"
             android:cacheColorHint="#00000000"
             android:scrollbars="none"
-            android:divider="#FF0000"
+            android:divider="#B5B5B5"
             android:dividerHeight="1dp"
             android:visibility="invisible"
             />

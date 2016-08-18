@@ -247,7 +247,7 @@ public class WarningOrderActivity extends BaseActivity {
                 level_value.append("4,");
             }
 
-            //去掉开始的逗号
+            //去掉结尾的逗号
             if(level_value.length() == 2) {
                 level_value.deleteCharAt(1);
                 warning_level_value = level_value.toString();

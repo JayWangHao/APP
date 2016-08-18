@@ -25,4 +25,38 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
+    <style name="RadioButtonStyle">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:drawablePadding">1dp</item>
+        <item name="android:textColor">@drawable/radio_bt_color</item>
+        <item name="android:button">@null</item>
+    </style>
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+    <style name="wrap_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="tab_yuan_style">
+
+        <item name="android:layout_width">18dp</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/tab_msgnum_textbg</item>
+        <item name="android:visibility">visible</item>
+    </style>
 </resources>

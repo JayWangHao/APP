@@ -1,154 +1,202 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.cattsoft.wow.fragment.OverviewFragment">
-    <!-- 标题栏 -->
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="#FF0000" >
-
-        <ImageView
-            android:id="@+id/user_name_img"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/login_user_name_img" />
-
-
-
-        <TextView
-            android:id="@+id/duanZhan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="概览"
-            android:layout_centerInParent="true"
-            android:textColor="#ffffff"
-            android:textSize="22sp"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/relLay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/overview_shape"
-        >
-
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/wanzhouWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/linlay"
-            android:layout_alignBottom="@+id/linlay"
-            android:background="@drawable/edit_text"
-            />
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/fulinWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/linlay"
-            android:layout_alignBottom="@+id/linlay"
-            android:background="@drawable/edit_text"
-            android:visibility="gone"
-            />
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/jinjiaoWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/linlay"
-            android:layout_alignBottom="@+id/linlay"
-            android:background="@drawable/edit_text"
-            android:visibility="gone"
-            />
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/qianjiangWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/linlay"
-            android:layout_alignBottom="@+id/linlay"
-            android:background="@drawable/edit_text"
-            android:visibility="gone"
-            />
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/zhuchengWebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/linlay"
-            android:layout_alignBottom="@+id/linlay"
-            android:background="@drawable/edit_text"
-            android:visibility="gone"
-            />
-
-        <LinearLayout
-            android:id="@+id/linlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="2dp"
-            android:layout_alignParentRight="true"
-            >
-            <TextView
-                android:id="@+id/wanTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="万州工单"
-                android:background="#272933"
-                android:textSize="13sp"
-                android:textColor="@color/white"
-                android:padding="10dp"
-                />
-            <TextView
-                android:id="@+id/fuTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="涪陵工单"
-                android:background="#272933"
-                android:textSize="13sp"
-                android:layout_marginTop="1dp"
-                android:textColor="@color/white"
-                android:padding="10dp"
-                />
-            <TextView
-                android:id="@+id/jinTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="近郊工单"
-                android:background="#272933"
-                android:textSize="13sp"
-                android:layout_marginTop="1dp"
-                android:textColor="@color/white"
-                android:padding="10dp"/>
-            <TextView
-                android:id="@+id/qianTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="黔江工单"
-                android:background="#272933"
-                android:textSize="13sp"
-                android:layout_marginTop="1dp"
-                android:textColor="@color/white"
-                android:padding="10dp"/>
-            <TextView
-                android:id="@+id/zhuTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="主城工单"
-                android:background="#272933"
-                android:textSize="13sp"
-                android:layout_marginTop="1dp"
-                android:textColor="@color/white"
-                android:padding="10dp"/>
-        </LinearLayout>
-    </RelativeLayout>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPage"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        />
+        android:orientation="vertical"
+        >
+        <!-- 标题栏 -->
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@color/small_title_text_color" >
 
-</LinearLayout>
+            <ImageView
+                android:id="@+id/user_name_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/login_user_name_img" />
+
+
+
+            <TextView
+                android:id="@+id/duanZhan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="概览"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:textSize="22sp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/layout_netbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#00a2dc"
+            >
+
+
+            <RadioGroup
+                android:layout_marginLeft="10dp"
+                android:id="@+id/rg_content_map"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/rb_day_map"
+                    style="@style/RadioButtonStyle"
+                    android:drawableLeft="@drawable/selector_radio_btn_service"
+                    android:text="日" />
+
+                <RadioButton
+                    android:id="@+id/rb_week_map"
+                    style="@style/RadioButtonStyle"
+                    android:drawableLeft="@drawable/selector_radio_btn_service"
+                    android:text="周" />
+
+                <RadioButton
+                    android:id="@+id/rb_month_map"
+                    style="@style/RadioButtonStyle"
+
+                    android:drawableLeft="@drawable/selector_radio_btn_service"
+                    android:text="月" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/relLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/overview_shape"
+            >
+
+            <com.github.lzyzsd.jsbridge.BridgeWebView
+                android:id="@+id/wanzhouWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/linlay"
+                android:layout_alignBottom="@+id/linlay"
+                android:background="@drawable/edit_text"
+                />
+            <com.github.lzyzsd.jsbridge.BridgeWebView
+                android:id="@+id/fulinWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/linlay"
+                android:layout_alignBottom="@+id/linlay"
+                android:background="@drawable/edit_text"
+                android:visibility="gone"
+                />
+            <com.github.lzyzsd.jsbridge.BridgeWebView
+                android:id="@+id/jinjiaoWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/linlay"
+                android:layout_alignBottom="@+id/linlay"
+                android:background="@drawable/edit_text"
+                android:visibility="gone"
+                />
+            <com.github.lzyzsd.jsbridge.BridgeWebView
+                android:id="@+id/qianjiangWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/linlay"
+                android:layout_alignBottom="@+id/linlay"
+                android:background="@drawable/edit_text"
+                android:visibility="gone"
+                />
+            <com.github.lzyzsd.jsbridge.BridgeWebView
+                android:id="@+id/zhuchengWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/linlay"
+                android:layout_alignBottom="@+id/linlay"
+                android:background="@drawable/edit_text"
+                android:visibility="gone"
+                />
+
+            <LinearLayout
+                android:id="@+id/linlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="2dp"
+                android:layout_alignParentRight="true"
+                >
+                <TextView
+                    android:id="@+id/wanTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="万州工单"
+                    android:background="#272933"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    />
+                <TextView
+                    android:id="@+id/fuTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="涪陵工单"
+                    android:background="#272933"
+                    android:textSize="13sp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    />
+                <TextView
+                    android:id="@+id/jinTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="近郊工单"
+                    android:background="#272933"
+                    android:textSize="13sp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"/>
+                <TextView
+                    android:id="@+id/qianTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="黔江工单"
+                    android:background="#272933"
+                    android:textSize="13sp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"/>
+                <TextView
+                    android:id="@+id/zhuTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="主城工单"
+                    android:background="#272933"
+                    android:textSize="13sp"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/white"
+                    android:padding="10dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

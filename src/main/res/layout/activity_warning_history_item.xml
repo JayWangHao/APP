@@ -6,28 +6,40 @@
     android:background="@color/white"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
         >
-
         <TextView
-            android:id="@+id/wraning_detail_year"
-            android:layout_width="50dp"
+            android:id="@+id/wraning_detail_day"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="7dp"
+            android:textSize="15sp"
+            android:text="14日"
+            />
+        <TextView
+            android:layout_below="@+id/wraning_detail_day"
+            android:id="@+id/wraning_detail_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
             android:text="2016年"
             />
         <TextView
+            android:textSize="11sp"
             android:id="@+id/wraning_detail_month"
+            android:layout_below="@+id/wraning_detail_day"
+            android:layout_toRightOf="@+id/wraning_detail_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:text="2月"
             />
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cattsoft.framework.base.BaseFragmentActivity;
 import com.cattsoft.framework.listener.OnFragmentInteractionListener;
@@ -84,7 +85,7 @@ public class WoDetailActivity extends BaseFragmentActivity  implements OnFragmen
         transaction.replace(R.id.detail_wo_frame, woDetailFragment);
         transaction.commit();
 
-       // woLocus = (TextView) findViewById(R.id.wo_locus);
+        // woLocus = (TextView) findViewById(R.id.wo_locus);
         mViewStub = (ViewStub) this.findViewById(R.id.stub);
 
 
@@ -114,9 +115,9 @@ public class WoDetailActivity extends BaseFragmentActivity  implements OnFragmen
         woLocus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                Intent intent = new Intent(WoDetailActivity.this, MySubscriptionActivity.class);
-//                startActivity(intent);
+//                Toast.makeText(WoDetailActivity.this,"暂无服务",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(WoDetailActivity.this, OrderMapActivity.class);
+                startActivity(intent);
 
 
             }

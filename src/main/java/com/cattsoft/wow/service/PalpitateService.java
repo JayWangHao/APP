@@ -7,10 +7,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cattsoft.framework.connect.Communication;
+import com.cattsoft.framework.util.StringUtil;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -44,6 +45,7 @@ public class PalpitateService extends Service {
     public void onCreate() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         nid=sharedPreferences.getString("nid","");
+
         online="1";
 
         timerTask = new TimerTask() {
@@ -95,11 +97,30 @@ public class PalpitateService extends Service {
             String url="tz/TZDeviceAction.do?method=Heartbeat";
 
             JSONObject jsonObject=new JSONObject();
-            jsonObject.put("Nid",nid);
-            jsonObject.put("Online",online);
+            jsonObject.put("Nid", nid);
+            jsonObject.put("Online", online);
 
             try {
                 String result= Communication.getPostResponseForNetManagement(url,jsonObject.toString());
+//                Log.d("TAG", "心跳返回数据：" + result);
+
+                if (StringUtil.isBlank(result)) {
+
+                }else {
+                    if (result.contains("心跳验证成功")){
+                        sharedPreferences.edit().putBoolean("isAlsoLogin", true).commit();
+                    }else {
+                        sharedPreferences.edit().putBoolean("isAlsoLogin",false).commit();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId", "");
+                        editor.putString("geoId", "");
+                        editor.putString("nid", "");
+                        editor.putString("userType", "");
+                        //editor.putBoolean("isFirstRun", isFirstRun);
+                        editor.commit();
+                    }
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -113,7 +134,14 @@ public class PalpitateService extends Service {
         Message message = new Message();
         message.what = 1;
         handler.sendMessage(message);
-
         timer.cancel();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userId", "");
+        editor.putString("geoId", "");
+        editor.putString("nid", "");
+        editor.putString("userType", "");
+        //editor.putBoolean("isFirstRun", isFirstRun);
+        editor.commit();
     }
 }

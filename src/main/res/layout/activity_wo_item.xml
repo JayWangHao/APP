@@ -10,34 +10,41 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="5dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:id="@+id/alarm"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/alam"
-                android:visibility="gone" />
+                >
 
-            <TextView
-                android:id="@+id/warning_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/alarm"
-                android:text="二级"
-                android:textColor="#00FF00"
-                android:textSize="22sp"
-                android:textStyle="italic" />
-        </RelativeLayout>
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="40dp"
+                    android:layout_height="44dp"
+                    android:src="@drawable/level"
+                    />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/warning_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12级"
+                    android:textColor="#FF000000"
+                    android:textSize="15sp"
+                    android:textStyle="italic" />
 
+                <ImageView
+                    android:id="@+id/alarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/alam"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -73,7 +80,7 @@
                 android:orientation="vertical">
 
 
-                <!-- 第一行，站点名称 -->
+                 <!--第一行，站点名称 -->
                 <LinearLayout
                     android:id="@+id/lin1"
                     android:layout_width="wrap_content"
@@ -89,7 +96,10 @@
                     <TextView
                         android:id="@+id/site_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        />
                 </LinearLayout>
 
                 <!-- 第二行，工单标题 -->
@@ -97,7 +107,6 @@
                     android:id="@+id/lin2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/lin1"
                     android:orientation="horizontal">
 
                     <TextView
@@ -109,7 +118,10 @@
                     <TextView
                         android:id="@+id/wo_title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        />
                 </LinearLayout>
 
                 <!-- 第三行，工单历时 -->
@@ -130,11 +142,32 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
+                <!-- 第四行，待受理人 -->
+                <LinearLayout
+                    android:id="@+id/lin4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lin3"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="待受理人：" />
+
+                    <TextView
+                        android:id="@+id/wo_people"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="暂无"
+                        />
+                </LinearLayout>
             </LinearLayout>
 
 
             <!--待受理-->
             <RelativeLayout
+                android:layout_marginTop="5dp"
                 android:id="@+id/layout_01"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,27 +175,32 @@
                 android:layout_marginRight="10dp"
                 android:visibility="visible">
 
-                <TextView
+                <Button
                     android:id="@+id/accept_wo"
                     android:layout_width="50dp"
                     android:layout_height="27dp"
                     android:layout_toLeftOf="@+id/warning"
-                    android:background="#FF0000"
+                    android:background="@drawable/button_wh_1"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="接单"
-                    android:textColor="#FFFFFF" />
+                    android:textSize="@dimen/text_size"
+                    android:textColor="#FFFFFF"
 
-                <TextView
+                    />
+
+                <Button
                     android:id="@+id/warning"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="27dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="#FF0000"
+                    android:background="@drawable/button_wh_1"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:textSize="@dimen/text_size"
+
                     android:text="告警"
                     android:textColor="#FFFFFF" />
             </RelativeLayout>
@@ -244,8 +282,8 @@
 
                 <ImageView
                     android:id="@+id/down_img"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:src="@drawable/down" />
 
             </LinearLayout>
@@ -260,7 +298,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rel_up"
             android:orientation="vertical">
-
+            <!--点击显示完整信息-->
             <LinearLayout
                 android:id="@+id/ll_down"
                 android:layout_width="match_parent"
@@ -352,23 +390,23 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <!-- 第九行,待受理人-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <!--&lt;!&ndash; 第九行,待受理人&ndash;&gt;-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
 
-                    <TextView
-                        android:id="@+id/people"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="待受理人：" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/people"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="待受理人：" />-->
 
-                    <TextView
-                        android:id="@+id/accept_person"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/accept_person"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
+                <!--</LinearLayout>-->
 
                 <!-- 第十行,EMOSID-->
                 <LinearLayout
@@ -420,9 +458,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_wo_item_sltime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -468,125 +508,141 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <!--待受理-->
+    <RelativeLayout
+        android:layout_marginLeft="40dp"
+        android:id="@+id/layout_02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
 
-                <!--待受理-->
-                <RelativeLayout
-                    android:id="@+id/layout_02"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:visibility="visible">
+        <Button
+            android:id="@+id/accept_wo2"
+            android:layout_width="50dp"
+            android:layout_height="27dp"
+            android:background="@drawable/button_wh_1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="接单"
+            android:textSize="@dimen/text_size"
 
-                    <TextView
-                        android:id="@+id/accept_wo2"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/warning2"
-                        android:background="#FF0000"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="接单"
-                        android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF" />
 
-                    <TextView
-                        android:id="@+id/warning2"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="#FF0000"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="告警"
-                        android:textColor="#FFFFFF" />
-                </RelativeLayout>
+        <Button
+            android:layout_toRightOf="@id/accept_wo2"
+            android:id="@+id/warning2"
+            android:layout_width="50dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_wh_1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="告警"
+            android:textSize="@dimen/text_size"
 
-                <!--处理中-->
-                <RelativeLayout
-                    android:id="@+id/layout_12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:visibility="gone">
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/start2"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/finish2"
-                        android:background="@color/wo_button_blue"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="开始"
-                        android:textColor="#FFFFFF" />
+    <!--处理中-->
+    <RelativeLayout
+        android:id="@+id/layout_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/finish2"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/warning4"
-                        android:background="@color/wo_button_blue_selected"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="完成"
-                        android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/start2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/finish2"
+            android:background="@drawable/button_wh_1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textSize="@dimen/text_size"
+            android:text="开始"
+            android:textColor="#FFFFFF" />
 
-                    <TextView
-                        android:id="@+id/warning4"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:background="#34AFFF"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="告警"
-                        android:textColor="#FFFFFF" />
-                </RelativeLayout>
+        <TextView
+            android:id="@+id/finish2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/warning4"
+            android:background="@drawable/button_wh_1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textSize="@dimen/text_size"
+            android:text="完成"
+            android:textColor="#FFFFFF" />
 
-                <!--待确认-->
-                <RelativeLayout
-                    android:id="@+id/layout_22"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:visibility="gone">
+        <TextView
+            android:id="@+id/warning4"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="#34AFFF"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="告警"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/warning6"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:background="#2FB51C"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="告警"
-                        android:textColor="#FFFFFF" />
-                </RelativeLayout>
+    <!--待确认-->
+    <RelativeLayout
+        android:id="@+id/layout_22"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:visibility="gone">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginTop="5dp">
+        <TextView
+            android:id="@+id/warning6"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_wh_1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="告警"
+            android:textColor="#FFFFFF" />
 
-                    <TextView
-                        android:id="@+id/ji_text_view"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:background="#FF0000"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="基站导航"
-                        android:textColor="#FFFFFF" />
-                </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:gravity="center_vertical"
+            android:id="@+id/ji_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:background="@drawable/button_wh_1"
+            android:padding="5dp"
+            android:text="基站导航"
+            android:textSize="@dimen/text_size"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
             </LinearLayout>
 
+            <!-- 留言板-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -603,43 +659,52 @@
                         android:layout_height="wrap_content"
                         android:text="留言板"
                         android:textColor="@color/red"/>
-                <ListView
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/lv_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp">
+                    <ListView
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/lv_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp">
 
-                </ListView>
+                    </ListView>
                 </LinearLayout>
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     >
-
-                    <Button
-                        android:id="@+id/btn_message_submit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/red"
-                        android:textSize="16sp"
-                        android:layout_marginRight="5dp"
-                        android:layout_centerVertical="true"
-                        android:text="提交" />
-
                     <EditText
                         android:id="@+id/et_message"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_centerVertical="true"
                         android:padding="5dp"
                         android:background="@drawable/wo_item_edit_shap"
                         android:hint="请输入留言"
-                        android:layout_toLeftOf="@id/btn_message_submit" />
+                        android:layout_gravity="center_vertical"
+                        />
+
+                    <TextView
+                    android:layout_width="5dp"
+                    android:layout_height="wrap_content" />
+                    <Button
+                        android:id="@+id/btn_message_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:background="@drawable/button_wh_1"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:text="提交"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        />
+                    <TextView
+                        android:layout_width="5dp"
+                        android:layout_height="wrap_content" />
 
 
-                </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -648,12 +713,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="25dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="15dp">
 
                 <ImageView
                     android:id="@+id/up_img"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/up" />
             </LinearLayout>
 

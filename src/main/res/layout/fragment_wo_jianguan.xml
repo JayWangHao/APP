@@ -1,0 +1,310 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#FF4040"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/back_btn_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/title_left_back"
+            android:text="返回"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+        <!--<ImageView-->
+            <!--android:id="@+id/user_name_img"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:src="@drawable/login_user_name_img" />-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="21"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/wo_sreach_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/query_img_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_action_search" />
+
+            <EditText
+                android:id="@+id/sreach_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:hint="输入站点关键字或EMOSID"
+                android:textSize="13sp"
+                android:singleLine="true"
+                />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/wo_sreach_btn"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="查询"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+             />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                >
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/wo_count_color"
+
+                    >
+                    <LinearLayout
+                        android:id="@+id/ll_gd"
+                        android:layout_width="fill_parent"
+                        android:layout_height="56dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:orientation="vertical"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/all_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/tv_gd_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:drawableRight="@drawable/xialajiantou"
+                                android:text="今日总量"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:orientation="vertical"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/finish_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/wraning_history_text_green_color"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="已处理"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:orientation="vertical"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/doing_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/blue"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="处理中"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/nofinish_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="0"
+                                android:textColor="@color/wraning_history_text_red_color"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="未处理"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+                <!-- 搜索栏 -->
+
+
+                <!-- 小标题栏 -->
+
+                <LinearLayout
+                    android:id="@+id/data_choose"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:background="#F3F3F3"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/processing"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待受理"
+                        android:textColor="#4D4D4D"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/pending"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="处理中"
+                        android:textColor="#4D4D4D"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/confirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="待确认"
+                        android:textColor="#4D4D4D"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/cursor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/data_choose"
+                    android:scaleType="matrix" />
+                <TextView
+                    android:id="@+id/tv_city_name"
+                    android:gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_height="30dp"
+                    android:text="城口"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    />
+                <com.cattsoft.framework.view.pullableview.PullToRefreshLayout
+                    android:id="@+id/refresh_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bottom_with_frame"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <include layout="@layout/refresh_head" />
+
+                    <!-- 列表布局文件 -->
+                    <com.cattsoft.framework.view.pullableview.PullableListView
+                        android:id="@+id/listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:cacheColorHint="#00000000"
+                        android:scrollbars="none"
+                        android:divider="#D4D4D4"
+                        android:dividerHeight="0.5dp"
+                        android:visibility="invisible"
+                        />
+                </com.cattsoft.framework.view.pullableview.PullToRefreshLayout>
+            </LinearLayout>
+        </LinearLayout>
+  <!--  </com.cattsoft.wow.mudels.SlidingMenu>-->
+</LinearLayout>
+

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -99,6 +100,7 @@ public class WarningHistoryActivity extends Activity{
 
             //处理数据，解析数据
             JSONObject resultJson = JSON.parseObject(result);
+            Log.d("TAG","日期："+resultJson);
             if(resultJson.containsKey("error")){
                 error = resultJson.getString("error");
                 msg.what = 2;
@@ -188,6 +190,7 @@ public class WarningHistoryActivity extends Activity{
     private void initOneRowValue(final View itemview,JSONObject woInfoJson,int position) {
 
         TextView wraning_detail_year = (TextView)itemview.findViewById(R.id.wraning_detail_year);
+        TextView wraning_detail_day = (TextView)itemview.findViewById(R.id.wraning_detail_day);
         TextView wraning_detail_month = (TextView)itemview.findViewById(R.id.wraning_detail_month);
         ImageView detail_small_img = (ImageView)itemview.findViewById(R.id.detail_small_img);
         ImageView detail_img = (ImageView)itemview.findViewById(R.id.detail_img);
@@ -198,6 +201,7 @@ public class WarningHistoryActivity extends Activity{
         TextView detail_warning_level = (TextView)itemview.findViewById(R.id.detail_warning_level);
 
         String wraning_detail_year_text = woInfoJson.getString("timey");           //年份
+        String wraning_detail_day_text = woInfoJson.getString("timed");           //天份
         String wraning_detail_month_text = woInfoJson.getString("timem");          //月份
         String detail_begin_time_text = woInfoJson.getString("dfirsteventtime");  //开始时间
         String detail_warning_time_text = woInfoJson.getString("ctime1");         //告警时长
@@ -206,6 +210,11 @@ public class WarningHistoryActivity extends Activity{
 
         wraning_detail_year.setText(wraning_detail_year_text);
         wraning_detail_month.setText(wraning_detail_month_text);
+        if (wraning_detail_day_text != null){
+            wraning_detail_day.setText(wraning_detail_day_text);
+        }else {
+            Log.d("TAG","wraning_detail_day_text = null");
+        }
         detail_begin_time.setText(detail_begin_time_text);
         detail_warning_time.setText(detail_warning_time_text);
         detail_warning_title.setText(detail_warning_title_text);
@@ -215,6 +224,7 @@ public class WarningHistoryActivity extends Activity{
             if ((position + 0) % 2 == 0) {
                 wraning_detail_year.setTextColor(getResources().getColor(R.color.wraning_history_text_green_color));
                 wraning_detail_month.setTextColor(getResources().getColor(R.color.wraning_history_text_green_color));
+                wraning_detail_day.setTextColor(getResources().getColor(R.color.wraning_history_text_green_color));
                 detail_small_img.setImageResource(R.drawable.warning_history_item_green);
                 detail_img.setImageResource(R.drawable.warning_history_item_btn_green);
                 wraning_detail_text.setTextColor(getResources().getColor(R.color.wraning_history_text_green_color));
@@ -223,6 +233,7 @@ public class WarningHistoryActivity extends Activity{
             if ((position + 1) % 2 == 0) {
                 wraning_detail_year.setTextColor(getResources().getColor(R.color.wraning_history_text_red_color));
                 wraning_detail_month.setTextColor(getResources().getColor(R.color.wraning_history_text_red_color));
+                wraning_detail_day.setTextColor(getResources().getColor(R.color.wraning_history_text_red_color));
                 detail_small_img.setImageResource(R.drawable.warning_history_item_red);
                 detail_img.setImageResource(R.drawable.warning_history_item_btn_red);
                 wraning_detail_text.setTextColor(getResources().getColor(R.color.wraning_history_text_red_color));

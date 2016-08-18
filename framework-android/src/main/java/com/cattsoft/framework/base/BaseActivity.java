@@ -138,7 +138,4 @@ public abstract class BaseActivity extends Activity{
         }
 		super.onBackPressed();
 	}
-
-
-
 }

@@ -3,13 +3,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-   android:background="@drawable/listsfragment_bg">
+   android:background="@color/white">
 
     <ListView
-        android:layout_marginTop="20dp"
+        android:background="@drawable/solid_black_bg"
         android:id="@+id/title_list"
         android:layout_width="120dp"
-        android:layout_height="fill_parent"
+        android:layout_height="60dp"
 
         android:padding="3dp" />
 

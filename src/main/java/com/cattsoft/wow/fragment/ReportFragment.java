@@ -1,5 +1,6 @@
 package com.cattsoft.wow.fragment;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -37,7 +38,9 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+/*
+统计界面
+ */
 
 public class ReportFragment extends Fragment {
 
@@ -75,11 +78,14 @@ public class ReportFragment extends Fragment {
     private  ProgressDialog progressDialog;
 
    private SharedPreferences sharedPreferences;
+    private PieData pieData1;
+    private PieData pieData2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
-        View view=inflater.inflate(R.layout.fragment_report, container, false);
+        View view=inflater.inflate(R.layout.fragment_report2, container, false);
 
         initView(view);
         resterlistener();
@@ -87,11 +93,20 @@ public class ReportFragment extends Fragment {
         initPageTitles(view);
         initImageView(view);
 
+//        progressDialog = new ProgressDialog(getActivity()); //显示进度条
+//        progressDialog.showProcessDialog();
+//        new initThread().start();//启动线程请求数据
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         progressDialog = new ProgressDialog(getActivity()); //显示进度条
         progressDialog.showProcessDialog();
         new initThread().start();//启动线程请求数据
-        return view;
     }
+
     private void initView(View view) {
         pieChart1=(PieChart)view.findViewById(R.id.pieChart1);
         pieChart2=(PieChart)view.findViewById(R.id.pieChart2);
@@ -360,7 +375,7 @@ public class ReportFragment extends Fragment {
             pieChart.setCenterText((float)(Math.round((processCount / areaCount)*100*10))/10+"%");//饼状图中间的文字
         }
 
-        pieChart.setCenterTextColor(Color.YELLOW);
+        pieChart.setCenterTextColor(R.color.wh_blue);//圆心字体颜色
         //设置数据
         pieChart.setData(pieData);
 
@@ -373,7 +388,7 @@ public class ReportFragment extends Fragment {
 //      mLegend.setForm(LegendForm.LINE);  //设置比例图的形状，默认是方形
         mLegend.setXEntrySpace(7f);
         mLegend.setYEntrySpace(5f);
-        mLegend.setTextColor(Color.BLUE);
+        mLegend.setTextColor(R.color.wh_text);
 
         pieChart.animateXY(1000, 1000);  //设置动画
         // mChart.spin(2000, 0, 360);
@@ -393,7 +408,7 @@ public class ReportFragment extends Fragment {
 
             float quarterly1 = recoverCount;
             float quarterly2 = alarmCount-recoverCount;
-        Log.i("TAG",quarterly1+"---"+quarterly2);
+//        Log.i("TAG",quarterly1+"---"+quarterly2);
             yValues.add(new Entry(quarterly1, 0));
             yValues.add(new Entry(quarterly2, 1));
         }else{
@@ -414,13 +429,15 @@ public class ReportFragment extends Fragment {
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
         // 饼图颜色
-        colors.add(Color.rgb(114, 188, 223));
-        colors.add(Color.rgb(205, 205, 205));
+        colors.add(Color.rgb(30, 144, 255));//已回复/已处理颜色
+//        colors.add(Color.rgb(114, 188, 223));//已回复/已处理颜色
+        colors.add(Color.rgb(255, 64, 64));//未恢复颜色
+//        colors.add(Color.rgb(205, 205, 205));//未恢复颜色
 
         pieDataSet.setColors(colors);
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float px = 5 * (metrics.densityDpi / 160f);
+        float px = 3 * (metrics.densityDpi / 160f);
         pieDataSet.setSelectionShift(px); // 选中态多出的长度
 
         PieData pieData = new PieData(xValues, pieDataSet);
@@ -491,12 +508,8 @@ public class ReportFragment extends Fragment {
                     recoverCountView.setText((int)(recoverCount)+"");
                     alarmCountView.setText((int)(alarmCount)+"");
                     processCountView.setText((int)(processCount)+"");
-                    areaCountView.setText((int)(areaCount)+"");
-
-                    PieData pieData1=getPieData(2,alarmCount,1);
+                    areaCountView.setText((int) (areaCount) + "");
                     showChart(pieChart1, pieData1,1);
-
-                    PieData pieData2=getPieData(2,areaCount,2);
                     showChart(pieChart2, pieData2,2);
                     break;
                 }
@@ -520,5 +533,17 @@ public class ReportFragment extends Fragment {
         recoverCount=Float.parseFloat(jsonObject.getString("RecoverCount"));
         processCount=Float.parseFloat(jsonObject.getString("ProcessCount"));
         areaCount=Float.parseFloat(jsonObject.getString("AreaCount"));
+        pieData1 = getPieData(2, alarmCount, 1);
+        pieData2 = getPieData(2,areaCount,2);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
